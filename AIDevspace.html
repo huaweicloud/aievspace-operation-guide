@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 开发者空间用户操作指南</title>
+<style>
+  :root {
+    --link: #4191fa;
+    --title: #191919;
+    --text: #595959;
+    --text-2: #6b6b6b;
+    --text-3: #999999;
+    --border: #e5e5e5;
+    --bg: #f5f5f6;
+    --card: #ffffff;
+    --bg-soft: #f7f8fa;
+    --code-bg: #f6f6f6;
+    --code-text: #333333;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 50px;
+    padding: 0 24px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .logo {
+    height: 26px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+  }
+  .topbar .title { font-weight: 700; font-size: 16px; color: var(--title); }
+  .topbar .subtitle { color: var(--text-3); font-size: 13px; }
+  .menu-toggle {
+    display: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+    color: var(--title);
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .menu-toggle:hover { background: var(--bg-soft); }
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 20;
+  }
+  .search-box {
+    position: relative;
+    margin-left: auto;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .search-box input {
+    width: 220px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    font-size: 13px;
+    color: var(--title);
+    background: var(--bg-soft);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .search-box input:focus { border-color: var(--link); background: #fff; }
+  .search-results {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 320px;
+    max-height: 360px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    display: none;
+    z-index: 40;
+  }
+  .search-results.show { display: block; }
+  .search-results .sr-item {
+    display: block;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--bg-soft);
+    cursor: pointer;
+  }
+  .search-results .sr-item:last-child { border-bottom: none; }
+  .search-results .sr-item:hover { background: var(--bg-soft); }
+  .search-results .sr-title {
+    display: block;
+    font-weight: 600;
+    color: var(--title);
+    font-size: 13.5px;
+  }
+  .search-results .sr-snippet {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .search-empty {
+    padding: 16px;
+    text-align: center;
+    color: var(--text-3);
+    font-size: 13px;
+  }
+
+  .container {
+    display: flex;
+    max-width: 1280px;
+    margin: 24px auto;
+    background: var(--card);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 74px;
+    align-self: flex-start;
+    width: 264px;
+    min-width: 0;
+    flex-shrink: 0;
+    height: calc(100vh - 98px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 16px 40px 24px;
+    border-right: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    background: var(--card);
+    transition: width 0.2s ease, padding 0.2s ease, opacity 0.2s ease;
+    white-space: nowrap;
+  }
+  .sidebar .toc-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--title);
+    margin-bottom: 12px;
+    padding: 0 10px;
+  }
+  .sidebar nav a {
+    display: block;
+    padding: 6px 10px;
+    margin: 1px 0;
+    font-size: 13.5px;
+    color: var(--text);
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .sidebar nav a:hover { background: var(--bg-soft); color: var(--title); text-decoration: none; }
+  .sidebar nav a.active {
+    color: var(--link);
+    background: rgba(65, 145, 250, 0.08);
+    border-left-color: var(--link);
+    font-weight: 600;
+  }
+  .sidebar nav a.sub { padding-left: 26px; font-size: 13px; color: var(--text-2); }
+  .sidebar nav a.sub2 { padding-left: 42px; font-size: 12.5px; color: var(--text-3); }
+  .sidebar nav a.toggle-parent {
+    cursor: pointer;
+    user-select: none;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sidebar nav a.toggle-parent .label { flex: 1; min-width: 0; }
+  .sidebar nav a.toggle-parent .arrow {
+    display: inline-block;
+    width: 14px;
+    font-size: 11px;
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: transform 0.15s ease;
+  }
+  .sidebar nav a.toggle-parent.open .arrow { transform: rotate(90deg); }
+  .sidebar nav .submenu.collapsed { display: none; }
+  .sidebar nav .group {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin: 18px 10px 4px;
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    padding: 36px 56px 72px;
+    background: var(--card);
+    border-radius: 0 8px 8px 0;
+  }
+  .content > section { display: none; }
+  .content > section.page-active { display: block; }
+  .content h1 { font-size: 30px; line-height: 1.3; margin: 0 0 16px; color: var(--title); letter-spacing: -0.01em; }
+  .content h2 { font-size: 22px; margin: 0 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--title); }
+  .content h3 { font-size: 17px; margin: 30px 0 12px; color: var(--title); }
+  .content p { margin: 12px 0; color: var(--text); }
+  .content .lead { font-size: 16px; color: var(--text); }
+  .content strong { color: var(--title); font-weight: 650; }
+
+  .content ul, .content ol { margin: 12px 0; padding-left: 24px; color: var(--text); }
+  .content li { margin: 6px 0; }
+
+  .content table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  .content th, .content td { border: 1px solid var(--border); padding: 10px 14px; text-align: left; vertical-align: top; }
+  .content th { background: var(--bg-soft); font-weight: 650; color: var(--title); }
+  .content tr:nth-child(even) td { background: #fafbfc; }
+
+  .content pre {
+    background: var(--code-bg);
+    border: 1px solid #ececec;
+    color: var(--code-text);
+    padding: 16px 20px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: "SFMono-Regular", "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 16px 0;
+  }
+  .content code { font-family: "SFMono-Regular", "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.9em; }
+  .content :not(pre) > code {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--link);
+  }
+
+  .tip {
+    border-left: 4px solid var(--link);
+    background: rgba(65, 145, 250, 0.06);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .tip b { color: var(--title); }
+
+  .screenshot {
+    display: block;
+    max-width: 100%;
+    margin: 18px 0 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+  .figcaption {
+    font-size: 13px;
+    color: var(--text-3);
+    text-align: center;
+    margin: 0 0 22px;
+  }
+
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps li { position: relative; padding-left: 36px; margin: 12px 0; counter-increment: step; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--link);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .chapter-nav a { color: var(--link); }
+  .chapter-nav .prev { text-align: left; }
+  .chapter-nav .next { text-align: right; margin-left: auto; }
+
+  @media (max-width: 1000px) {
+    .menu-toggle { display: flex; }
+    .overlay.show { display: block; }
+    .topbar { padding: 0 16px; gap: 8px; }
+    .topbar .title { font-size: 15px; }
+
+    .container { margin: 12px; border-radius: 8px; }
+
+    .sidebar {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      height: 100vh;
+      border-radius: 0;
+      border-right: 1px solid var(--border);
+      padding: 20px 16px 40px 20px;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 25;
+      white-space: normal;
+    }
+    .sidebar.open { transform: translateX(0); }
+
+    .content { padding: 24px 18px 48px; border-radius: 8px; }
+    .content h1 { font-size: 24px; }
+    .content h2 { font-size: 20px; }
+    .content h3 { font-size: 16px; }
+    .content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    .chapter-nav { flex-direction: column; gap: 10px; }
+    .chapter-nav .next { margin-left: 0; }
+
+    .search-box { flex: 1; max-width: 160px; }
+    .search-box input { width: 100%; }
+    .search-results {
+      position: fixed;
+      top: 56px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-height: 50vh;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-toggle" id="menu-toggle" aria-label="打开菜单">☰</button>
+  <img class="logo" src="images/space.svg" alt="AI 开发者空间" />
+  <span class="title">AI 开发者空间</span>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="搜索文档" autocomplete="off" />
+    <div class="search-results" id="search-results"></div>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="container">
+  <aside class="sidebar">
+    <div class="toc-title">开始使用</div>
+    <nav id="toc">
+      <a href="#intro">简介</a>
+      <a href="#ai-shell">AI SHELL</a>
+      <a href="#agents" class="toggle-parent" id="agents-toggle"><span class="label">AGENTS 概览</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="agents-submenu">
+        <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
+        <a href="#agent-codearts" class="sub2">CodeArts</a>
+        <a href="#agent-jiuwenswarm" class="sub2">JiuwenSwarm</a>
+        <a href="#agent-hermes" class="sub2">Hermes Agent</a>
+        <a href="#agent-opencode" class="sub2">OpenCode</a>
+        <a href="#agent-openclaw" class="sub2">OpenClaw</a>
+        <a href="#agent-kimicode" class="sub2">KimiCode</a>
+      </div>
+      <a href="#workenv">环境管理</a>
+      <a href="#skills">华为云 Skills</a>
+      <a href="#channels">Channels</a>
+      <a href="#files">文件管理</a>
+      <a href="#settings">设置与反馈</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <section id="intro">
+      <h2>简介</h2>
+      <p class="lead">AI 开发者空间是面向开发者的智能开发工作空间，以 AI SHELL 为主要入口，整合自然语言交互、命令行、Agents、开发环境、Skills、Channels、会话和文件管理等能力。开发者可用它辅助完成云资源查询与操作、代码和命令生成、环境部署及多工具协同，减少在不同工具之间切换的成本。</p>
+
+      <h3>为什么需要 AI 开发者空间</h3>
+      <p>在华为云上进行开发与运维时，开发者常遇到以下挑战：</p>
+      <ul>
+        <li><strong>云资源操作门槛高</strong>：ECS、CCE、OBS 等服务 API 与 CLI 命令繁多，学习成本高</li>
+        <li><strong>自然语言到命令的转换难</strong>：想把想法落地为可执行的云操作命令，需要大量检索与试错</li>
+        <li><strong>能力分散</strong>：代码智能体、多 Agent 协作、上下文数据库等工具散落各处</li>
+        <li><strong>多平台集成繁琐</strong>：难以将 AI 能力接入飞书、微信、企业微信等消息平台</li>
+      </ul>
+    </section>
+
+    <section id="ai-shell">
+      <h2>AI SHELL</h2>
+      <p><strong>AI SHELL</strong> 是产品的核心入口，提供两种交互模式：</p>
+      <table>
+        <thead>
+          <tr><th>模式</th><th>用途</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AI 对话</strong></td><td>自然语言交互</td><td>用自然语言描述需求，AI 生成命令并执行</td></tr>
+          <tr><td><strong>命令行</strong></td><td>命令式操作</td><td>面向熟悉 CLI 的开发者，直接输入命令</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AI SHELL</strong>，进入对话界面</li>
+        <li>在顶部切换「AI 对话」或「命令行」模式</li>
+        <li>点击输入框，用自然语言描述需求（例如"查询所有运行中的 ECS 实例"）并发送</li>
+        <li>点击「创建会话」或「新建」可开启新的对话</li>
+      </ol>
+
+      <img class="screenshot" src="images/ai-shell.png" alt="AI SHELL 主界面" />
+      <div class="figcaption">AI SHELL 主界面：AI 对话模式、快捷建议与输入框</div>
+
+      <p>点击输入框左侧的 <code>mode: Manual</code> 按钮，可配置会话参数：</p>
+      <table>
+        <thead>
+          <tr><th>配置项</th><th>说明</th><th>示例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Session Mode</strong></td><td>控制 AI 的自主性与安全边界</td><td>Manual（手动确认执行）</td></tr>
+          <tr><td><strong>Reasoning Level</strong></td><td>控制模型产生的推理量</td><td>Medium（中等）</td></tr>
+          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/glm-5.2</td></tr>
+        </tbody>
+      </table>
+
+      <img class="screenshot" src="images/ai-shell-config.png" alt="AI SHELL 会话配置" />
+      <div class="figcaption">会话配置面板：Session Mode / Reasoning Level / Model</div>
+    </section>
+
+    <section id="agents">
+      <h2>概览</h2>
+      <p>
+        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、JiuwenSwarm 智能体，根据部署的环境状态动态展示 Agent 入口，
+        目前可以提供 7 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手等场景。
+      </p>
+    </section>
+
+    <section id="agent-hwcloud-cli">
+      <h2>HWCloud CLI</h2>
+      <p><strong>HWCloud CLI</strong> 是基础设施即代码（IaC）智能体，支持 Terraform、Ansible 等工具，可将自然语言需求转换为可执行的基础设施配置。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>HWCloud CLI</strong>，进入该智能体</li>
+        <li>用自然语言描述基础设施需求（例如"创建一个 VPC 和一个 ECS 实例"）</li>
+        <li>HWCloud CLI 调用 Terraform / Ansible 等工具生成 IaC 脚本</li>
+        <li>确认脚本后执行部署，并查看运行结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-hwcloud-cli.png" alt="HWCloud CLI 智能体" />
+      <div class="figcaption">HWCloud CLI：基础设施即代码智能体</div>
+    </section>
+
+    <section id="agent-codearts">
+      <h2>CodeArts</h2>
+      <p><strong>CodeArts</strong> 是华为云码道代码智能体 CLI，支持代码编写、分析与优化。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>CodeArts</strong>，进入该智能体</li>
+        <li>在终端中输入代码编写、分析或优化需求</li>
+        <li>CodeArts 生成代码建议或分析报告</li>
+        <li>确认后执行，并查看结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-codearts.png" alt="CodeArts 智能体" />
+      <div class="figcaption">CodeArts：代码编写、分析、优化智能体</div>
+    </section>
+
+    <section id="agent-jiuwenswarm">
+      <h2>JiuwenSwarm</h2>
+      <p><strong>JiuwenSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>JiuwenSwarm</strong>，进入该智能体</li>
+        <li>输入一个复杂任务</li>
+        <li>JiuwenSwarm 自动分解任务并分配给不同 Agent 协作处理</li>
+        <li>查看各 Agent 的协作结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-jiuwenswarm.png" alt="JiuwenSwarm 智能体" />
+      <div class="figcaption">JiuwenSwarm：多 Agent 协作框架</div>
+    </section>
+
+    <section id="agent-hermes">
+      <h2>Hermes Agent</h2>
+      <p><strong>Hermes Agent</strong> 是自我改进型 AI Agent，内置学习循环与长期记忆，可持续优化自身行为。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>Hermes Agent</strong>，进入该智能体</li>
+        <li>输入需要处理或改进的任务</li>
+        <li>Hermes Agent 通过学习循环与长期记忆进行自我改进</li>
+        <li>查看改进后的结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-hermes.png" alt="Hermes Agent 智能体" />
+      <div class="figcaption">Hermes Agent：自我改进型 AI Agent</div>
+    </section>
+
+    <section id="agent-opencode">
+      <h2>OpenCode</h2>
+      <p><strong>OpenCode</strong> 是开源 AI 编程代理，可连接任意模型完成编程任务。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>OpenCode</strong>，进入该智能体</li>
+        <li>连接目标模型</li>
+        <li>描述编程任务</li>
+        <li>查看生成的代码并确认执行</li>
+      </ol>
+      <img class="screenshot" src="images/agent-opencode.png" alt="OpenCode 智能体" />
+      <div class="figcaption">OpenCode：开源 AI 编程代理</div>
+    </section>
+
+    <section id="agent-openclaw">
+      <h2>OpenClaw</h2>
+      <p><strong>OpenClaw</strong> 是开源可编程 AI 个人助手平台，可处理各类个人任务。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>OpenClaw</strong>，进入该智能体</li>
+        <li>配置个人助手</li>
+        <li>输入任务，OpenClaw 执行</li>
+        <li>查看执行结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-openclaw.png" alt="OpenClaw 智能体" />
+      <div class="figcaption">OpenClaw：开源可编程 AI 个人助手</div>
+    </section>
+
+    <section id="agent-kimicode">
+      <h2>KimiCode</h2>
+      <p><strong>KimiCode</strong> 是智能编程服务，支持代码阅读、编辑与命令执行。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>KimiCode</strong>，进入该智能体</li>
+        <li>描述代码阅读、编辑或命令执行需求</li>
+        <li>KimiCode 执行并返回结果</li>
+        <li>查看执行结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-kimicode.png" alt="KimiCode 智能体" />
+      <div class="figcaption">KimiCode：智能编程服务</div>
+    </section>
+
+    <section id="workenv">
+      <h2>环境管理</h2>
+      <p><strong>环境管理</strong> 用于浏览和部署各类作业环境，支持搜索与分类筛选：</p>
+      <table>
+        <thead>
+          <tr><th>分类</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>智能体</td><td>7 个代码智能体（见 AGENTS 章节）+ SRE 运维智能体</td></tr>
+          <tr><td>开发工具</td><td>隧道管理、向量 Embedding 等开发工具</td></tr>
+          <tr><td>基础设施</td><td>鸿蒙元服务开发等基础设施环境</td></tr>
+        </tbody>
+      </table>
+
+      <p>可用的作业环境：</p>
+      <table>
+        <thead>
+          <tr><th>环境</th><th>类型</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等工具</td></tr>
+          <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>华为云码道代码智能体 CLI，支持代码编写、分析、优化</td></tr>
+          <tr><td><strong>JiuwenSwarm</strong></td><td>智能体</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
+          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
+          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>开源 AI 编程代理，可连接任意模型</td></tr>
+          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>开源可编程 AI 个人助手平台</td></tr>
+          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>智能编程服务，支持代码阅读、编辑、命令执行</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>隧道管理 Web 控制台，支持隧道创建、端口管理</td></tr>
+          <tr><td><strong>Llama</strong></td><td>开发工具</td><td>基于 llama.cpp 的本地 Embedding 环境</td></tr>
+        </tbody>
+      </table>
+
+      <p>待开放的作业环境：鸿蒙元服务开发、SRE</p>
+
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>环境管理</strong> 进入环境列表</li>
+        <li>使用顶部<strong>搜索框</strong>检索环境，或按分类（智能体 / 开发工具 / 基础设施）筛选</li>
+        <li>每个环境提供 <strong>TUI</strong>（终端界面）或 <strong>WebUI</strong>（网页界面）入口</li>
+        <li>点击 <strong>停止 / 删除</strong> 可停用或移除环境</li>
+      </ol>
+
+      <img class="screenshot" src="images/workenv.png" alt="环境管理" />
+      <div class="figcaption">环境管理：作业环境列表、分类筛选与 TUI / WebUI 入口</div>
+    </section>
+
+    <section id="skills">
+      <h2>华为云 Skills</h2>
+      <p><strong>华为云 Skills</strong> 是技能市场，提供华为云各产品的技能（当前 79 个，可查看已安装数量）。</p>
+      <table>
+        <thead>
+          <tr><th>技能类别</th><th>示例</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>昇腾 Ascend NPU</td><td>ascend-command、models-deploy</td><td>NPU 管理、模型部署、算子优化</td></tr>
+          <tr><td>容器 CCE / CCI</td><td>cluster-management、metric-analyzer</td><td>集群管理、事件分析、指标分析</td></tr>
+          <tr><td>云服务器 ECS</td><td>ecs-alert、passwordless-login</td><td>监控告警、免密登录配置</td></tr>
+          <tr><td>轻量服务器 Flexus L</td><td>server-manage、deploy-jiuwenswarm</td><td>实例管理、一键部署</td></tr>
+          <tr><td>对象存储 OBS</td><td>bucket-create、obs-upload</td><td>桶创建、文件上传、静态网站托管</td></tr>
+          <tr><td>数据仓库 DWS</td><td>dws-cpu-diag、sql-check</td><td>性能诊断、SQL 检查</td></tr>
+          <tr><td>资源查询</td><td>computing-query、network-query、iam-query</td><td>查询计算 / 网络 / 存储 / 监控 / 身份资源</td></tr>
+          <tr><td>技能工具</td><td>skill-creator、skill-tester、skill-audit</td><td>技能创建、测试、审计</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>华为云 Skills</strong> 进入技能市场</li>
+        <li>使用顶部<strong>搜索框</strong>按名称检索技能</li>
+        <li>勾选「仅显示已安装」可筛选已安装的技能</li>
+        <li>点击技能的<strong>安装</strong>按钮完成安装，点击<strong>卸载</strong>移除</li>
+      </ol>
+
+      <img class="screenshot" src="images/skills.png" alt="华为云 Skills" />
+      <div class="figcaption">华为云 Skills 技能市场：技能搜索、安装与卸载</div>
+    </section>
+
+    <section id="channels">
+      <h2>Channels 渠道</h2>
+      <p><strong>Channels</strong> 用于连接外部消息平台。Agent 通过它收发消息，从而接入飞书、微信、企业微信等平台。</p>
+      <table>
+        <thead>
+          <tr><th>渠道</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>飞书</strong></td><td>支持消息接收、机器人回复、文档协作</td></tr>
+          <tr><td><strong>微信</strong></td><td>支持扫码登录、消息收发、配对码验证</td></tr>
+          <tr><td><strong>企业微信</strong></td><td>支持 AI 机器人扫码授权与消息收发</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>Channels</strong> 进入渠道列表</li>
+        <li>点击顶部「配置华为云 AKSK」，管理华为云访问凭证</li>
+        <li>选择目标渠道（飞书 / 微信 / 企业微信），点击<strong>连接</strong>或<strong>配置</strong>建立连接</li>
+      </ol>
+      <div class="tip">
+        <b>提示：</b>每个 Channel 通过配置凭证（如 App ID、App Secret）与外部平台建立安全连接，支持扫码注册与手动配置两种方式。
+      </div>
+
+      <img class="screenshot" src="images/channels.png" alt="Channels 渠道" />
+      <div class="figcaption">Channels 渠道：飞书 / 微信 / 企业微信连接配置</div>
+    </section>
+
+    <section id="files">
+      <h2>文件管理</h2>
+      <p>点击右上角「展开右侧面板」，可打开文件管理器：</p>
+      <ul>
+        <li><strong>搜索文件名</strong>：按名称检索文件</li>
+        <li><strong>批量操作</strong>：对多个文件执行批量处理</li>
+        <li><strong>上传</strong>：上传本地文件</li>
+        <li><strong>新建文件 / 新建文件夹</strong>：在工作区创建文件或目录</li>
+      </ul>
+
+      <img class="screenshot" src="images/files.png" alt="文件管理" />
+      <div class="figcaption">文件管理：文件搜索、上传、新建文件 / 文件夹</div>
+    </section>
+
+    <section id="settings">
+      <h2>设置与反馈</h2>
+      <table>
+        <thead>
+          <tr><th>入口</th><th>功能</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>设置</strong></td><td>主题设置：浅色模式 / 深色模式 / 跟随设备</td></tr>
+          <tr><td><strong>问题反馈</strong></td><td>提交使用问题与意见反馈</td></tr>
+        </tbody>
+      </table>
+
+      <img class="screenshot" src="images/settings.png" alt="设置" />
+      <div class="figcaption">设置：主题模式切换（浅色 / 深色 / 跟随设备）</div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const chapters = [
+    { id: 'intro', title: '简介' },
+    { id: 'ai-shell', title: 'AI SHELL' },
+    { id: 'agents', title: 'AGENTS 概览' },
+    { id: 'agent-hwcloud-cli', title: 'HWCloud CLI' },
+    { id: 'agent-codearts', title: 'CodeArts' },
+    { id: 'agent-jiuwenswarm', title: 'JiuwenSwarm' },
+    { id: 'agent-hermes', title: 'Hermes Agent' },
+    { id: 'agent-opencode', title: 'OpenCode' },
+    { id: 'agent-openclaw', title: 'OpenClaw' },
+    { id: 'agent-kimicode', title: 'KimiCode' },
+    { id: 'workenv', title: '环境管理' },
+    { id: 'skills', title: '华为云 Skills' },
+    { id: 'channels', title: 'Channels' },
+    { id: 'files', title: '文件管理' },
+    { id: 'settings', title: '设置与反馈' }
+  ];
+
+  function hasChapter(id) {
+    return chapters.some(c => c.id === id);
+  }
+
+  function showPage(id) {
+    chapters.forEach(c => {
+      const sec = document.getElementById(c.id);
+      if (sec) sec.classList.toggle('page-active', c.id === id);
+    });
+    document.querySelectorAll('#toc a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  chapters.forEach((c, i) => {
+    const sec = document.getElementById(c.id);
+    if (!sec) return;
+    const nav = document.createElement('nav');
+    nav.className = 'chapter-nav';
+    let html = '';
+    if (i > 0) {
+      html += '<a class="prev" href="#' + chapters[i - 1].id + '">← 上一篇：' + chapters[i - 1].title + '</a>';
+    }
+    if (i < chapters.length - 1) {
+      html += '<a class="next" href="#' + chapters[i + 1].id + '">下一篇：' + chapters[i + 1].title + ' →</a>';
+    }
+    nav.innerHTML = html;
+    sec.appendChild(nav);
+  });
+
+  // 左侧菜单点击：切换页面 + AGENTS 折叠/展开
+  document.querySelectorAll('#toc a').forEach(a => {
+    a.addEventListener('click', function (e) {
+      const id = a.getAttribute('href').slice(1);
+      if (a.id === 'agents-toggle') {
+        const submenu = document.getElementById('agents-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (hasChapter(id)) {
+        e.preventDefault();
+        showPage(id);
+      }
+    });
+  });
+
+  // 上一篇/下一篇 链接点击
+  document.querySelectorAll('.chapter-nav a').forEach(a => {
+    a.addEventListener('click', function (e) {
+      const id = a.getAttribute('href').slice(1);
+      if (hasChapter(id)) {
+        e.preventDefault();
+        showPage(id);
+      }
+    });
+  });
+
+  // 初始化：优先读取 URL hash，否则默认显示简介
+  const initial = hasChapter(location.hash.slice(1)) ? location.hash.slice(1) : 'intro';
+  showPage(initial);
+
+  // 移动端菜单抽屉
+  const menuToggle = document.getElementById('menu-toggle');
+  const overlay = document.getElementById('overlay');
+  const sidebarEl = document.querySelector('.sidebar');
+  function closeMenu() {
+    sidebarEl.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+  menuToggle.addEventListener('click', function () {
+    sidebarEl.classList.add('open');
+    overlay.classList.add('show');
+  });
+  overlay.addEventListener('click', closeMenu);
+  document.querySelectorAll('#toc a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+
+  // 文档搜索
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+  const searchIndex = chapters.map(c => {
+    const sec = document.getElementById(c.id);
+    return { id: c.id, title: c.title, text: sec ? sec.textContent.replace(/\s+/g, ' ').trim() : '' };
+  });
+
+  searchInput.addEventListener('input', function () {
+    const q = this.value.trim().toLowerCase();
+    searchResults.innerHTML = '';
+    if (!q) { searchResults.classList.remove('show'); return; }
+    const matches = searchIndex.filter(it => it.title.toLowerCase().indexOf(q) >= 0 || it.text.toLowerCase().indexOf(q) >= 0).slice(0, 10);
+    if (matches.length === 0) {
+      searchResults.innerHTML = '<div class="search-empty">无匹配结果</div>';
+    } else {
+      matches.forEach(it => {
+        const item = document.createElement('div');
+        item.className = 'sr-item';
+        let html = '<span class="sr-title">' + escapeHtml(it.title) + '</span>';
+        const idx = it.text.toLowerCase().indexOf(q);
+        if (idx >= 0) {
+          const start = Math.max(0, idx - 15);
+          const snippet = it.text.slice(start, idx + q.length + 30);
+          html += '<span class="sr-snippet">' + (start > 0 ? '…' : '') + escapeHtml(snippet) + '…</span>';
+        }
+        item.innerHTML = html;
+        item.addEventListener('click', function () {
+          showPage(it.id);
+          searchResults.classList.remove('show');
+          searchInput.value = '';
+        });
+        searchResults.appendChild(item);
+      });
+    }
+    searchResults.classList.add('show');
+  });
+
+  searchInput.addEventListener('keydown', function (e) {
+    // 忽略输入法组合中（中文候选词确认）的 Enter，避免误触发搜索
+    if (e.key !== 'Enter' || e.isComposing || e.keyCode === 229) return;
+    const q = this.value.trim().toLowerCase();
+    if (!q) return;
+    const currentId = document.querySelector('section.page-active').id;
+    const matches = searchIndex.filter(it => it.title.toLowerCase().indexOf(q) >= 0 || it.text.toLowerCase().indexOf(q) >= 0);
+    // 优先跳到非当前页的第一个匹配，避免跳转无感知
+    const target = matches.find(it => it.id !== currentId) || matches[0];
+    if (target) {
+      showPage(target.id);
+      searchResults.classList.remove('show');
+      this.value = '';
+      this.blur();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.search-box')) {
+      searchResults.classList.remove('show');
+    }
+  });
+
+</script>
+</body>
+</html>
