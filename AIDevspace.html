@@ -348,14 +348,15 @@
     }
     .sidebar.open { transform: translateX(0); }
 
-    .content { padding: 24px 18px 48px; border-radius: 8px; }
+    .content { padding: 24px 18px 60px; border-radius: 8px; }
     .content h1 { font-size: 24px; }
     .content h2 { font-size: 20px; }
     .content h3 { font-size: 16px; }
     .content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-    .chapter-nav { flex-direction: column; gap: 10px; }
-    .chapter-nav .next { margin-left: 0; }
+    .chapter-nav { gap: 8px; font-size: 12px; flex-wrap: nowrap; }
+    .chapter-nav .prev, .chapter-nav .next { flex: 1; min-width: 0; text-align: left; margin-left: 0; }
+    .chapter-nav .next { text-align: right; }
 
     .search-box { flex: 1; max-width: 160px; }
     .search-box input { width: 100%; }
@@ -395,14 +396,30 @@
         <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
         <a href="#agent-jiuwenswarm" class="sub2">JiuwenSwarm</a>
+        <a href="#agent-deepseek-harness" class="sub2">DeepSeek Harness</a>
         <a href="#agent-hermes" class="sub2">Hermes Agent</a>
         <a href="#agent-opencode" class="sub2">OpenCode</a>
         <a href="#agent-openclaw" class="sub2">OpenClaw</a>
         <a href="#agent-kimicode" class="sub2">KimiCode</a>
       </div>
+      
       <a href="#workenv">环境管理</a>
-      <a href="#skills">华为云 Skills</a>
-      <a href="#channels">Channels</a>
+      <a href="#extensions" class="toggle-parent" id="extensions-toggle"><span class="label">EXTENSIONS</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="extensions-submenu">
+        <a href="#skills" class="sub2">华为云 Skills</a>
+        <a href="#channels" class="sub2">Channels</a>
+      </div>
+      <a href="#tools" class="toggle-parent" id="tools-toggle"><span class="label">TOOLS</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="tools-submenu">
+        <a href="#tool-openviking" class="sub2">OpenViking</a>
+        <a href="#tool-iacmcp" class="sub2">IACMCPServer</a>
+        <a href="#tool-devbridge" class="sub2">DevBridge</a>
+      </div>
+      <a href="#resources" class="toggle-parent" id="resources-toggle"><span class="label">RESOURCES</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="resources-submenu">
+        <a href="#resources-docs" class="sub2">文档站</a>
+        <a href="#resources-agent" class="sub2">Agent 接入</a>
+      </div>
       <a href="#files">文件管理</a>
       <a href="#settings">设置与反馈</a>
     </nav>
@@ -412,14 +429,33 @@
 
     <section id="intro">
       <h2>简介</h2>
-      <p class="lead">AI 开发者空间是面向开发者的智能开发工作空间，以 AI SHELL 为主要入口，整合自然语言交互、命令行、Agents、开发环境、Skills、Channels、会话和文件管理等能力。开发者可用它辅助完成云资源查询与操作、代码和命令生成、环境部署及多工具协同，减少在不同工具之间切换的成本。</p>
+      <p class="lead">AI 开发者空间是面向开发者的智能开发工作空间，以 AI SHELL 为核心入口，通过自然语言交互和命令行两种模式，打通云资源操作、智能代码生成、多 Agent 协作、基础设施即代码（IaC）部署、消息渠道对接、隧道托管与远程连接等全链路开发能力，帮助开发者在统一工作台中高效完成云原生应用的开发、部署与运维。</p>
+
+      <h3>核心能力</h3>
+      <table>
+        <thead>
+          <tr><th>模块</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话（自然语言交互）和命令行两种模式</td></tr>
+          <tr><td><strong>AGENTS</strong></td><td>8 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 推理、SRE 运维等场景</td></tr>
+          <tr><td><strong>环境管理</strong></td><td>14 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类，一键部署与管理</td></tr>
+          <tr><td><strong>EXTENSIONS</strong></td><td>扩展能力，包含华为云 Skills（79 个云服务技能）和 Channels（飞书/微信/企业微信对接）</td></tr>
+          <tr><td><strong>TOOLS</strong></td><td>开发辅助工具：OpenViking 代码理解与重构、IACMCPServer 多云 IaC 部署、DevBridge 隧道管理</td></tr>
+          <tr><td><strong>RESOURCES</strong></td><td>资源入口：文档站（本操作指南）和 Agent 接入（IACMCPServer 使用指南）</td></tr>
+          <tr><td><strong>文件管理</strong></td><td>工作区文件操作：搜索、批量处理、上传、新建文件/文件夹，右侧面板快速访问</td></tr>
+        </tbody>
+      </table>
 
       <h3>为什么需要 AI 开发者空间</h3>
       <p>在华为云上进行开发与运维时，开发者常遇到以下挑战：</p>
       <ul>
         <li><strong>云资源操作门槛高</strong>：ECS、CCE、OBS 等服务 API 与 CLI 命令繁多，学习成本高</li>
         <li><strong>自然语言到命令的转换难</strong>：想把想法落地为可执行的云操作命令，需要大量检索与试错</li>
-        <li><strong>能力分散</strong>：代码智能体、多 Agent 协作、上下文数据库等工具散落各处</li>
+        <li><strong>代码理解与重构成本高</strong>：大型项目中代码逻辑复杂，缺乏智能化的代码分析与重构建议支持</li>
+        <li><strong>多云 IaC 编排学习曲线陡峭</strong>：多云资源编排需要掌握不同云平台的 IaC 语法，切换成本高</li>
+        <li><strong>隧道与远程连接配置复杂</strong>：本地开发环境与云环境的安全连接配置繁琐，端口管理与转发耗时</li>
+        <li><strong>能力分散</strong>：代码智能体、多 Agent 协作、IaC 部署、隧道管理等工具散落各处，难以协同</li>
         <li><strong>多平台集成繁琐</strong>：难以将 AI 能力接入飞书、微信、企业微信等消息平台</li>
       </ul>
     </section>
@@ -465,10 +501,10 @@
     </section>
 
     <section id="agents">
-      <h2>概览</h2>
+      <h2>AGENTS 概览</h2>
       <p>
-        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、JiuwenSwarm 智能体，根据部署的环境状态动态展示 Agent 入口，
-        目前可以提供 7 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手等场景。
+        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、JiuwenSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
+        目前可以提供 8 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 模型推理等场景。
       </p>
     </section>
 
@@ -488,30 +524,58 @@
 
     <section id="agent-codearts">
       <h2>CodeArts</h2>
-      <p><strong>CodeArts</strong> 是华为云码道代码智能体 CLI，支持代码编写、分析与优化。</p>
+      <p><strong>CodeArts</strong> 是华为云码道代码智能体 CLI，支持代码编写、分析与优化。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
         <li>点击左侧菜单 <strong>CodeArts</strong>，进入该智能体</li>
-        <li>在终端中输入代码编写、分析或优化需求</li>
-        <li>CodeArts 生成代码建议或分析报告</li>
-        <li>确认后执行，并查看结果</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
+        <li>在 TUI 终端或 WebUI 网页中输入代码编写、分析或优化需求</li>
+        <li>CodeArts 生成代码建议或分析报告，确认后执行查看结果</li>
       </ol>
-      <img class="screenshot" src="images/agent-codearts.png" alt="CodeArts 智能体" />
-      <div class="figcaption">CodeArts：代码编写、分析、优化智能体</div>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/agent-codearts-tui.jpg" alt="CodeArts TUI 模式" />
+      <div class="figcaption">CodeArts TUI：终端模式，直接在命令行中交互</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/agent-codearts-webui.jpg" alt="CodeArts WebUI 模式" />
+      <div class="figcaption">CodeArts WebUI：网页模式，可视化操作界面</div>
     </section>
 
     <section id="agent-jiuwenswarm">
       <h2>JiuwenSwarm</h2>
-      <p><strong>JiuwenSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。</p>
+      <p><strong>JiuwenSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
         <li>点击左侧菜单 <strong>JiuwenSwarm</strong>，进入该智能体</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
         <li>输入一个复杂任务</li>
         <li>JiuwenSwarm 自动分解任务并分配给不同 Agent 协作处理</li>
         <li>查看各 Agent 的协作结果</li>
       </ol>
-      <img class="screenshot" src="images/agent-jiuwenswarm.png" alt="JiuwenSwarm 智能体" />
-      <div class="figcaption">JiuwenSwarm：多 Agent 协作框架</div>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/agent-jiuwenswarm-tui.jpg" alt="JiuwenSwarm TUI 模式" />
+      <div class="figcaption">JiuwenSwarm TUI：终端模式</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/agent-jiuwenswarm-webui.jpg" alt="JiuwenSwarm WebUI 模式" />
+      <div class="figcaption">JiuwenSwarm WebUI：网页模式，多 Agent 可视化协作</div>
+    </section>
+
+    <section id="agent-deepseek-harness">
+      <h2>DeepSeek Harness</h2>
+      <p><strong>DeepSeek Harness</strong> 是基于 DeepSeek 大模型的 AI 推理智能体，支持高效模型推理、代码生成与自然语言理解，可无缝集成到开发工作流中。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>DeepSeek Harness</strong>，进入该智能体</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
+        <li>输入推理、代码生成或分析需求</li>
+        <li>DeepSeek Harness 调用模型进行推理并返回结果</li>
+        <li>查看推理结果，根据需要调整提示词并重新执行</li>
+      </ol>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/agent-deepseek-harness-tui.jpg" alt="DeepSeek Harness TUI 模式" />
+      <div class="figcaption">DeepSeek Harness TUI：终端模式</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/agent-deepseek-harness-webui.jpg" alt="DeepSeek Harness WebUI 模式" />
+      <div class="figcaption">DeepSeek Harness WebUI：网页模式，支持会话编排与技能管理</div>
     </section>
 
     <section id="agent-hermes">
@@ -538,7 +602,7 @@
         <li>描述编程任务</li>
         <li>查看生成的代码并确认执行</li>
       </ol>
-      <img class="screenshot" src="images/agent-opencode.png" alt="OpenCode 智能体" />
+      <img class="screenshot" src="images/agent-opencode.jpg" alt="OpenCode 智能体" />
       <div class="figcaption">OpenCode：开源 AI 编程代理</div>
     </section>
 
@@ -552,7 +616,7 @@
         <li>输入任务，OpenClaw 执行</li>
         <li>查看执行结果</li>
       </ol>
-      <img class="screenshot" src="images/agent-openclaw.png" alt="OpenClaw 智能体" />
+      <img class="screenshot" src="images/agent-openclaw.jpg" alt="OpenClaw 智能体" />
       <div class="figcaption">OpenClaw：开源可编程 AI 个人助手</div>
     </section>
 
@@ -570,50 +634,135 @@
       <div class="figcaption">KimiCode：智能编程服务</div>
     </section>
 
+    <section id="tools">
+      <h2>TOOLS</h2>
+      <p><strong>TOOLS</strong> 模块提供开发辅助工具，默认部署以下工具：</p>
+      <table>
+        <thead>
+          <tr><th>工具</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>OpenViking</strong></td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
+          <tr><td><strong>IACMCPServer</strong></td><td>基础设施即代码 MCP 服务，通过 MCP 协议对外暴露 IaC 能力，支持多云资源编排与管理</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>隧道管理工具，提供 Web 控制台，支持隧道创建、端口管理与远程访问</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="tool-openviking">
+      <h2>OpenViking</h2>
+      <p><strong>OpenViking</strong> 是智能开发辅助工具，帮助开发者理解代码、提供重构建议与自动化开发支持。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>TOOLS → OpenViking</strong>，进入该工具</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
+        <li>选择目标代码文件或项目目录</li>
+        <li>OpenViking 分析代码并生成理解报告或重构建议</li>
+        <li>确认建议后执行相应操作</li>
+      </ol>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/tool-openviking-tui.jpg" alt="OpenViking TUI 模式" />
+      <div class="figcaption">OpenViking TUI：终端模式</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/tool-openviking-webui.jpg" alt="OpenViking WebUI 模式" />
+      <div class="figcaption">OpenViking WebUI：网页模式，代码智能助手</div>
+    </section>
+
+    <section id="tool-iacmcp">
+      <h2>IACMCPServer</h2>
+      <p><strong>IACMCPServer</strong> 是基础设施即代码 MCP 服务，通过 MCP（Model Context Protocol）协议对外暴露 IaC 能力，支持多云资源编排与管理。目前仅支持 <strong>TUI（终端模式）</strong>。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>TOOLS → IACMCPServer</strong>，进入该工具</li>
+        <li>配置目标云平台的认证凭证</li>
+        <li>通过 MCP 协议发送基础设施编排指令</li>
+        <li>查看编排结果与资源状态</li>
+      </ol>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/tool-iacmcp-tui.jpg" alt="IACMCPServer TUI 模式" />
+      <div class="figcaption">IACMCPServer TUI：基础设施即代码 MCP 服务（终端模式）</div>
+    </section>
+
+    <section id="tool-devbridge">
+      <h2>DevBridge</h2>
+      <p><strong>DevBridge</strong> 是隧道管理工具，提供开发者隧道能力，支持托管（Host）将本地端口服务暴露到公网隧道，以及连接（Connect）将远端隧道端口转发到本地。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。当在<strong>环境管理</strong>中部署 DevBridge 环境后，会在 <strong>TOOLS</strong> 菜单下展示入口。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在 <strong>环境管理</strong> 中部署 <strong>DevBridge</strong> 环境</li>
+        <li>部署完成后，左侧 <strong>TOOLS</strong> 菜单下会出现 <strong>DevBridge</strong> 入口</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入管理控制台）</li>
+        <li>TUI 模式下可通过命令行管理隧道；WebUI 模式下可在控制台创建隧道、管理端口映射与托管/连接进程</li>
+      </ol>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/tool-devbridge-tui.jpg" alt="DevBridge TUI 模式" />
+      <div class="figcaption">DevBridge TUI：终端模式，通过命令行管理隧道</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/tool-devbridge-webui.jpg" alt="DevBridge WebUI 模式" />
+      <div class="figcaption">DevBridge WebUI：隧道管理控制台，可视化创建和管理隧道</div>
+    </section>
+
     <section id="workenv">
       <h2>环境管理</h2>
-      <p><strong>环境管理</strong> 用于浏览和部署各类作业环境，支持搜索与分类筛选：</p>
+      <p>环境管理用于浏览和部署各类作业环境，支持搜索与分类筛选：</p>
       <table>
         <thead>
           <tr><th>分类</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td>智能体</td><td>7 个代码智能体（见 AGENTS 章节）+ SRE 运维智能体</td></tr>
-          <tr><td>开发工具</td><td>隧道管理、向量 Embedding 等开发工具</td></tr>
-          <tr><td>基础设施</td><td>鸿蒙元服务开发等基础设施环境</td></tr>
+          <tr><td>智能体（9）</td><td>代码智能体、多 Agent 协作、个人助手、SRE 运维等 9 个智能体环境</td></tr>
+          <tr><td>开发工具（3）</td><td>DevBridge 隧道管理、IACMCPServer 基础设施即代码、鸿蒙元服务开发</td></tr>
+          <tr><td>数据库（1）</td><td>OpenViking 智能开发辅助工具</td></tr>
+          <tr><td>基础设施（1）</td><td>Llama 本地 Embedding 环境</td></tr>
         </tbody>
       </table>
 
-      <p>可用的作业环境：</p>
+      <p>共 14 个环境，12 运行中，支持的作业环境：</p>
       <table>
         <thead>
-          <tr><th>环境</th><th>类型</th><th>说明</th></tr>
+          <tr><th>环境</th><th>类型</th><th>版本</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等工具</td></tr>
-          <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>华为云码道代码智能体 CLI，支持代码编写、分析、优化</td></tr>
-          <tr><td><strong>JiuwenSwarm</strong></td><td>智能体</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
-          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
-          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>开源 AI 编程代理，可连接任意模型</td></tr>
-          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>开源可编程 AI 个人助手平台</td></tr>
-          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>智能编程服务，支持代码阅读、编辑、命令执行</td></tr>
-          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>隧道管理 Web 控制台，支持隧道创建、端口管理</td></tr>
-          <tr><td><strong>Llama</strong></td><td>开发工具</td><td>基于 llama.cpp 的本地 Embedding 环境</td></tr>
+          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>—</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等工具</td></tr>
+          <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>v1.0.1</td><td>华为云码道代码智能体 CLI，支持代码编写、分析、优化</td></tr>
+          <tr><td><strong>JiuwenSwarm</strong></td><td>智能体</td><td>v1.0.1</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
+          <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v0.1.0-rc.6</td><td>DeepSeek 官方多代理智能体开发平台，支持会话编排、技能管理、多模型接入</td></tr>
+          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>v0.19.0</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
+          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.1</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等任意模型</td></tr>
+          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>v2026.7.1-2</td><td>开源可编程 AI 个人助手平台，支持自动化任务、工具调用</td></tr>
+          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>v0.31.1</td><td>智能编程服务，支持代码阅读、编辑、命令执行、网页搜索</td></tr>
+          <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.0</td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>v0.1.13</td><td>隧道管理工具，支持隧道创建、端口管理、本地服务托管与远程连接</td></tr>
+          <tr><td><strong>IACMCPServer</strong></td><td>开发工具</td><td>v2026.8.14</td><td>基础设施即代码 MCP 服务，支持多云资源编排、Terraform 部署</td></tr>
+          <tr><td><strong>Llama</strong></td><td>基础设施</td><td>v1.0.0</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型</td></tr>
+          <tr><td><strong>鸿蒙元服务开发</strong></td><td>开发工具</td><td>—</td><td>鸿蒙 OS 应用开发环境，支持 ArkTS 语言与元服务开发框架（待开放）</td></tr>
+          <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>云服务运维智能体，支持故障排查、扩缩容规划、费用查询（待开放）</td></tr>
         </tbody>
       </table>
-
-      <p>待开放的作业环境：鸿蒙元服务开发、SRE</p>
 
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
         <li>点击左侧 <strong>环境管理</strong> 进入环境列表</li>
-        <li>使用顶部<strong>搜索框</strong>检索环境，或按分类（智能体 / 开发工具 / 基础设施）筛选</li>
+        <li>使用顶部<strong>搜索框</strong>检索环境，或按分类（智能体 / 开发工具 / 数据库 / 基础设施）筛选</li>
         <li>每个环境提供 <strong>TUI</strong>（终端界面）或 <strong>WebUI</strong>（网页界面）入口</li>
-        <li>点击 <strong>停止 / 删除</strong> 可停用或移除环境</li>
+        <li>支持<strong>停止</strong>、<strong>删除</strong>操作，部分环境支持<strong>升级</strong></li>
       </ol>
 
       <img class="screenshot" src="images/workenv.png" alt="环境管理" />
       <div class="figcaption">环境管理：作业环境列表、分类筛选与 TUI / WebUI 入口</div>
+    </section>
+
+    <section id="extensions">
+      <h2>EXTENSIONS</h2>
+      <p><strong>EXTENSIONS</strong> 模块提供扩展能力入口，包含华为云 Skills 和 Channels 两个子模块：</p>
+      <table>
+        <thead>
+          <tr><th>子模块</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>华为云 Skills</strong></td><td>预置的华为云服务技能集合，提供云资源查询、运维等快捷能力</td></tr>
+          <tr><td><strong>Channels</strong></td><td>消息渠道连接管理，支持飞书、微信、企业微信等平台对接</td></tr>
+        </tbody>
+      </table>
     </section>
 
     <section id="skills">
@@ -675,6 +824,54 @@
       <div class="figcaption">Channels 渠道：飞书 / 微信 / 企业微信连接配置</div>
     </section>
 
+    <section id="resources">
+      <h2>RESOURCES</h2>
+      <p><strong>RESOURCES</strong> 模块提供文档与资源入口，包含开发文档站和 Agent 接入指引：</p>
+      <table>
+        <thead>
+          <tr><th>入口</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>文档站</strong></td><td>《AI 开发者空间操作指南》（本文档），查看完整的产品使用说明</td></tr>
+          <tr><td><strong>Agent 接入</strong></td><td>IACMCPServer 使用指南文档</td></tr>
+        </tbody>
+      </table>
+      
+    </section>
+
+    <section id="resources-docs">
+      <h2>文档站</h2>
+      <p><strong>文档站</strong> 是 AI 开发者空间的官方操作指南文档，点击左侧菜单 <strong>RESOURCES → 文档站</strong> 即可进入。文档站涵盖以下内容：</p>
+      <ul>
+        <li>AI SHELL 的使用方法（AI 对话模式、命令行模式、会话配置）</li>
+        <li>AGENTS 模块各智能体的操作说明（HWCloud CLI、CodeArts、JiuwenSwarm 等）</li>
+        <li>环境管理的部署与配置指引</li>
+        <li>华为云 Skills 和 Channels 的接入说明</li>
+        <li>TOOLS 模块（OpenViking、IACMCPServer、DevBridge）的使用指南</li>
+        <li>RESOURCES、文件管理、设置与反馈等全部功能模块说明</li>
+      </ul>
+      <div class="tip">
+        <b>说明：</b>本文档即为「文档站」所指向的操作指南，当前页面即为文档站内容。可通过左侧导航菜单快速定位到各个功能模块的使用说明。
+      </div>
+    </section>
+
+    <section id="resources-agent">
+      <h2>Agent 接入</h2>
+      <p><strong>Agent 接入</strong> 提供 IACMCPServer 使用指南，指导开发者通过 MCP 协议将基础设施即代码能力接入到 AI 开发者空间。点击左侧菜单 <strong>RESOURCES → Agent 接入</strong> 即可跳转到 GitCode 上的 IACMCPServer 文档。</p>
+      <p><strong>IACMCPServer 使用指南包含以下内容：</strong></p>
+      <ul>
+        <li>IACMCPServer 概述：通过 MCP 协议暴露云基础设施部署能力</li>
+        <li>接入流程：配置 MCP 客户端（opencode、codearts、Cursor 等）</li>
+        <li>能力说明：支持多云资源编排、部署、排错与销毁全流程</li>
+        <li>配置说明：timeout、tool_call 等参数配置</li>
+      </ul>
+      <div class="tip">
+        <b>提示：</b>点击 Agent 接入 菜单项将跳转到 GitCode（gitcode.com）上的 Hi-Tools/runtime 仓库，查看 IACMCPServer 完整使用指南。
+      </div>
+      <img class="screenshot" src="images/resources-agent.png" alt="IACMCPServer 使用指南" />
+      <div class="figcaption">Agent 接入：IACMCPServer 使用指南（GitCode）</div>
+    </section>
+
     <section id="files">
       <h2>文件管理</h2>
       <p>点击右上角「展开右侧面板」，可打开文件管理器：</p>
@@ -716,13 +913,22 @@
     { id: 'agent-hwcloud-cli', title: 'HWCloud CLI' },
     { id: 'agent-codearts', title: 'CodeArts' },
     { id: 'agent-jiuwenswarm', title: 'JiuwenSwarm' },
+    { id: 'agent-deepseek-harness', title: 'DeepSeek Harness' },
     { id: 'agent-hermes', title: 'Hermes Agent' },
     { id: 'agent-opencode', title: 'OpenCode' },
     { id: 'agent-openclaw', title: 'OpenClaw' },
     { id: 'agent-kimicode', title: 'KimiCode' },
     { id: 'workenv', title: '环境管理' },
+    { id: 'extensions', title: 'EXTENSIONS' },
     { id: 'skills', title: '华为云 Skills' },
     { id: 'channels', title: 'Channels' },
+    { id: 'tools', title: 'TOOLS' },
+    { id: 'tool-openviking', title: 'OpenViking' },
+    { id: 'tool-iacmcp', title: 'IACMCPServer' },
+    { id: 'tool-devbridge', title: 'DevBridge' },
+    { id: 'resources', title: 'RESOURCES' },
+    { id: 'resources-docs', title: '文档站' },
+    { id: 'resources-agent', title: 'Agent 接入' },
     { id: 'files', title: '文件管理' },
     { id: 'settings', title: '设置与反馈' }
   ];
@@ -758,12 +964,27 @@
     sec.appendChild(nav);
   });
 
-  // 左侧菜单点击：切换页面 + AGENTS 折叠/展开
+  // 左侧菜单点击：切换页面 + AGENTS / TOOLS 折叠/展开
   document.querySelectorAll('#toc a').forEach(a => {
     a.addEventListener('click', function (e) {
       const id = a.getAttribute('href').slice(1);
       if (a.id === 'agents-toggle') {
         const submenu = document.getElementById('agents-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (a.id === 'extensions-toggle') {
+        const submenu = document.getElementById('extensions-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (a.id === 'tools-toggle') {
+        const submenu = document.getElementById('tools-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (a.id === 'resources-toggle') {
+        const submenu = document.getElementById('resources-submenu');
         const collapsed = submenu.classList.toggle('collapsed');
         a.classList.toggle('open', !collapsed);
       }
