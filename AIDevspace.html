@@ -401,6 +401,7 @@
         <a href="#agent-opencode" class="sub2">OpenCode</a>
         <a href="#agent-openclaw" class="sub2">OpenClaw</a>
         <a href="#agent-kimicode" class="sub2">KimiCode</a>
+        <a href="#agent-prime" class="sub2">Prime Agent</a>
       </div>
       
       <a href="#workenv">环境管理</a>
@@ -412,7 +413,6 @@
       <a href="#tools" class="toggle-parent" id="tools-toggle"><span class="label">TOOLS</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="tools-submenu">
         <a href="#tool-openviking" class="sub2">OpenViking</a>
-        <a href="#tool-iacmcp" class="sub2">IACMCPServer</a>
         <a href="#tool-devbridge" class="sub2">DevBridge</a>
       </div>
       <a href="#resources" class="toggle-parent" id="resources-toggle"><span class="label">RESOURCES</span><span class="arrow">▸</span></a>
@@ -438,11 +438,11 @@
         </thead>
         <tbody>
           <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话（自然语言交互）和命令行两种模式</td></tr>
-          <tr><td><strong>AGENTS</strong></td><td>8 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 推理、SRE 运维等场景</td></tr>
-          <tr><td><strong>环境管理</strong></td><td>14 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类，一键部署与管理</td></tr>
+          <tr><td><strong>AGENTS</strong></td><td>9 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 推理、SRE 运维等场景</td></tr>
+          <tr><td><strong>环境管理</strong></td><td>13 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类，一键部署与管理</td></tr>
           <tr><td><strong>EXTENSIONS</strong></td><td>扩展能力，包含华为云 Skills（79 个云服务技能）和 Channels（飞书/微信/企业微信对接）</td></tr>
-          <tr><td><strong>TOOLS</strong></td><td>开发辅助工具：OpenViking 代码理解与重构、IACMCPServer 多云 IaC 部署、DevBridge 隧道管理</td></tr>
-          <tr><td><strong>RESOURCES</strong></td><td>资源入口：文档站（本操作指南）和 Agent 接入（IACMCPServer 使用指南）</td></tr>
+          <tr><td><strong>TOOLS</strong></td><td>开发辅助工具：OpenViking 代码理解与重构、DevBridge 隧道管理</td></tr>
+          <tr><td><strong>RESOURCES</strong></td><td>资源入口：文档站（本操作指南）</td></tr>
           <tr><td><strong>文件管理</strong></td><td>工作区文件操作：搜索、批量处理、上传、新建文件/文件夹，右侧面板快速访问</td></tr>
         </tbody>
       </table>
@@ -504,7 +504,7 @@
       <h2>AGENTS 概览</h2>
       <p>
         <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、JiuwenSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
-        目前可以提供 8 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 模型推理等场景。
+        目前可以提供 9 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 模型推理等场景。
       </p>
     </section>
 
@@ -608,16 +608,21 @@
 
     <section id="agent-openclaw">
       <h2>OpenClaw</h2>
-      <p><strong>OpenClaw</strong> 是开源可编程 AI 个人助手平台，可处理各类个人任务。</p>
+      <p><strong>OpenClaw</strong> 是开源可编程 AI 个人助手平台，支持多渠道消息接入与自动化任务处理，可处理各类个人任务。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
         <li>点击左侧菜单 <strong>OpenClaw</strong>，进入该智能体</li>
-        <li>配置个人助手</li>
-        <li>输入任务，OpenClaw 执行</li>
-        <li>查看执行结果</li>
+        <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
+        <li>配置个人助手参数与渠道接入</li>
+        <li>输入任务，OpenClaw 自动执行并返回结果</li>
+        <li>查看执行结果，可根据需要调整配置并重新执行</li>
       </ol>
-      <img class="screenshot" src="images/agent-openclaw.jpg" alt="OpenClaw 智能体" />
-      <div class="figcaption">OpenClaw：开源可编程 AI 个人助手</div>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/agent-openclaw-tui.jpg" alt="OpenClaw TUI 模式" />
+      <div class="figcaption">OpenClaw TUI：终端模式，命令行交互</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/agent-openclaw-webui.jpg" alt="OpenClaw WebUI 模式" />
+      <div class="figcaption">OpenClaw WebUI：网页模式，可视化管理个人助手与渠道配置</div>
     </section>
 
     <section id="agent-kimicode">
@@ -634,6 +639,18 @@
       <div class="figcaption">KimiCode：智能编程服务</div>
     </section>
 
+    <section id="agent-prime">
+      <h2>Prime Agent</h2>
+      <p><strong>Prime Agent</strong> 是智能任务调度与编排 Agent，支持将复杂任务自动拆解为子任务并协调多个执行单元协同完成。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>Prime Agent</strong>，进入该智能体</li>
+        <li>输入需要处理的复杂任务或编排需求</li>
+        <li>Prime Agent 自动拆解任务并协调执行单元进行处理</li>
+        <li>查看各子任务的执行结果与整体编排状态</li>
+      </ol>
+    </section>
+
     <section id="tools">
       <h2>TOOLS</h2>
       <p><strong>TOOLS</strong> 模块提供开发辅助工具，默认部署以下工具：</p>
@@ -643,7 +660,6 @@
         </thead>
         <tbody>
           <tr><td><strong>OpenViking</strong></td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
-          <tr><td><strong>IACMCPServer</strong></td><td>基础设施即代码 MCP 服务，通过 MCP 协议对外暴露 IaC 能力，支持多云资源编排与管理</td></tr>
           <tr><td><strong>DevBridge</strong></td><td>隧道管理工具，提供 Web 控制台，支持隧道创建、端口管理与远程访问</td></tr>
         </tbody>
       </table>
@@ -662,25 +678,12 @@
       </ol>
       <h3>TUI 模式（终端界面）</h3>
       <img class="screenshot" src="images/tool-openviking-tui.jpg" alt="OpenViking TUI 模式" />
-      <div class="figcaption">OpenViking TUI：终端模式</div>
+      <div class="figcaption">OpenViking TUI：终端模式，选择语言初始界面</div>
+      <img class="screenshot" src="images/tool-openviking-tui-lang.jpg" alt="OpenViking TUI 选择中文后" />
+      <div class="figcaption">OpenViking TUI：选择中文语言后的界面展示</div>
       <h3>WebUI 模式（网页界面）</h3>
       <img class="screenshot" src="images/tool-openviking-webui.jpg" alt="OpenViking WebUI 模式" />
       <div class="figcaption">OpenViking WebUI：网页模式，代码智能助手</div>
-    </section>
-
-    <section id="tool-iacmcp">
-      <h2>IACMCPServer</h2>
-      <p><strong>IACMCPServer</strong> 是基础设施即代码 MCP 服务，通过 MCP（Model Context Protocol）协议对外暴露 IaC 能力，支持多云资源编排与管理。目前仅支持 <strong>TUI（终端模式）</strong>。</p>
-      <p><strong>操作步骤：</strong></p>
-      <ol class="steps">
-        <li>点击左侧菜单 <strong>TOOLS → IACMCPServer</strong>，进入该工具</li>
-        <li>配置目标云平台的认证凭证</li>
-        <li>通过 MCP 协议发送基础设施编排指令</li>
-        <li>查看编排结果与资源状态</li>
-      </ol>
-      <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/tool-iacmcp-tui.jpg" alt="IACMCPServer TUI 模式" />
-      <div class="figcaption">IACMCPServer TUI：基础设施即代码 MCP 服务（终端模式）</div>
     </section>
 
     <section id="tool-devbridge">
@@ -709,8 +712,8 @@
           <tr><th>分类</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td>智能体（9）</td><td>代码智能体、多 Agent 协作、个人助手、SRE 运维等 9 个智能体环境</td></tr>
-          <tr><td>开发工具（3）</td><td>DevBridge 隧道管理、IACMCPServer 基础设施即代码、鸿蒙元服务开发</td></tr>
+          <tr><td>智能体（10）</td><td>代码智能体、多 Agent 协作、个人助手、SRE 运维等 10 个智能体环境</td></tr>
+          <tr><td>开发工具（2）</td><td>DevBridge 隧道管理、鸿蒙元服务开发</td></tr>
           <tr><td>数据库（1）</td><td>OpenViking 智能开发辅助工具</td></tr>
           <tr><td>基础设施（1）</td><td>Llama 本地 Embedding 环境</td></tr>
         </tbody>
@@ -730,9 +733,9 @@
           <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.1</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等任意模型</td></tr>
           <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>v2026.7.1-2</td><td>开源可编程 AI 个人助手平台，支持自动化任务、工具调用</td></tr>
           <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>v0.31.1</td><td>智能编程服务，支持代码阅读、编辑、命令执行、网页搜索</td></tr>
+          <tr><td><strong>Prime Agent</strong></td><td>智能体</td><td>—</td><td>智能任务调度与编排 Agent，自动拆解复杂任务并协调多执行单元协同</td></tr>
           <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.0</td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
           <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>v0.1.13</td><td>隧道管理工具，支持隧道创建、端口管理、本地服务托管与远程连接</td></tr>
-          <tr><td><strong>IACMCPServer</strong></td><td>开发工具</td><td>v2026.8.14</td><td>基础设施即代码 MCP 服务，支持多云资源编排、Terraform 部署</td></tr>
           <tr><td><strong>Llama</strong></td><td>基础设施</td><td>v1.0.0</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型</td></tr>
           <tr><td><strong>鸿蒙元服务开发</strong></td><td>开发工具</td><td>—</td><td>鸿蒙 OS 应用开发环境，支持 ArkTS 语言与元服务开发框架（待开放）</td></tr>
           <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>云服务运维智能体，支持故障排查、扩缩容规划、费用查询（待开放）</td></tr>
@@ -847,7 +850,7 @@
         <li>AGENTS 模块各智能体的操作说明（HWCloud CLI、CodeArts、JiuwenSwarm 等）</li>
         <li>环境管理的部署与配置指引</li>
         <li>华为云 Skills 和 Channels 的接入说明</li>
-        <li>TOOLS 模块（OpenViking、IACMCPServer、DevBridge）的使用指南</li>
+        <li>TOOLS 模块（OpenViking、DevBridge）的使用指南</li>
         <li>RESOURCES、文件管理、设置与反馈等全部功能模块说明</li>
       </ul>
       <div class="tip">
@@ -918,6 +921,7 @@
     { id: 'agent-opencode', title: 'OpenCode' },
     { id: 'agent-openclaw', title: 'OpenClaw' },
     { id: 'agent-kimicode', title: 'KimiCode' },
+    { id: 'agent-prime', title: 'Prime Agent' },
     { id: 'workenv', title: '环境管理' },
     { id: 'extensions', title: 'EXTENSIONS' },
     { id: 'skills', title: '华为云 Skills' },
