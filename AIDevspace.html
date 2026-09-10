@@ -336,11 +336,15 @@
     cursor: pointer;
     background: #000;
   }
-  .video-thumb video {
+  .video-thumb video,
+  .video-thumb img {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+  }
+  .video-thumb.video-loaded img {
+    display: none;
   }
   .video-duration {
     position: absolute;
@@ -1230,17 +1234,17 @@
 
   // 视频列表：本项目 video 目录下的视频
   const videoList = [
-    { src: 'video/space.mp4', title: '什么是AI开发者空间？' },
-    { src: 'video/agentwork.mp4', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork' },
-    { src: 'video/envrioment.mp4', title: '自定义作业环境：AI创建与手动搭建', cat: 'env' },
-    { src: 'video/devBridge.mp4', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge' },
-    { src: 'video/devBridge_2.mp4', title: 'DevBridge实践：一键分享本地服务', cat: 'devbridge' },
-    { src: 'video/devBridge_1.mp4', title: 'DevBridge实践：CI开发', cat: 'devbridge' },
-    { src: 'video/OpenViKing_Agent.mp4', title: 'OpenViking多Agent记忆集成', cat: 'openviking' },
-    { src: 'video/OpenViKing_Embing.mp4', title: 'OpenViking切换本地Embedding模型', cat: 'openviking' },
-    { src: 'video/OpenViKing_long.mp4', title: 'OpenViking实践：长期记忆集成', cat: 'openviking' },
-    { src: 'video/openviking_model.mp4', title: 'OpenViking实践： Embedding切换排障', cat: 'openviking' },
-    { src: 'video/data.mp4', title: '一句话做出数据大屏' }
+    { src: 'video/space.mp4', title: '什么是AI开发者空间？', dur: 70.1 },
+    { src: 'video/agentwork.mp4', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
+    { src: 'video/envrioment.mp4', title: '自定义作业环境：AI创建与手动搭建', cat: 'env', dur: 123.5 },
+    { src: 'video/devBridge.mp4', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge', dur: 61.9 },
+    { src: 'video/devBridge_2.mp4', title: 'DevBridge实践：一键分享本地服务', cat: 'devbridge', dur: 71.9 },
+    { src: 'video/devBridge_1.mp4', title: 'DevBridge实践：CI开发', cat: 'devbridge', dur: 60 },
+    { src: 'video/OpenViKing_Agent.mp4', title: 'OpenViking多Agent记忆集成', cat: 'openviking', dur: 90.3 },
+    { src: 'video/OpenViKing_Embing.mp4', title: 'OpenViking切换本地Embedding模型', cat: 'openviking', dur: 73.2 },
+    { src: 'video/OpenViKing_long.mp4', title: 'OpenViking实践：长期记忆集成', cat: 'openviking', dur: 97.7 },
+    { src: 'video/openviking_model.mp4', title: 'OpenViking实践： Embedding切换排障', cat: 'openviking', dur: 96 },
+    { src: 'video/data.mp4', title: '一句话做出数据大屏', dur: 180.1 }
   ];
 
   // 动态渲染视频卡片（筛选 + 分页）
@@ -1291,59 +1295,63 @@
   }
 
   function videoCardHTML(item) {
+    // 封面图替代 <video>：页面加载时只下载小图（约几十KB），视频数据点击后才加载
+    const poster = item.src.replace(/^video\//, 'video/posters/').replace(/\.mp4$/, '.jpg');
     return '<div class="video-card">' +
       '<div class="video-thumb" data-src="' + item.src + '" data-title="' + item.title + '">' +
-      '<video preload="metadata" src="' + item.src + '" playsinline></video>' +
+      '<img class="video-poster" loading="lazy" src="' + poster + '" alt="' + item.title + '">' +
       '<button class="video-play" type="button" aria-label="播放视频"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>' +
-      '<span class="video-duration"></span>' +
+      '<span class="video-duration">' + formatTime(item.dur) + '</span>' +
       '</div>' +
       '<p class="video-title">' + item.title + '</p>' +
       '</div>';
   }
 
-  // 绑定视频卡片事件：点击播放 + 时长显示（翻页重新渲染后需重新绑定）
+  // 绑定视频卡片事件：点击时才创建 video 元素加载视频（翻页重新渲染后需重新绑定）
   function bindVideoCards() {
     document.querySelectorAll('.video-thumb').forEach(thumb => {
-      const inlineVideo = thumb.querySelector('video');
-      // 移动端卡片内播放结束：恢复播放图标
-      if (inlineVideo) inlineVideo.addEventListener('ended', function () {
-        inlineVideo.removeAttribute('controls');
-        thumb.classList.remove('inline-playing');
-      });
       thumb.addEventListener('click', function (e) {
-        // 移动端：点击直接在卡片内播放，不弹框
-        if (window.matchMedia('(pointer: coarse)').matches) {
-          // 带原生控制条后，视频区域的点击交给原生控件处理
-          if (inlineVideo.hasAttribute('controls') && e.target === inlineVideo) return;
-          // 同一时间只播放一个视频
-          document.querySelectorAll('.video-thumb').forEach(t => {
-            const other = t.querySelector('video');
-            if (other && other !== inlineVideo) {
-              other.pause();
-              other.removeAttribute('controls');
-              t.classList.remove('inline-playing');
-            }
-          });
-          if (inlineVideo.paused) {
-            inlineVideo.setAttribute('controls', '');
-            thumb.classList.add('inline-playing');
-            inlineVideo.play().catch(function () {});
-          } else {
-            inlineVideo.pause();
-          }
+        const inlineVideo = thumb.querySelector('video');
+        // 桌面端：弹框播放（弹框打开时才设置 src）
+        if (!window.matchMedia('(pointer: coarse)').matches) {
+          openVideoModal(thumb.getAttribute('data-src'), thumb.getAttribute('data-title'));
           return;
         }
-        openVideoModal(thumb.getAttribute('data-src'), thumb.getAttribute('data-title'));
+        // 移动端：点击直接在卡片内播放，视频元素按需创建
+        // 带原生控制条后，视频区域的点击交给原生控件处理
+        if (inlineVideo && inlineVideo.hasAttribute('controls') && e.target === inlineVideo) return;
+        // 同一时间只播放一个视频：其他卡片恢复封面图状态
+        document.querySelectorAll('.video-thumb video').forEach(other => {
+          if (other !== inlineVideo) {
+            other.pause();
+            const t = other.closest('.video-thumb');
+            t.classList.remove('inline-playing', 'video-loaded');
+            other.remove();
+          }
+        });
+        if (!inlineVideo) {
+          const v = document.createElement('video');
+          v.src = thumb.getAttribute('data-src');
+          v.playsInline = true;
+          // 播放结束：恢复播放图标（保留视频画面）
+          v.addEventListener('ended', function () {
+            v.removeAttribute('controls');
+            thumb.classList.remove('inline-playing');
+          });
+          thumb.insertBefore(v, thumb.firstChild);
+          thumb.classList.add('video-loaded', 'inline-playing');
+          v.setAttribute('controls', '');
+          v.play().catch(function () {});
+          return;
+        }
+        if (inlineVideo.paused) {
+          inlineVideo.setAttribute('controls', '');
+          thumb.classList.add('inline-playing');
+          inlineVideo.play().catch(function () {});
+        } else {
+          inlineVideo.pause();
+        }
       });
-      // 视频时长：元数据加载后显示在卡片右下角
-      const dur = thumb.querySelector('.video-duration');
-      if (dur && inlineVideo) {
-        const set = function () {
-          if (inlineVideo.duration && !isNaN(inlineVideo.duration)) dur.textContent = formatTime(inlineVideo.duration);
-        };
-        if (inlineVideo.readyState >= 1) set();
-        else inlineVideo.addEventListener('loadedmetadata', set);
-      }
     });
   }
 
