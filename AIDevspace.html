@@ -1252,6 +1252,7 @@
   const videoPagination = document.getElementById('video-pagination');
   const videoFilters = document.getElementById('video-filters');
   const VIDEO_PAGE_SIZE = 9; // 每页视频数
+  const hoverPreloads = {}; // 记录已悬停预加载过的视频，避免重复请求
   let videoCurrentPage = 1;
 
   // 视频分类筛选：支持多选，取所选分类的并集；未选任何分类时展示全部
@@ -1310,6 +1311,17 @@
   // 绑定视频卡片事件：点击时才创建 video 元素加载视频（翻页重新渲染后需重新绑定）
   function bindVideoCards() {
     document.querySelectorAll('.video-thumb').forEach(thumb => {
+      // 桌面端悬停预加载：提前缓冲视频，点开弹框即刻可播
+      if (!thumb.dataset.hoverBound) {
+        thumb.addEventListener('mouseenter', function () {
+          const src = thumb.getAttribute('data-src');
+          if (!hoverPreloads[src]) {
+            hoverPreloads[src] = true;
+            fetch(src, { headers: { 'Range': 'bytes=0-2097151' } }).catch(() => {});
+          }
+        });
+        thumb.dataset.hoverBound = '1';
+      }
       thumb.addEventListener('click', function (e) {
         const inlineVideo = thumb.querySelector('video');
         // 桌面端：弹框播放（弹框打开时才设置 src）
@@ -1411,6 +1423,7 @@
   const videoModalBackdrop = document.getElementById('video-modal-backdrop');
 
   function openVideoModal(src, title) {
+    videoModalPlayer.setAttribute('preload', 'auto');
     videoModalPlayer.src = src;
     videoModalTitle.textContent = title;
     videoModal.classList.add('show');
