@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -615,7 +615,7 @@
       <div class="submenu collapsed" id="agents-submenu">
         <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
-        <a href="#agent-JiuwenSwarm" class="sub2">JiuwenSwarm</a>
+        <a href="#agent-WorkSwarm" class="sub2">WorkSwarm</a>
         <a href="#agent-deepseek-harness" class="sub2">DeepSeek Harness</a>
         <a href="#agent-hermes" class="sub2">Hermes Agent</a>
         <a href="#agent-opencode" class="sub2">OpenCode</a>
@@ -724,7 +724,7 @@
     <section id="agents">
       <h2>AGENTS 概览</h2>
       <p>
-        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、JiuwenSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
+        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、WorkSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
         目前可以提供 9 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 模型推理等场景。
       </p>
     </section>
@@ -761,23 +761,23 @@
       <div class="figcaption">CodeArts WebUI：网页模式，可视化操作界面</div>
     </section>
 
-    <section id="agent-JiuwenSwarm">
-      <h2>JiuwenSwarm</h2>
-      <p><strong>JiuwenSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
+    <section id="agent-WorkSwarm">
+      <h2>WorkSwarm</h2>
+      <p><strong>WorkSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧菜单 <strong>JiuwenSwarm</strong>，进入该智能体</li>
+        <li>点击左侧菜单 <strong>WorkSwarm</strong>，进入该智能体</li>
         <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
         <li>输入一个复杂任务</li>
-        <li>JiuwenSwarm 自动分解任务并分配给不同 Agent 协作处理</li>
+        <li>WorkSwarm 自动分解任务并分配给不同 Agent 协作处理</li>
         <li>查看各 Agent 的协作结果</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-JiuwenSwarm-tui.jpg" alt="JiuwenSwarm TUI 模式" />
-      <div class="figcaption">JiuwenSwarm TUI：终端模式</div>
+      <img class="screenshot" src="images/agent-workswarm-tui.jpg" alt="WorkSwarm TUI 模式" />
+      <div class="figcaption">WorkSwarm TUI：终端模式</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-JiuwenSwarm-webui.jpg" alt="JiuwenSwarm WebUI 模式" />
-      <div class="figcaption">JiuwenSwarm WebUI：网页模式，多 Agent 可视化协作</div>
+      <img class="screenshot" src="images/agent-workswarm-webui.jpg" alt="WorkSwarm WebUI 模式" />
+      <div class="figcaption">WorkSwarm WebUI：网页模式，多 Agent 可视化协作</div>
     </section>
 
     <section id="agent-deepseek-harness">
@@ -948,7 +948,7 @@
         <tbody>
           <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>—</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等工具</td></tr>
           <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>v1.0.1</td><td>华为云码道代码智能体 CLI，支持代码编写、分析、优化</td></tr>
-          <tr><td><strong>JiuwenSwarm</strong></td><td>智能体</td><td>v1.0.1</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
+          <tr><td><strong>WorkSwarm</strong></td><td>智能体</td><td>v1.0.1</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
           <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v0.1.0-rc.6</td><td>DeepSeek 官方多代理智能体开发平台，支持会话编排、技能管理、多模型接入</td></tr>
           <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>v0.19.0</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
           <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.1</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等任意模型</td></tr>
@@ -1000,7 +1000,7 @@
           <tr><td>昇腾 Ascend NPU</td><td>ascend-command、models-deploy</td><td>NPU 管理、模型部署、算子优化</td></tr>
           <tr><td>容器 CCE / CCI</td><td>cluster-management、metric-analyzer</td><td>集群管理、事件分析、指标分析</td></tr>
           <tr><td>云服务器 ECS</td><td>ecs-alert、passwordless-login</td><td>监控告警、免密登录配置</td></tr>
-          <tr><td>轻量服务器 Flexus L</td><td>server-manage、deploy-JiuwenSwarm</td><td>实例管理、一键部署</td></tr>
+          <tr><td>轻量服务器 Flexus L</td><td>server-manage、deploy-WorkSwarm</td><td>实例管理、一键部署</td></tr>
           <tr><td>对象存储 OBS</td><td>bucket-create、obs-upload</td><td>桶创建、文件上传、静态网站托管</td></tr>
           <tr><td>数据仓库 DWS</td><td>dws-cpu-diag、sql-check</td><td>性能诊断、SQL 检查</td></tr>
           <tr><td>资源查询</td><td>computing-query、network-query、iam-query</td><td>查询计算 / 网络 / 存储 / 监控 / 身份资源</td></tr>
@@ -1068,7 +1068,7 @@
       <p><strong>文档站</strong> 是 AI 开发者空间的官方操作指南文档，点击左侧菜单 <strong>RESOURCES → 文档站</strong> 即可进入。文档站涵盖以下内容：</p>
       <ul>
         <li>AI SHELL 的使用方法（AI 对话模式、命令行模式、会话配置）</li>
-        <li>AGENTS 模块各智能体的操作说明（HWCloud CLI、CodeArts、JiuwenSwarm 等）</li>
+        <li>AGENTS 模块各智能体的操作说明（HWCloud CLI、CodeArts、WorkSwarm 等）</li>
         <li>环境管理的部署与配置指引</li>
         <li>华为云 Skills 和 Channels 的接入说明</li>
         <li>TOOLS 模块（OpenViking、DevBridge）的使用指南</li>
@@ -1156,7 +1156,7 @@
     { id: 'agents', title: 'AGENTS 概览' },
     { id: 'agent-hwcloud-cli', title: 'HWCloud CLI' },
     { id: 'agent-codearts', title: 'CodeArts' },
-    { id: 'agent-JiuwenSwarm', title: 'JiuwenSwarm' },
+    { id: 'agent-WorkSwarm', title: 'WorkSwarm' },
     { id: 'agent-deepseek-harness', title: 'DeepSeek Harness' },
     { id: 'agent-hermes', title: 'Hermes Agent' },
     { id: 'agent-opencode', title: 'OpenCode' },
@@ -1311,14 +1311,21 @@
   // 绑定视频卡片事件：点击时才创建 video 元素加载视频（翻页重新渲染后需重新绑定）
   function bindVideoCards() {
     document.querySelectorAll('.video-thumb').forEach(thumb => {
-      // 桌面端悬停预加载：提前缓冲视频，点开弹框即刻可播
+      // 桌面端悬停预加载：悬停 300ms 后才预取视频头部（512KB），
+      // 避免鼠标快速扫过网格时批量请求挤占连接，导致封面图加载变慢
       if (!thumb.dataset.hoverBound) {
+        let hoverTimer = null;
         thumb.addEventListener('mouseenter', function () {
           const src = thumb.getAttribute('data-src');
-          if (!hoverPreloads[src]) {
-            hoverPreloads[src] = true;
-            fetch(src, { headers: { 'Range': 'bytes=0-2097151' } }).catch(() => {});
-          }
+          hoverTimer = setTimeout(function () {
+            if (!hoverPreloads[src]) {
+              hoverPreloads[src] = true;
+              fetch(src, { headers: { 'Range': 'bytes=0-524287' } }).catch(() => {});
+            }
+          }, 300);
+        });
+        thumb.addEventListener('mouseleave', function () {
+          clearTimeout(hoverTimer);
         });
         thumb.dataset.hoverBound = '1';
       }
