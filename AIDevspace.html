@@ -286,6 +286,204 @@
     border-radius: 4px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   }
+  .video-card .video-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    margin: 8px 14px 8px;
+  }
+  .video-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .video-filter {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .video-filter:hover { border-color: var(--link); color: var(--link); }
+  .video-filter.active {
+    background: var(--link);
+    border-color: var(--link);
+    color: #fff;
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 12px;
+  }
+  .video-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    padding: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+  }
+  .video-thumb {
+    position: relative;
+    border-radius: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000;
+  }
+  .video-thumb video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .video-duration {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  .video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .video-play:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  .video-play svg {
+    width: 26px;
+    height: 26px;
+    fill: #fff;
+  }
+  .video-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .video-pagination button {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .video-pagination button:hover:not(:disabled):not(.active) {
+    border-color: var(--link);
+    color: var(--link);
+  }
+  .video-pagination button.active {
+    background: var(--link);
+    border-color: var(--link);
+    color: #fff;
+    cursor: default;
+  }
+  .video-pagination button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .video-modal.show { display: flex; }
+  .video-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .video-modal-box {
+    position: relative;
+    z-index: 1;
+    width: min(800px, 100%);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+  .video-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .video-modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--title);
+  }
+  .video-modal-close {
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .video-modal-close:hover { color: var(--title); }
+  .video-modal-box video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  /* 移动端竖屏全屏：旋转 90° 强制横屏展示视频 */
+  #video-modal-player.force-landscape {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: 100vh;
+    height: 100vw;
+    transform: rotate(90deg);
+    object-fit: contain;
+    background: #000;
+  }
+  /* 移动端卡片内直接播放：隐藏播放图标和时长角标（避免遮挡原生控制条） */
+  .video-thumb.inline-playing .video-play,
+  .video-thumb.inline-playing .video-duration { display: none; }
+  .video-thumb video::-webkit-media-controls-panel {
+    background-image: none !important;
+    background-color: rgba(0, 0, 0, 0.55) !important;
+  }
   .figcaption {
     font-size: 13px;
     color: var(--text-3);
@@ -322,6 +520,12 @@
   .chapter-nav .prev { text-align: left; }
   .chapter-nav .next { text-align: right; margin-left: auto; }
 
+  @media (min-width: 1001px) and (max-width: 1280px) {
+    .container { margin: 16px; }
+    .sidebar { width: 224px; padding-left: 16px; padding-right: 12px; }
+    .content { padding: 28px 36px 64px; }
+  }
+
   @media (max-width: 1000px) {
     .menu-toggle { display: flex; }
     .overlay.show { display: block; }
@@ -352,14 +556,13 @@
     .content h1 { font-size: 24px; }
     .content h2 { font-size: 20px; }
     .content h3 { font-size: 16px; }
-    .content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
     .chapter-nav { gap: 8px; font-size: 12px; flex-wrap: nowrap; }
     .chapter-nav .prev, .chapter-nav .next { flex: 1; min-width: 0; text-align: left; margin-left: 0; }
     .chapter-nav .next { text-align: right; }
 
     .search-box { flex: 1; max-width: 160px; }
     .search-box input { width: 100%; }
+    .video-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
     .search-results {
       position: fixed;
       top: 56px;
@@ -368,6 +571,19 @@
       width: auto;
       max-height: 50vh;
     }
+  }
+
+  @media (max-width: 560px) {
+    .topbar { height: 48px; padding: 0 12px; }
+    .topbar .logo { height: 22px; }
+    .topbar .title { font-size: 14px; }
+    .search-box { max-width: 120px; }
+    .container { margin: 8px; }
+    .content { padding: 20px 14px 48px; }
+    .content h1 { font-size: 22px; }
+    .content h2 { font-size: 18px; }
+    .video-grid { grid-template-columns: 1fr; gap: 14px; }
+    .video-card .video-title { font-size: 14px; }
   }
 </style>
 </head>
@@ -395,7 +611,7 @@
       <div class="submenu collapsed" id="agents-submenu">
         <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
-        <a href="#agent-jiuwenswarm" class="sub2">JiuwenSwarm</a>
+        <a href="#agent-JiuwenSwarm" class="sub2">JiuwenSwarm</a>
         <a href="#agent-deepseek-harness" class="sub2">DeepSeek Harness</a>
         <a href="#agent-hermes" class="sub2">Hermes Agent</a>
         <a href="#agent-opencode" class="sub2">OpenCode</a>
@@ -422,6 +638,7 @@
       </div>
       <a href="#files">文件管理</a>
       <a href="#settings">设置与反馈</a>
+      <a href="#video-tutorials">视频指导</a>
     </nav>
   </aside>
 
@@ -540,7 +757,7 @@
       <div class="figcaption">CodeArts WebUI：网页模式，可视化操作界面</div>
     </section>
 
-    <section id="agent-jiuwenswarm">
+    <section id="agent-JiuwenSwarm">
       <h2>JiuwenSwarm</h2>
       <p><strong>JiuwenSwarm</strong> 是多 Agent 协作框架，可自动将复杂任务分解并分配给不同 Agent 协作完成。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
@@ -552,10 +769,10 @@
         <li>查看各 Agent 的协作结果</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-jiuwenswarm-tui.jpg" alt="JiuwenSwarm TUI 模式" />
+      <img class="screenshot" src="images/agent-JiuwenSwarm-tui.jpg" alt="JiuwenSwarm TUI 模式" />
       <div class="figcaption">JiuwenSwarm TUI：终端模式</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-jiuwenswarm-webui.jpg" alt="JiuwenSwarm WebUI 模式" />
+      <img class="screenshot" src="images/agent-JiuwenSwarm-webui.jpg" alt="JiuwenSwarm WebUI 模式" />
       <div class="figcaption">JiuwenSwarm WebUI：网页模式，多 Agent 可视化协作</div>
     </section>
 
@@ -779,7 +996,7 @@
           <tr><td>昇腾 Ascend NPU</td><td>ascend-command、models-deploy</td><td>NPU 管理、模型部署、算子优化</td></tr>
           <tr><td>容器 CCE / CCI</td><td>cluster-management、metric-analyzer</td><td>集群管理、事件分析、指标分析</td></tr>
           <tr><td>云服务器 ECS</td><td>ecs-alert、passwordless-login</td><td>监控告警、免密登录配置</td></tr>
-          <tr><td>轻量服务器 Flexus L</td><td>server-manage、deploy-jiuwenswarm</td><td>实例管理、一键部署</td></tr>
+          <tr><td>轻量服务器 Flexus L</td><td>server-manage、deploy-JiuwenSwarm</td><td>实例管理、一键部署</td></tr>
           <tr><td>对象存储 OBS</td><td>bucket-create、obs-upload</td><td>桶创建、文件上传、静态网站托管</td></tr>
           <tr><td>数据仓库 DWS</td><td>dws-cpu-diag、sql-check</td><td>性能诊断、SQL 检查</td></tr>
           <tr><td>资源查询</td><td>computing-query、network-query、iam-query</td><td>查询计算 / 网络 / 存储 / 监控 / 身份资源</td></tr>
@@ -905,7 +1122,27 @@
       <div class="figcaption">设置：主题模式切换（浅色 / 深色 / 跟随设备）</div>
     </section>
 
+    <section id="video-tutorials">
+      <h2>视频指导</h2>
+      <p class="lead">通过视频快速了解 AI 开发者空间的核心功能与实操方法。</p>
+
+      <div class="video-filters" id="video-filters"></div>
+      <div class="video-grid" id="video-list"></div>
+      <div class="video-pagination" id="video-pagination"></div>
+    </section>
+
   </main>
+</div>
+
+<div class="video-modal" id="video-modal" aria-hidden="true">
+  <div class="video-modal-backdrop" id="video-modal-backdrop"></div>
+  <div class="video-modal-box" role="dialog" aria-modal="true" aria-label="视频播放">
+    <div class="video-modal-head">
+      <span class="video-modal-title" id="video-modal-title"></span>
+      <button class="video-modal-close" id="video-modal-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <video id="video-modal-player" controls playsinline preload="metadata"></video>
+  </div>
 </div>
 
 <script>
@@ -915,7 +1152,7 @@
     { id: 'agents', title: 'AGENTS 概览' },
     { id: 'agent-hwcloud-cli', title: 'HWCloud CLI' },
     { id: 'agent-codearts', title: 'CodeArts' },
-    { id: 'agent-jiuwenswarm', title: 'JiuwenSwarm' },
+    { id: 'agent-JiuwenSwarm', title: 'JiuwenSwarm' },
     { id: 'agent-deepseek-harness', title: 'DeepSeek Harness' },
     { id: 'agent-hermes', title: 'Hermes Agent' },
     { id: 'agent-opencode', title: 'OpenCode' },
@@ -934,14 +1171,23 @@
     { id: 'resources-docs', title: '文档站' },
     { id: 'resources-agent', title: 'Agent 接入' },
     { id: 'files', title: '文件管理' },
-    { id: 'settings', title: '设置与反馈' }
+    { id: 'settings', title: '设置与反馈' },
+    { id: 'video-tutorials', title: '视频指导' }
   ];
+
+  // 表格适配：宽表包一层横向滚动容器，避免在小屏下撑破布局
+  document.querySelectorAll('.content table').forEach(function (t) {
+    const wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  });
 
   function hasChapter(id) {
     return chapters.some(c => c.id === id);
   }
 
-  function showPage(id) {
+  function renderPage(id) {
     chapters.forEach(c => {
       const sec = document.getElementById(c.id);
       if (sec) sec.classList.toggle('page-active', c.id === id);
@@ -951,6 +1197,20 @@
     });
     window.scrollTo(0, 0);
   }
+
+  // 切换页面并同步 URL hash：点击菜单后链接地址随之变化，支持链接直达与浏览器前进/后退
+  function showPage(id) {
+    if (location.hash !== '#' + id) {
+      location.hash = id; // 触发 hashchange，由下方监听统一渲染
+    } else {
+      renderPage(id);
+    }
+  }
+
+  window.addEventListener('hashchange', function () {
+    const id = location.hash.slice(1);
+    renderPage(hasChapter(id) ? id : 'intro');
+  });
 
   chapters.forEach((c, i) => {
     const sec = document.getElementById(c.id);
@@ -967,6 +1227,225 @@
     nav.innerHTML = html;
     sec.appendChild(nav);
   });
+
+  // 视频列表：本项目 video 目录下的视频
+  const videoList = [
+    { src: 'video/space.mp4', title: '什么是AI开发者空间？' },
+    { src: 'video/agentwork.mp4', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork' },
+    { src: 'video/envrioment.mp4', title: '自定义作业环境：AI创建与手动搭建', cat: 'env' },
+    { src: 'video/devBridge.mp4', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge' },
+    { src: 'video/devBridge_2.mp4', title: 'DevBridge实践：一键分享本地服务', cat: 'devbridge' },
+    { src: 'video/devBridge_1.mp4', title: 'DevBridge实践：CI开发', cat: 'devbridge' },
+    { src: 'video/OpenViKing_Agent.mp4', title: 'OpenViking多Agent记忆集成', cat: 'openviking' },
+    { src: 'video/OpenViKing_Embing.mp4', title: 'OpenViking切换本地Embedding模型', cat: 'openviking' },
+    { src: 'video/OpenViKing_long.mp4', title: 'OpenViking实践：长期记忆集成', cat: 'openviking' },
+    { src: 'video/openviking_model.mp4', title: 'OpenViking实践： Embedding切换排障', cat: 'openviking' },
+    { src: 'video/data.mp4', title: '一句话做出数据大屏' }
+  ];
+
+  // 动态渲染视频卡片（筛选 + 分页）
+  const videoGrid = document.getElementById('video-list');
+  const videoPagination = document.getElementById('video-pagination');
+  const videoFilters = document.getElementById('video-filters');
+  const VIDEO_PAGE_SIZE = 9; // 每页视频数
+  let videoCurrentPage = 1;
+
+  // 视频分类筛选：支持多选，取所选分类的并集；未选任何分类时展示全部
+  const videoCats = [
+    { key: 'agentwork', label: 'AgentWork' },
+    { key: 'env', label: '作业环境' },
+    { key: 'devbridge', label: 'DevBridge' },
+    { key: 'openviking', label: 'OpenViking' }
+  ];
+  const activeCats = new Set();
+
+  function getFilteredVideos() {
+    if (!activeCats.size) return videoList;
+    return videoList.filter(function (v) { return v.cat && activeCats.has(v.cat); });
+  }
+
+  function renderVideoFilters() {
+    if (!videoFilters) return;
+    let html = '<button type="button" data-cat="" class="video-filter' + (activeCats.size === 0 ? ' active' : '') + '">全部</button>';
+    videoCats.forEach(function (c) {
+      html += '<button type="button" data-cat="' + c.key + '" class="video-filter' + (activeCats.has(c.key) ? ' active' : '') + '">' + c.label + '</button>';
+    });
+    videoFilters.innerHTML = html;
+  }
+
+  if (videoFilters) {
+    videoFilters.addEventListener('click', function (e) {
+      const btn = e.target.closest('button[data-cat]');
+      if (!btn) return;
+      const key = btn.getAttribute('data-cat');
+      if (!key) {
+        activeCats.clear(); // 全部：清空多选
+      } else if (activeCats.has(key)) {
+        activeCats.delete(key);
+      } else {
+        activeCats.add(key);
+      }
+      renderVideoFilters();
+      renderVideoPage(1);
+    });
+  }
+
+  function videoCardHTML(item) {
+    return '<div class="video-card">' +
+      '<div class="video-thumb" data-src="' + item.src + '" data-title="' + item.title + '">' +
+      '<video preload="metadata" src="' + item.src + '" playsinline></video>' +
+      '<button class="video-play" type="button" aria-label="播放视频"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>' +
+      '<span class="video-duration"></span>' +
+      '</div>' +
+      '<p class="video-title">' + item.title + '</p>' +
+      '</div>';
+  }
+
+  // 绑定视频卡片事件：点击播放 + 时长显示（翻页重新渲染后需重新绑定）
+  function bindVideoCards() {
+    document.querySelectorAll('.video-thumb').forEach(thumb => {
+      const inlineVideo = thumb.querySelector('video');
+      // 移动端卡片内播放结束：恢复播放图标
+      if (inlineVideo) inlineVideo.addEventListener('ended', function () {
+        inlineVideo.removeAttribute('controls');
+        thumb.classList.remove('inline-playing');
+      });
+      thumb.addEventListener('click', function (e) {
+        // 移动端：点击直接在卡片内播放，不弹框
+        if (window.matchMedia('(pointer: coarse)').matches) {
+          // 带原生控制条后，视频区域的点击交给原生控件处理
+          if (inlineVideo.hasAttribute('controls') && e.target === inlineVideo) return;
+          // 同一时间只播放一个视频
+          document.querySelectorAll('.video-thumb').forEach(t => {
+            const other = t.querySelector('video');
+            if (other && other !== inlineVideo) {
+              other.pause();
+              other.removeAttribute('controls');
+              t.classList.remove('inline-playing');
+            }
+          });
+          if (inlineVideo.paused) {
+            inlineVideo.setAttribute('controls', '');
+            thumb.classList.add('inline-playing');
+            inlineVideo.play().catch(function () {});
+          } else {
+            inlineVideo.pause();
+          }
+          return;
+        }
+        openVideoModal(thumb.getAttribute('data-src'), thumb.getAttribute('data-title'));
+      });
+      // 视频时长：元数据加载后显示在卡片右下角
+      const dur = thumb.querySelector('.video-duration');
+      if (dur && inlineVideo) {
+        const set = function () {
+          if (inlineVideo.duration && !isNaN(inlineVideo.duration)) dur.textContent = formatTime(inlineVideo.duration);
+        };
+        if (inlineVideo.readyState >= 1) set();
+        else inlineVideo.addEventListener('loadedmetadata', set);
+      }
+    });
+  }
+
+  function renderVideoPagination() {
+    if (!videoPagination) return;
+    // 只有一页时不显示分页控件
+    const pageCount = Math.ceil(getFilteredVideos().length / VIDEO_PAGE_SIZE);
+    if (pageCount <= 1) { videoPagination.innerHTML = ''; return; }
+    let html = '<button type="button" data-page="prev" aria-label="上一页"' + (videoCurrentPage === 1 ? ' disabled' : '') + '>‹</button>';
+    for (let i = 1; i <= pageCount; i++) {
+      html += '<button type="button" data-page="' + i + '"' + (i === videoCurrentPage ? ' class="active"' : '') + '>' + i + '</button>';
+    }
+    html += '<button type="button" data-page="next" aria-label="下一页"' + (videoCurrentPage === pageCount ? ' disabled' : '') + '>›</button>';
+    videoPagination.innerHTML = html;
+  }
+
+  function renderVideoPage(page) {
+    if (!videoGrid) return;
+    const filtered = getFilteredVideos();
+    const pageCount = Math.max(1, Math.ceil(filtered.length / VIDEO_PAGE_SIZE));
+    videoCurrentPage = Math.min(Math.max(1, page), pageCount);
+    const start = (videoCurrentPage - 1) * VIDEO_PAGE_SIZE;
+    videoGrid.innerHTML = filtered.slice(start, start + VIDEO_PAGE_SIZE).map(videoCardHTML).join('');
+    bindVideoCards();
+    renderVideoPagination();
+  }
+
+  if (videoPagination) {
+    videoPagination.addEventListener('click', function (e) {
+      const btn = e.target.closest('button[data-page]');
+      if (!btn || btn.disabled) return;
+      const p = btn.getAttribute('data-page');
+      const next = p === 'prev' ? videoCurrentPage - 1 : (p === 'next' ? videoCurrentPage + 1 : parseInt(p, 10));
+      if (next === videoCurrentPage) return;
+      renderVideoPage(next);
+      // 翻页后回到视频列表顶部，便于浏览当前页内容
+      videoGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  renderVideoFilters();
+  renderVideoPage(1);
+
+  // 视频时长：元数据加载后显示在右下角
+  function formatTime(t) {
+    t = Math.floor(t || 0);
+    const m = Math.floor(t / 60);
+    const s = t % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+
+  // 视频弹框：点击视频缩略图弹框播放，同一时间只有一个视频播放
+  const videoModal = document.getElementById('video-modal');
+  const videoModalTitle = document.getElementById('video-modal-title');
+  const videoModalPlayer = document.getElementById('video-modal-player');
+  const videoModalClose = document.getElementById('video-modal-close');
+  const videoModalBackdrop = document.getElementById('video-modal-backdrop');
+
+  function openVideoModal(src, title) {
+    videoModalPlayer.src = src;
+    videoModalTitle.textContent = title;
+    videoModal.classList.add('show');
+    videoModal.setAttribute('aria-hidden', 'false');
+    videoModalPlayer.play().catch(function () {});
+  }
+
+  function closeVideoModal() {
+    videoModal.classList.remove('show');
+    videoModal.setAttribute('aria-hidden', 'true');
+    videoModalPlayer.pause();
+    videoModalPlayer.removeAttribute('src');
+    videoModalPlayer.load();
+  }
+
+  if (videoModalClose) videoModalClose.addEventListener('click', closeVideoModal);
+  if (videoModalBackdrop) videoModalBackdrop.addEventListener('click', closeVideoModal);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && videoModal.classList.contains('show')) closeVideoModal();
+  });
+
+  // 移动端全屏横屏：竖屏设备全屏播放时，优先锁定屏幕方向为横屏，不支持则旋转视频 90°
+  function syncVideoFullscreen() {
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    if (fsEl === videoModalPlayer && isMobile && isPortrait) {
+      videoModalPlayer.classList.add('force-landscape');
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').then(function () {
+          videoModalPlayer.classList.remove('force-landscape');
+        }).catch(function () {});
+      }
+    } else {
+      videoModalPlayer.classList.remove('force-landscape');
+      if (fsEl !== videoModalPlayer && screen.orientation && screen.orientation.unlock) {
+        try { screen.orientation.unlock(); } catch (err) {}
+      }
+    }
+  }
+  document.addEventListener('fullscreenchange', syncVideoFullscreen);
+  document.addEventListener('webkitfullscreenchange', syncVideoFullscreen);
+  window.addEventListener('resize', syncVideoFullscreen);
 
   // 左侧菜单点击：切换页面 + AGENTS / TOOLS 折叠/展开
   document.querySelectorAll('#toc a').forEach(a => {
