@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -1400,7 +1400,8 @@
 
   function videoCardHTML(item) {
     // 封面图替代 <video>：页面加载时只下载小图（约几十KB），视频数据点击后才加载
-    const poster = item.src.replace(/^video\//, 'video/posters/').replace(/\.mp4$/, '.jpg');
+    // 封面取值：优先 item.poster（外链 CDN/OBS 源必须显式指定）；本地相对路径按规则推导
+    const poster = item.poster || item.src.replace(/^video\//, 'video/posters/').replace(/\.mp4$/, '.jpg');
     return '<div class="video-card">' +
       '<div class="video-thumb" data-src="' + item.src + '" data-title="' + item.title + '">' +
       '<img class="video-poster" loading="lazy" src="' + poster + '" alt="' + item.title + '">' +
