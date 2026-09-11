@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
@@ -625,6 +625,14 @@
       </div>
       
       <a href="#workenv">环境管理</a>
+      <a href="#agent-work" class="toggle-parent" id="agentwork-toggle"><span class="label">AGENT WORK</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="agentwork-submenu">
+        <a href="#agent-work-agents" class="sub2">Agent 管理</a>
+        <a href="#agent-work-projects" class="sub2">项目</a>
+        <a href="#agent-work-tasks" class="sub2">任务</a>
+        <a href="#agent-work-squads" class="sub2">小队</a>
+        <a href="#agent-work-automation" class="sub2">自动化</a>
+      </div>
       <a href="#extensions" class="toggle-parent" id="extensions-toggle"><span class="label">EXTENSIONS</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="extensions-submenu">
         <a href="#skills" class="sub2">华为云 Skills</a>
@@ -975,6 +983,95 @@
       <div class="figcaption">环境管理：作业环境列表、分类筛选与 TUI / WebUI 入口</div>
     </section>
 
+    <section id="agent-work">
+      <h2>AGENT WORK</h2>
+      <p><strong>AGENT WORK</strong>（Beta）是智能体工作平台，提供从 Agent 定义、任务承载、多智能体协作到周期自动化的完整工作流。在左侧导航展开 <strong>AGENT WORK</strong> 菜单，包含 5 个子模块：</p>
+      <table>
+        <thead>
+          <tr><th>子模块</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Agent 管理</strong></td><td>创建和管理自定义 AI Agent，配置人格、模型与运行时</td></tr>
+          <tr><td><strong>项目</strong></td><td>承载 Agent 任务的容器，定义标准与验证规则，支持关联代码仓库自动校验</td></tr>
+          <tr><td><strong>任务</strong></td><td>Agent 任务目标管理，跟踪任务执行状态与进度</td></tr>
+          <tr><td><strong>小队</strong></td><td>将多个智能体组合为协作小队，由 Leader 协同完成复杂任务</td></tr>
+          <tr><td><strong>自动化</strong></td><td>为智能体或小队安排周期性任务</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="agent-work-agents">
+      <h2>Agent 管理</h2>
+      <p>管理空间内的 AI Agent 实例。内置 <strong>AI SHELL</strong> Agent 默认在线，支持通过 <strong>聊天</strong> 直接对话，或通过 <strong>IM 连接</strong> 接入即时消息渠道：</p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENT WORK → Agent 管理</strong> 进入 Agent 列表</li>
+        <li>使用顶部<strong>搜索框</strong>按名称、模型检索 Agent，点击 <strong>我的 SKILL</strong> 查看可用技能</li>
+        <li>点击 <strong>+ 创建 Agent</strong>，填写 Agent 名称与人格，选择运行时，可配置环境变量、Skills 与 MCP 服务器</li>
+        <li>通过<strong>快速入口</strong>开关控制 Agent 展示，使用 <strong>聊天</strong> / <strong>IM 连接</strong> 快捷操作</li>
+      </ol>
+      <img class="screenshot" src="images/agentwork-agents.png" alt="Agent 管理" />
+      <div class="figcaption">Agent 管理：Agent 列表、状态与运行时监控、聊天 / IM 连接入口</div>
+      <img class="screenshot" src="images/agentwork-agents-create.png" alt="创建 Agent" />
+      <div class="figcaption">创建 Agent：填写名称与人格，选择运行时，可配置环境变量、Skills 与 MCP 服务器</div>
+    </section>
+
+    <section id="agent-work-projects">
+      <h2>项目</h2>
+      <p>项目是承载 Agent 任务的容器，可定义标准与验证规则，支持关联代码仓库自动校验：</p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENT WORK → 项目</strong> 进入项目列表</li>
+        <li>点击 <strong>+ 新建项目</strong>（首次使用可点击 <strong>+ 创建第一个项目</strong>），选择项目类型（<strong>无仓库项目</strong> / <strong>代码仓库</strong>），填写项目名称与验收要求</li>
+        <li>支持按项目名称搜索与筛选</li>
+      </ol>
+      <img class="screenshot" src="images/agentwork-projects.png" alt="项目" />
+      <div class="figcaption">项目：承载 Agent 任务的容器，创建后可为任务定义验证规则</div>
+      <img class="screenshot" src="images/agentwork-projects-create.png" alt="新建项目" />
+      <div class="figcaption">新建项目：选择项目类型（无仓库项目 / 代码仓库），填写项目名称与验收要求</div>
+    </section>
+
+    <section id="agent-work-tasks">
+      <h2>任务</h2>
+      <p>面向目标的任务管理，实时跟踪 Agent 执行状态与进度：</p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENT WORK → 任务</strong> 进入任务列表</li>
+        <li>点击 <strong>+ 新建任务</strong>（首次使用可点击 <strong>+ 创建第一个任务</strong>），填写标题与描述，选择负责人（Agent 或小队）与所属项目</li>
+        <li>注意：新建任务需至少存在一个项目，请先在 <strong>项目</strong> 页面创建项目</li>
+        <li>在任务列表中跟踪 Agent 执行状态与进度</li>
+      </ol>
+      <img class="screenshot" src="images/agentwork-tasks.png" alt="任务" />
+      <div class="figcaption">任务：创建任务目标并追踪 Agent 执行进度</div>
+      <img class="screenshot" src="images/agentwork-tasks-create.png" alt="新建任务" />
+      <div class="figcaption">新建任务：填写标题与描述，选择负责人（Agent / 小队）、状态与所属项目</div>
+    </section>
+
+    <section id="agent-work-squads">
+      <h2>小队</h2>
+      <p>将多个智能体组合为协作小队，由 Leader 协同完成复杂任务：</p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENT WORK → 小队</strong> 进入小队列表</li>
+        <li>点击 <strong>+ 创建小队</strong>（首次使用可点击 <strong>+ 创建第一个小队</strong>），设置名称与 Leader，勾选成员，可指定审查者并填写小队介绍与协作说明</li>
+        <li>支持按小队名称、Leader 或成员搜索</li>
+      </ol>
+      <img class="screenshot" src="images/agentwork-squads.png" alt="小队" />
+      <div class="figcaption">小队：多智能体协作，由 Leader 分工配合完成复杂任务</div>
+      <img class="screenshot" src="images/agentwork-squads-create.png" alt="新建小队" />
+      <div class="figcaption">新建小队：设置名称与 Leader，选择成员与审查者，填写小队介绍与协作说明</div>
+    </section>
+
+    <section id="agent-work-automation">
+      <h2>自动化</h2>
+      <p>为智能体或小队安排周期性任务，实现定时自动执行：</p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENT WORK → 自动化</strong> 进入自动化列表</li>
+        <li>点击 <strong>+ 新建</strong> 创建自动化计划：填写计划名称与任务内容，选择所属项目与负责人，设置触发时间（支持 <strong>高级 Cron</strong> 表达式）</li>
+        <li>支持按名称搜索自动化任务</li>
+      </ol>
+      <img class="screenshot" src="images/agentwork-automation.png" alt="自动化" />
+      <div class="figcaption">自动化：为智能体或小队安排周期性任务</div>
+      <img class="screenshot" src="images/agentwork-automation-create.png" alt="新建计划" />
+      <div class="figcaption">新建计划：填写计划名称与任务内容，选择所属项目与负责人，设置触发时间</div>
+    </section>
+
     <section id="extensions">
       <h2>EXTENSIONS</h2>
       <p><strong>EXTENSIONS</strong> 模块提供扩展能力入口，包含华为云 Skills 和 Channels 两个子模块：</p>
@@ -1117,13 +1214,13 @@
           <tr><th>入口</th><th>功能</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>设置</strong></td><td>主题设置：浅色模式 / 深色模式 / 跟随设备</td></tr>
+          <tr><td><strong>设置</strong></td><td>基本信息：账号 ID / 实名认证状态 / 账号中心；主题设置：浅色模式 / 深色模式 / 跟随设备</td></tr>
           <tr><td><strong>问题反馈</strong></td><td>提交使用问题与意见反馈</td></tr>
         </tbody>
       </table>
 
       <img class="screenshot" src="images/settings.png" alt="设置" />
-      <div class="figcaption">设置：主题模式切换（浅色 / 深色 / 跟随设备）</div>
+      <div class="figcaption">设置：基本信息与主题模式切换（浅色 / 深色 / 跟随设备）</div>
     </section>
 
     <section id="video-tutorials">
@@ -1164,6 +1261,12 @@
     { id: 'agent-kimicode', title: 'KimiCode' },
     { id: 'agent-prime', title: 'Prime Agent' },
     { id: 'workenv', title: '环境管理' },
+    { id: 'agent-work', title: 'AGENT WORK' },
+    { id: 'agent-work-agents', title: 'Agent 管理' },
+    { id: 'agent-work-projects', title: '项目' },
+    { id: 'agent-work-tasks', title: '任务' },
+    { id: 'agent-work-squads', title: '小队' },
+    { id: 'agent-work-automation', title: '自动化' },
     { id: 'extensions', title: 'EXTENSIONS' },
     { id: 'skills', title: '华为云 Skills' },
     { id: 'channels', title: 'Channels' },
@@ -1481,6 +1584,11 @@
       const id = a.getAttribute('href').slice(1);
       if (a.id === 'agents-toggle') {
         const submenu = document.getElementById('agents-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (a.id === 'agentwork-toggle') {
+        const submenu = document.getElementById('agentwork-submenu');
         const collapsed = submenu.classList.toggle('collapsed');
         a.classList.toggle('open', !collapsed);
       }
