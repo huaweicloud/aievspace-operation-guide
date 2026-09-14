@@ -1336,15 +1336,16 @@
   });
 
   // 视频列表
-  // 视频播放源托管在 tools-artifact（国内可达，来源：视频内容.xlsx）；封面仍走本地 video/posters/
+  // 视频/封面均托管在 tools-artifact（国内可达，来源：视频内容(1).xlsx）；封面目录 screen/，缺传的用本地 video/posters/ 兜底
   const VIDEO_BASE = 'https://tools-artifact.developer.huaweicloud.com/sharedata/home/video/';
+  const POSTER_BASE = 'https://tools-artifact.developer.huaweicloud.com/sharedata/home/screen/';
   const videoList = [
     { src: VIDEO_BASE + 'space.mp4', title: '什么是AI开发者空间？', dur: 70.1 },
     { src: VIDEO_BASE + 'codearts.mp4', title: '码道CodeArts 快速上手：从自动安装到一句话开发', cat: 'codearts', dur: 106.1 },
-    { src: VIDEO_BASE + 'agentwork.mp4', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
-    { src: VIDEO_BASE + 'envrioment.mp4', title: '自定义作业环境：AI创建与手动搭建', cat: 'env', dur: 123.5 },
+    { src: VIDEO_BASE + 'agentwork.mp4', poster: POSTER_BASE + 'agentwork.png', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
+    { src: VIDEO_BASE + 'envrioment.mp4', poster: POSTER_BASE + 'envrioment.png', title: '自定义作业环境：AI创建与手动搭建', cat: 'env', dur: 123.5 },
     { src: VIDEO_BASE + 'devBridge.mp4', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge', dur: 61.9 },
-    { src: VIDEO_BASE + 'devBridge_2.mp4', title: 'DevBridge实践：一键分享本地服务', cat: 'devbridge', dur: 71.9 },
+    { src: VIDEO_BASE + 'devBridge_2.mp4', poster: POSTER_BASE + 'devBridge_2.png', title: 'DevBridge实践：一键分享本地服务', cat: 'devbridge', dur: 71.9 },
     { src: VIDEO_BASE + 'devBridge_1.mp4', title: 'DevBridge实践：CI开发', cat: 'devbridge', dur: 60 },
     { src: VIDEO_BASE + 'OpenViKing_Agent.mp4', title: 'OpenViking多Agent记忆集成', cat: 'openviking', dur: 90.3 },
     { src: VIDEO_BASE + 'OpenViKing_Embing.mp4', title: 'OpenViking切换本地Embedding模型', cat: 'openviking', dur: 73.2 },
@@ -1404,8 +1405,8 @@
 
   function videoCardHTML(item) {
     // 封面图替代 <video>：页面加载时只下载小图（约几十KB），视频数据点击后才加载
-    // 封面取值：优先 item.poster；否则按 src 文件名推导 video/posters/同名.jpg（本地路径与外链 URL 均适用）
-    const poster = item.poster || 'video/posters/' + item.src.split('/').pop().replace(/\.mp4$/, '.jpg');
+    // 封面取值：优先 item.poster；否则按 src 文件名推导 tools-artifact screen/ 下同名 jpg（缺传文件可用 item.poster 指本地兜底）
+    const poster = item.poster || POSTER_BASE + item.src.split('/').pop().replace(/\.mp4$/, '.jpg');
     return '<div class="video-card">' +
       '<div class="video-thumb" data-src="' + item.src + '" data-title="' + item.title + '">' +
       '<img class="video-poster" loading="lazy" src="' + poster + '" alt="' + item.title + '">' +
