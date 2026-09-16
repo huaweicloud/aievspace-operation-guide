@@ -610,9 +610,9 @@
     <div class="toc-title">开始使用</div>
     <nav id="toc">
       <a href="#intro">简介</a>
-      <a href="#ai-shell">AI SHELL</a>
       <a href="#agents" class="toggle-parent" id="agents-toggle"><span class="label">AGENTS 概览</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="agents-submenu">
+        <a href="#ai-shell" class="sub2">AI SHELL</a>
         <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
         <a href="#agent-WorkSwarm" class="sub2">WorkSwarm</a>
@@ -666,7 +666,7 @@
           <tr><th>模块</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话（自然语言交互）和命令行两种模式</td></tr>
+          <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话、TUI、命令行三种交互模式</td></tr>
           <tr><td><strong>AGENTS</strong></td><td>9 个智能体，覆盖基础设施即代码、代码编写与分析、多 Agent 协作、DeepSeek 推理、编程辅助、个人助手、任务调度编排等场景</td></tr>
           <tr><td><strong>环境管理</strong></td><td>14 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类，一键部署与管理</td></tr>
           <tr><td><strong>AGENT WORK</strong></td><td>智能体工作平台（Beta），包含 Agent 管理、项目、任务、小队、自动化 5 个子模块，覆盖从 Agent 定义、任务承载、多智能体协作到周期自动化的完整工作流</td></tr>
@@ -694,41 +694,49 @@
 
     <section id="ai-shell">
       <h2>AI SHELL</h2>
-      <p><strong>AI SHELL</strong> 是产品的核心入口，提供两种交互模式：</p>
+      <p><strong>AI SHELL</strong> 是产品的核心入口，大模型驱动，支持自然语言对话、智能排错与云端在线终端，提供三种交互模式：</p>
       <table>
         <thead>
           <tr><th>模式</th><th>用途</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>AI 对话</strong></td><td>自然语言交互</td><td>用自然语言描述需求，AI 生成命令并执行</td></tr>
+          <tr><td><strong>AI 对话</strong></td><td>自然语言交互</td><td>用自然语言描述需求，AI 生成命令并执行（默认模式）</td></tr>
+          <tr><td><strong>TUI</strong></td><td>终端交互</td><td>终端界面（Terminal UI），面向习惯终端操作的开发者</td></tr>
           <tr><td><strong>命令行</strong></td><td>命令式操作</td><td>面向熟悉 CLI 的开发者，直接输入命令</td></tr>
         </tbody>
       </table>
 
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧 <strong>AI SHELL</strong>，进入对话界面</li>
-        <li>在顶部切换「AI 对话」或「命令行」模式</li>
-        <li>点击输入框，用自然语言描述需求（例如"查询所有运行中的 ECS 实例"）并发送</li>
-        <li>点击「创建会话」或「新建」可开启新的对话</li>
+        <li>在左侧 <strong>AGENTS 概览</strong>下点击 <strong>AI SHELL</strong>，进入 AI 对话界面</li>
+        <li>点击 <strong>「新建」</strong>创建会话，可指定工作目录（CWD），缺省为 <code>/root/workspace</code></li>
+        <li>在输入框用自然语言描述需求（例如"查询所有运行中的 ECS 实例"），按 Enter 发送（Shift+Enter 换行）</li>
+        <li>点击顶部标签可随时切换「AI 对话」「TUI」「命令行」模式</li>
       </ol>
 
-      <img class="screenshot" src="images/ai-shell.png" alt="AI SHELL 主界面" />
-      <div class="figcaption">AI SHELL 主界面：AI 对话模式、快捷建议与输入框</div>
+      <img class="screenshot" src="images/ai-shell.png?v=20260916" alt="AI SHELL 主界面" />
+      <div class="figcaption">AI SHELL 主界面：三种模式切换、快捷建议与需求输入框</div>
 
-      <p>点击输入框左侧的 <code>mode: Manual</code> 按钮，可配置会话参数：</p>
+      <p><strong>输入增强：</strong></p>
+      <ul>
+        <li>输入 <code>/</code> 触发快捷指令：<code>/clear</code>、<code>/compact</code>、<code>/cwd</code>、<code>/help</code>、<code>/mode</code>、<code>/model</code>、<code>/new</code>、<code>/rename</code>、<code>/sessions</code>、<code>/settings</code></li>
+        <li>输入 <code>$</code> 快速引用技能</li>
+        <li>右侧资源管理器中可将文件「添加到对话」作为上下文</li>
+      </ul>
+
+      <p>点击输入框左下方的 <code>mode: Semi-Auto</code> 按钮，可打开会话配置：</p>
       <table>
         <thead>
-          <tr><th>配置项</th><th>说明</th><th>示例</th></tr>
+          <tr><th>配置项</th><th>说明</th><th>可选值</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Session Mode</strong></td><td>控制 AI 的自主性与安全边界</td><td>Manual（手动确认执行）</td></tr>
-          <tr><td><strong>Reasoning Level</strong></td><td>控制模型产生的推理量</td><td>Medium（中等）</td></tr>
-          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/glm-5.2</td></tr>
+          <tr><td><strong>Session Mode</strong></td><td>控制 AI 的自主性与安全边界</td><td>Auto / Semi-Auto（默认）/ Manual / Plan</td></tr>
+          <tr><td><strong>Reasoning Level</strong></td><td>控制模型产生的推理量</td><td>Low / Medium（默认）/ High</td></tr>
+          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/glm-5.1 / hwdevspace/glm-5.2 / hwdevspace/openpangu-2.0-flash</td></tr>
         </tbody>
       </table>
 
-      <img class="screenshot" src="images/ai-shell-config.png" alt="AI SHELL 会话配置" />
+      <img class="screenshot" src="images/ai-shell-config.png?v=20260916" alt="AI SHELL 会话配置" />
       <div class="figcaption">会话配置面板：Session Mode / Reasoning Level / Model</div>
     </section>
 
