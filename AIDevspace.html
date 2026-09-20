@@ -610,10 +610,10 @@
     <div class="toc-title">开始使用</div>
     <nav id="toc">
       <a href="#intro">简介</a>
+      <a href="#home">首页</a>
       <a href="#agents" class="toggle-parent" id="agents-toggle"><span class="label">AGENTS 概览</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="agents-submenu">
         <a href="#ai-shell" class="sub2">AI SHELL</a>
-        <a href="#agent-hwcloud-cli" class="sub2">HWCloud CLI</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
         <a href="#agent-WorkSwarm" class="sub2">WorkSwarm</a>
         <a href="#agent-deepseek-harness" class="sub2">DeepSeek Harness</a>
@@ -622,6 +622,7 @@
         <a href="#agent-openclaw" class="sub2">OpenClaw</a>
         <a href="#agent-kimicode" class="sub2">KimiCode</a>
         <a href="#agent-prime" class="sub2">Prime Agent</a>
+        <a href="#agent-eduswarm" class="sub2">EduSwarm</a>
       </div>
       
       <a href="#workenv">环境管理</a>
@@ -667,7 +668,7 @@
         </thead>
         <tbody>
           <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话、TUI、命令行三种交互模式</td></tr>
-          <tr><td><strong>AGENTS</strong></td><td>9 个智能体，覆盖基础设施即代码、代码编写与分析、多 Agent 协作、DeepSeek 推理、编程辅助、个人助手、任务调度编排等场景</td></tr>
+          <tr><td><strong>AGENTS</strong></td><td>9 个智能体，覆盖代码编写与分析、多 Agent 协作、DeepSeek 推理、编程辅助、个人助手、任务调度编排、AI 教学辅助等场景</td></tr>
           <tr><td><strong>环境管理</strong></td><td>14 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类，一键部署与管理</td></tr>
           <tr><td><strong>AGENT WORK</strong></td><td>智能体工作平台（Beta），包含 Agent 管理、项目、任务、小队、自动化 5 个子模块，覆盖从 Agent 定义、任务承载、多智能体协作到周期自动化的完整工作流</td></tr>
           <tr><td><strong>EXTENSIONS</strong></td><td>扩展能力，包含华为云 Skills（79 个云服务技能）和 Channels（飞书/微信/企业微信对接）</td></tr>
@@ -692,9 +693,27 @@
       </ul>
     </section>
 
+    <section id="home">
+      <h2>首页</h2>
+      <p>登录 AI 开发者空间后默认进入首页。页面左侧为全局导航（AGENTS、环境管理、EXTENSIONS、TOOLS、RESOURCES、文件管理、设置与反馈），右侧为资源管理器面板；主区域从上到下分为四个板块：</p>
+      <img class="screenshot" src="images/home.png" alt="AI 开发者空间首页" />
+      <div class="figcaption">AI 开发者空间首页总览</div>
+      <table>
+        <thead>
+          <tr><th>板块</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>快速开始</strong></td><td>产品与核心功能的视频教程列表（什么是 AI 开发者空间、码道 CodeArts、WorkSwarm、AgentWork 等），点击即可在线播放</td></tr>
+          <tr><td><strong>每日AI知识精选</strong></td><td>每日更新的大模型与 AI 领域精选资讯，涵盖前沿模型发布、技术进展与实践案例</td></tr>
+          <tr><td><strong>实践中心</strong></td><td>AI 云原生、鸿蒙、AI 办公、IaC 四大开发实践中心，按场景提供端到端的开发实践资源</td></tr>
+          <tr><td><strong>开发者动态</strong></td><td>华为云开发者活动、任务福利与平台最新动态</td></tr>
+        </tbody>
+      </table>
+    </section>
+
     <section id="ai-shell">
       <h2>AI SHELL</h2>
-      <p><strong>AI SHELL</strong> 是产品的核心入口，大模型驱动，支持自然语言对话、智能排错与云端在线终端，提供三种交互模式：</p>
+      <p><strong>AI SHELL</strong> 是产品的核心入口，秉持“智驱华为云，对话即部署”的产品理念，大模型驱动，支持自然语言对话、智能排错与云端在线终端，提供三种交互模式：</p>
       <table>
         <thead>
           <tr><th>模式</th><th>用途</th><th>说明</th></tr>
@@ -711,11 +730,11 @@
         <li>在左侧 <strong>AGENTS 概览</strong>下点击 <strong>AI SHELL</strong>，进入 AI 对话界面</li>
         <li>点击 <strong>「新建」</strong>创建会话，可指定工作目录（CWD），缺省为 <code>/root/workspace</code></li>
         <li>在输入框用自然语言描述需求（例如"查询所有运行中的 ECS 实例"），按 Enter 发送（Shift+Enter 换行）</li>
-        <li>点击顶部标签可随时切换「AI 对话」「TUI」「命令行」模式</li>
+        <li>输入 <code>/mode</code> 可随时切换「AI 对话」「TUI」「命令行」模式</li>
       </ol>
 
-      <img class="screenshot" src="images/ai-shell.png?v=20260916" alt="AI SHELL 主界面" />
-      <div class="figcaption">AI SHELL 主界面：三种模式切换、快捷建议与需求输入框</div>
+      <img class="screenshot" src="images/ai-shell.png?v=20260920" alt="AI SHELL 主界面" />
+      <div class="figcaption">AI SHELL 主界面：居中欢迎页、快捷建议与需求输入框</div>
 
       <p><strong>输入增强：</strong></p>
       <ul>
@@ -732,34 +751,20 @@
         <tbody>
           <tr><td><strong>Session Mode</strong></td><td>控制 AI 的自主性与安全边界</td><td>Auto / Semi-Auto（默认）/ Manual / Plan</td></tr>
           <tr><td><strong>Reasoning Level</strong></td><td>控制模型产生的推理量</td><td>Low / Medium（默认）/ High</td></tr>
-          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/glm-5.1 / hwdevspace/glm-5.2 / hwdevspace/openpangu-2.0-flash</td></tr>
+          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/deepseek-v4-flash-0731（默认）/ hwdevspace/deepseek-v4-pro-0813 / hwdevspace/glm-5.1 / hwdevspace/glm-5.2</td></tr>
         </tbody>
       </table>
 
-      <img class="screenshot" src="images/ai-shell-config.png?v=20260916" alt="AI SHELL 会话配置" />
+      <img class="screenshot" src="images/ai-shell-config.png?v=20260920" alt="AI SHELL 会话配置" />
       <div class="figcaption">会话配置面板：Session Mode / Reasoning Level / Model</div>
     </section>
 
     <section id="agents">
       <h2>AGENTS 概览</h2>
       <p>
-        <strong>AGENTS</strong> 模块默认展示 HWCloud CLI、CodeArts、WorkSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
-        目前可以提供 9 个智能体，覆盖代码生成、多 Agent 协作、基础设施即代码、个人助手、DeepSeek 模型推理等场景。
+        <strong>AGENTS</strong> 模块默认展示 CodeArts、WorkSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
+        目前可以提供 9 个智能体，覆盖代码生成、多 Agent 协作、个人助手、DeepSeek 模型推理、AI 教学辅助等场景。
       </p>
-    </section>
-
-    <section id="agent-hwcloud-cli">
-      <h2>HWCloud CLI</h2>
-      <p><strong>HWCloud CLI</strong> 是基础设施即代码（IaC）智能体，支持 Terraform、Ansible 等工具，可将自然语言需求转换为可执行的基础设施配置。</p>
-      <p><strong>操作步骤：</strong></p>
-      <ol class="steps">
-        <li>点击左侧菜单 <strong>HWCloud CLI</strong>，进入该智能体</li>
-        <li>用自然语言描述基础设施需求（例如"创建一个 VPC 和一个 ECS 实例"）</li>
-        <li>HWCloud CLI 调用 Terraform / Ansible 等工具生成 IaC 脚本</li>
-        <li>确认脚本后执行部署，并查看运行结果</li>
-      </ol>
-      <img class="screenshot" src="images/agent-hwcloud-cli.png" alt="HWCloud CLI 智能体" />
-      <div class="figcaption">HWCloud CLI：基础设施即代码智能体</div>
     </section>
 
     <section id="agent-codearts">
@@ -891,6 +896,20 @@
       </ol>
     </section>
 
+    <section id="agent-eduswarm">
+      <h2>EduSwarm</h2>
+      <p><strong>EduSwarm</strong> 是 AI 教师团队协作平台（AI 智慧课堂工作台），提供备课、上课、作业、批改、学情全流程 AI 辅助。内置今日课堂、课堂管理、班级管理、课件中心、作业中心、批改报告、教学总览、Agent 配置与统计、Edu SkillHub、Studio、学生端等功能模块，支持任务编排与定时任务。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧菜单 <strong>EduSwarm</strong>，进入 AI 智慧课堂工作台</li>
+        <li>首次进入可跟随操作指引分步熟悉核心流程，或点击「跳过引导」直接开始</li>
+        <li>通过左侧功能栏进入今日课堂、课件中心、作业中心等模块，也可在输入框用自然语言直接下达教学任务</li>
+        <li>通过输入框下方可配置单 Agent 模式、访问权限与技能，选择模型后发送，EduSwarm 协同 AI 教师团队完成任务并输出结果</li>
+      </ol>
+      <img class="screenshot" src="images/agent-eduswarm.png" alt="EduSwarm AI 智慧课堂工作台" />
+      <div class="figcaption">EduSwarm：AI 智慧课堂工作台</div>
+    </section>
+
     <section id="tools">
       <h2>TOOLS</h2>
       <p><strong>TOOLS</strong> 模块提供开发辅助工具，默认部署以下工具：</p>
@@ -952,33 +971,39 @@
           <tr><th>分类</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td>智能体（10）</td><td>代码智能体、多 Agent 协作、个人助手、SRE 运维等 10 个智能体环境</td></tr>
-          <tr><td>开发工具（2）</td><td>DevBridge 隧道管理、鸿蒙元服务开发</td></tr>
-          <tr><td>数据库（1）</td><td>OpenViking 智能开发辅助工具</td></tr>
+          <tr><td>智能体（11）</td><td>代码智能体、多 Agent 协作、个人助手、AI 教学辅助等 11 个智能体环境</td></tr>
+          <tr><td>开发工具（6）</td><td>DevBridge 隧道管理、IAC MCP Server、Agent Browser、HuaweiCloud DevKit、Next AI Draw.io、鸿蒙开发环境</td></tr>
+          <tr><td>数据库（1）</td><td>OpenViking AI 智能体开源上下文数据库</td></tr>
           <tr><td>基础设施（1）</td><td>Llama 本地 Embedding 环境</td></tr>
         </tbody>
       </table>
 
-      <p>共 14 个环境，12 运行中，支持的作业环境：</p>
+      <p>共 19 个环境，12 运行中，支持的作业环境：</p>
       <table>
         <thead>
           <tr><th>环境</th><th>类型</th><th>版本</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>—</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等工具</td></tr>
-          <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>v1.0.1</td><td>华为云码道代码智能体 CLI，支持代码编写、分析、优化</td></tr>
-          <tr><td><strong>WorkSwarm</strong></td><td>智能体</td><td>v1.0.1</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
-          <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v0.1.0-rc.6</td><td>DeepSeek 官方多代理智能体开发平台，支持会话编排、技能管理、多模型接入</td></tr>
-          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>v0.19.0</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
-          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.1</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等任意模型</td></tr>
-          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>v2026.7.1-2</td><td>开源可编程 AI 个人助手平台，支持自动化任务、工具调用</td></tr>
-          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>v0.31.1</td><td>智能编程服务，支持代码阅读、编辑、命令执行、网页搜索</td></tr>
-          <tr><td><strong>Prime Agent</strong></td><td>智能体</td><td>—</td><td>智能任务调度与编排 Agent，自动拆解复杂任务并协调多执行单元协同</td></tr>
-          <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.0</td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
-          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>v0.1.13</td><td>隧道管理工具，支持隧道创建、端口管理、本地服务托管与远程连接</td></tr>
-          <tr><td><strong>Llama</strong></td><td>基础设施</td><td>v1.0.0</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型</td></tr>
-          <tr><td><strong>鸿蒙元服务开发</strong></td><td>开发工具</td><td>—</td><td>鸿蒙 OS 应用开发环境，支持 ArkTS 语言与元服务开发框架（待开放）</td></tr>
-          <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>云服务运维智能体，支持故障排查、扩缩容规划、费用查询（待开放）</td></tr>
+          <tr><td><strong>AI Shell</strong></td><td>智能体</td><td>内置</td><td>AI Shell · 智驱华为云，对话即部署（TUI）</td></tr>
+          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>v1.0.5</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等自动化工具</td></tr>
+          <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>v1.0.10</td><td>华为云码道代码智能体，支持代码编写、分析、优化（TUI / WebUI）</td></tr>
+          <tr><td><strong>WorkSwarm</strong></td><td>智能体</td><td>v1.0.9</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent</td></tr>
+          <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v1.0.9</td><td>DeepSeek 官方多代理智能体开发平台，支持会话编排、技能管理、多模型接入</td></tr>
+          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>v1.0.5</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
+          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.5</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等任意模型</td></tr>
+          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>v1.0.4</td><td>开源可编程 AI 个人助手平台，支持自动化任务、工具调用</td></tr>
+          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>v1.0.4</td><td>智能编程服务，支持代码阅读、编辑、命令执行、网页搜索（仅 TUI）</td></tr>
+          <tr><td><strong>Prime Agent</strong></td><td>智能体</td><td>v1.0.4</td><td>智能任务调度与编排 Agent，自动拆解复杂任务并协调多执行单元协同（仅 TUI）</td></tr>
+          <tr><td><strong>EduSwarm</strong></td><td>智能体</td><td>v1.0.3</td><td>AI 教师团队协作平台，覆盖备课、上课、作业、批改、学情全流程（仅 WebUI）</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>v1.0.1</td><td>隧道管理工具，支持网络隧道创建、端口管理与远程连接</td></tr>
+          <tr><td><strong>IAC MCP Server</strong></td><td>开发工具</td><td>—</td><td>云部署 IaC 助手，覆盖需求分析、资源规划、成本估算、Terraform 部署、排错与资源销毁全流程（未部署）</td></tr>
+          <tr><td><strong>Agent Browser</strong></td><td>开发工具</td><td>—</td><td>无头浏览器自动化环境（未部署）</td></tr>
+          <tr><td><strong>HuaweiCloud DevKit</strong></td><td>开发工具</td><td>—</td><td>华为云开发套件，构建、部署、运维全程受控（未部署）</td></tr>
+          <tr><td><strong>Next AI Draw.io</strong></td><td>开发工具</td><td>—</td><td>AI 自然语言生成 Draw.io 图表（未部署）</td></tr>
+          <tr><td><strong>鸿蒙开发环境</strong></td><td>开发工具</td><td>—</td><td>基于 GLM 模型鸿蒙增训、深度适配 ArkTS 语言，支持云端编译打包，支持云端 + 本地模拟器调测（待开放）</td></tr>
+          <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.2</td><td>AI 智能体的开源上下文数据库</td></tr>
+          <tr><td><strong>Llama</strong></td><td>基础设施</td><td>—</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型（未部署）</td></tr>
+          <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>环境运维、故障排查、扩缩容规划、费用查询（待开放）</td></tr>
         </tbody>
       </table>
 
@@ -990,7 +1015,7 @@
         <li>支持<strong>停止</strong>、<strong>删除</strong>操作，部分环境支持<strong>升级</strong></li>
       </ol>
 
-      <img class="screenshot" src="images/workenv.png" alt="环境管理" />
+      <img class="screenshot" src="images/workenv.png?v=20260920" alt="环境管理" />
       <div class="figcaption">环境管理：作业环境列表、分类筛选与 TUI / WebUI 入口</div>
     </section>
 
@@ -1176,7 +1201,7 @@
       <p><strong>文档站</strong> 是 AI 开发者空间的官方操作指南文档，点击左侧菜单 <strong>RESOURCES → 文档站</strong> 即可进入。文档站涵盖以下内容：</p>
       <ul>
         <li>AI SHELL 的使用方法（AI 对话模式、命令行模式、会话配置）</li>
-        <li>AGENTS 模块各智能体的操作说明（HWCloud CLI、CodeArts、WorkSwarm 等）</li>
+        <li>AGENTS 模块各智能体的操作说明（CodeArts、WorkSwarm 等）</li>
         <li>环境管理的部署与配置指引</li>
         <li>华为云 Skills 和 Channels 的接入说明</li>
         <li>TOOLS 模块（OpenViking、DevBridge）的使用指南</li>
@@ -1260,9 +1285,9 @@
 <script>
   const chapters = [
     { id: 'intro', title: '简介' },
+    { id: 'home', title: '首页' },
     { id: 'ai-shell', title: 'AI SHELL' },
     { id: 'agents', title: 'AGENTS 概览' },
-    { id: 'agent-hwcloud-cli', title: 'HWCloud CLI' },
     { id: 'agent-codearts', title: 'CodeArts' },
     { id: 'agent-WorkSwarm', title: 'WorkSwarm' },
     { id: 'agent-deepseek-harness', title: 'DeepSeek Harness' },
@@ -1271,6 +1296,7 @@
     { id: 'agent-openclaw', title: 'OpenClaw' },
     { id: 'agent-kimicode', title: 'KimiCode' },
     { id: 'agent-prime', title: 'Prime Agent' },
+    { id: 'agent-eduswarm', title: 'EduSwarm' },
     { id: 'workenv', title: '环境管理' },
     { id: 'agent-work', title: 'AGENT WORK' },
     { id: 'agent-work-agents', title: 'Agent 管理' },
