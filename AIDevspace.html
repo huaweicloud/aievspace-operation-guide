@@ -675,7 +675,7 @@
           <tr><td><strong>RESOURCES</strong></td><td>资源入口：文档站（本操作指南）与 Agent 接入（IACMCPServer 使用指南）</td></tr>
           <tr><td><strong>文件管理</strong></td><td>工作区文件操作：搜索、批量处理、上传、新建文件/文件夹，右侧面板快速访问</td></tr>
           <tr><td><strong>设置与反馈</strong></td><td>账号信息与主题设置（浅色 / 深色 / 跟随设备），以及问题反馈入口</td></tr>
-          <tr><td><strong>视频指导</strong></td><td>核心功能与实操方法的视频教程，支持按 CodeArts、AgentWork、作业环境、DevBridge、OpenViking 分类筛选查看</td></tr>
+          <tr><td><strong>视频指导</strong></td><td>核心功能与实操方法的视频教程，支持按 CodeArts、AgentWork、WorkSwarm、作业环境、DevBridge、OpenViking 分类筛选查看</td></tr>
         </tbody>
       </table>
 
@@ -1351,8 +1351,9 @@
   const VIDEO_BASE = 'https://tools-artifact.developer.huaweicloud.com/sharedata/home/video/';
   const POSTER_BASE = 'https://tools-artifact.developer.huaweicloud.com/sharedata/home/screen/';
   const videoList = [
-    { src: VIDEO_BASE + 'space.mp4', title: '什么是AI开发者空间？', dur: 70.1 },
+    { src: VIDEO_BASE + 'space.mp4', poster: POSTER_BASE + 'space1.jpg', title: '什么是AI开发者空间？', dur: 70.1 },
     { src: VIDEO_BASE + 'codearts.mp4', title: '码道CodeArts 快速上手：从自动安装到一句话开发', cat: 'codearts', dur: 106.1 },
+    { src: VIDEO_BASE + 'workswarm.mp4', poster: POSTER_BASE + 'workswarm.png', title: 'WorkSwarm快速上手：你的专属桌面智能搭子', cat: 'workswarm', dur: 140.9 },
     { src: VIDEO_BASE + 'agentwork.mp4', poster: POSTER_BASE + 'agentwork.png', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
     { src: VIDEO_BASE + 'envrioment.mp4', poster: POSTER_BASE + 'envrioment.png', title: '自定义作业环境：AI创建与手动搭建', cat: 'env', dur: 123.5 },
     { src: VIDEO_BASE + 'devBridge.mp4', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge', dur: 61.9 },
@@ -1376,6 +1377,7 @@
   // 视频分类筛选：支持多选，取所选分类的并集；未选任何分类时展示全部
   const videoCats = [
     { key: 'codearts', label: 'CodeArts' },
+    { key: 'workswarm', label: 'WorkSwarm' },
     { key: 'agentwork', label: 'AgentWork' },
     { key: 'env', label: '作业环境' },
     { key: 'devbridge', label: 'DevBridge' },
