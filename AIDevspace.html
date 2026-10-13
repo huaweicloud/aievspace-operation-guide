@@ -557,6 +557,7 @@
     .sidebar.open { transform: translateX(0); }
 
     .content { padding: 24px 18px 60px; border-radius: 8px; }
+    .cl-rail { display: none; }
     .content h1 { font-size: 24px; }
     .content h2 { font-size: 20px; }
     .content h3 { font-size: 16px; }
@@ -589,6 +590,68 @@
     .video-grid { grid-template-columns: 1fr; gap: 14px; }
     .video-card .video-title { font-size: 14px; }
   }
+
+  /* 更新日志：左侧内容流 + 右侧版本导航 */
+  .cl-layout { display: flex; align-items: flex-start; gap: 48px; }
+  .changelog { flex: 1; min-width: 0; }
+  .cl-month { scroll-margin-top: 84px; }
+  .cl-month + .cl-month { margin-top: 40px; }
+  .cl-month-h {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--title);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .cl-month-date { font-size: 15px; font-weight: 650; color: var(--title); margin: 6px 0 0; }
+  .cl-cat { margin-top: 16px; }
+  .cl-cat-h { font-size: 15px; font-weight: 700; color: var(--title); margin-bottom: 2px; }
+  .cl-list { list-style: none; margin: 0; padding: 0; }
+  .cl-list li { position: relative; padding: 0 0 0 16px; }
+  .cl-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--title);
+  }
+  .cl-tag {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 18px;
+    padding: 0 6px;
+    margin-right: 6px;
+    border-radius: 4px;
+    background: #eaf3ff;
+    color: #2e7cf5;
+    font-weight: 500;
+  }
+  .cl-t { display: inline; font-size: 14px; font-weight: 650; color: var(--title); }
+  .cl-t::after { content: ' — '; font-weight: 400; }
+  .cl-d { display: inline; font-size: 14px; color: var(--text); }
+  .cl-rail {
+    position: sticky;
+    top: 84px;
+    width: 128px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border);
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .cl-rail a {
+    font-size: 13px;
+    color: var(--text-3);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+  .cl-rail a:hover { color: var(--link); }
+  .cl-rail a.active { color: var(--link); font-weight: 650; }
 </style>
 </head>
 <body>
@@ -652,6 +715,7 @@
       <a href="#files">文件管理</a>
       <a href="#settings">设置与反馈</a>
       <a href="#video-tutorials">视频指导</a>
+      <a href="#changelog">更新日志</a>
     </nav>
   </aside>
 
@@ -1268,6 +1332,145 @@
       <div class="video-pagination" id="video-pagination"></div>
     </section>
 
+    <section id="changelog">
+      <h2>更新日志</h2>
+      <p class="lead">记录 AI 开发者空间每次更新的特性功能点、修复与兼容性影响。</p>
+
+      <div class="cl-layout">
+        <div class="changelog">
+          <div class="cl-month" id="cl-v2026-10">
+            <h3 class="cl-month-h">2026年10月</h3>
+            <div class="cl-month-date">2026-10-13 · v1.6.0</div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">新特性</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">新增 CLI 状态管理命令</div>
+                  <div class="cl-d">新增 <code>job-env-manager up / ls / status</code> 命令，支持环境卡片状态查询，以及在任务状态下拉起指定环境卡片。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">新增 open-with-drawio skill</div>
+                  <div class="cl-d">支持生成的 .drawio 图表直接使用 draw.io 编辑器打开、查看与编辑。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">基础镜像</span><div class="cl-t">默认安装 keyutils</div>
+                  <div class="cl-d">基础镜像内置 keyutils 工具集（keyctl 等），开箱即可使用内核密钥管理（keyring）能力，无需手动安装。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">支持 PPT / PDF 在线预览</div>
+                  <div class="cl-d">文件浏览器中可直接预览 .ppt / .pptx / .pdf 文件，单文件大小限制 20MB。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">ACP 侧边栏折叠状态按会话独立记忆</div>
+                  <div class="cl-d">每个会话各自记住侧边栏的折叠/展开状态，会话之间互不干扰。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">对话区新增「回到底部」按钮</div>
+                  <div class="cl-d">长对话浏览时可一键回到底部。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">文件浏览状态按会话持久化</div>
+                  <div class="cl-d">切换会话或刷新浏览器后可恢复当前会话的文件状态。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">连接器</span><div class="cl-t">Proxy 版本升级</div>
+                  <div class="cl-d">支持附件上传；支持永久 AK/SK。</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">特性更新</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">环境卡片升级并内置安全提示词</div>
+                  <div class="cl-d">以下环境统一升级并内置 AGENTS.md：prime-agent（1.0.6）、minimax-code（1.0.4）、kimicode（1.0.6）、icode（1.0.1）、workswarm（1.0.12）、openclaw（1.0.7）、opencode（1.0.8）、deepseek-harness（1.0.12）、codearts（1.0.11）、eduswarm（1.0.5）、iacmcpserver（1.0.4）、hermes（1.0.7）。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">升级至 v0.0.1-alpha.28</div>
+                  <div class="cl-d">新环境默认 settings.json 增加 OpenViking 配置项，实现默认接入 OpenViking；优化接入 OpenViking 后长期记忆的写入方式，提升 Agent 长期记忆质量。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">升级至 v0.0.1-alpha.29</div>
+                  <div class="cl-d">调整接入 OpenViking 后记忆的写入位置，支持提取的记忆在用户域内共享。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">基础镜像运行时</span><div class="cl-t">Node.js</div>
+                  <div class="cl-d">v20.18.0 → v22.23.3。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">基础镜像运行时</span><div class="cl-t">Python</div>
+                  <div class="cl-d">3.11.4 → 3.11.16。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">菜单调整</div>
+                  <div class="cl-d">页面左上角标题修改为「AI 开发者空间 - 体验中心」。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">问题反馈入口调整</div>
+                  <div class="cl-d">移除「问题反馈」菜单，新增右侧悬浮侧边栏。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">文件编辑器优化</div>
+                  <div class="cl-d">面板宽度按可用池比例分配（默认 = 池 × 50%，关闭再打开恢复默认）；标签页选中态优化。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">会话体验优化</div>
+                  <div class="cl-d">会话标题「本地 + 服务端」双端同步；会话列表新增搜索与置顶；左侧栏收起时显示导航。</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">Bug 修复</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">KasmVNC Desktop 1.0.3</div>
+                  <div class="cl-d">修复多页面场景下持续自动重连的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">GaussDB 1.0.3</div>
+                  <div class="cl-d">修复数据持久化问题，并补充使用文档、更新图标。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">DeepSeek Harness 1.0.12</div>
+                  <div class="cl-d">修复部分插件因版本过低而不可用的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">OpenViking 1.0.5</div>
+                  <div class="cl-d">支持启动时 VLM 模型自适应，并修复内容提取问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">OpenClaw 1.0.7</div>
+                  <div class="cl-d">修正存储路径，确保数据持久化在沙箱 <code>/workspace</code> 目录下。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">环境部署与清理问题修复</div>
+                  <div class="cl-d">自定义与非自定义环境总量超 20 个时部署失败、环境停止删除卡片后沙箱文件遗留、历史镜像残留旧版 hwcloud 导致 dbus 僵尸进程泄露等问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">AI 创建环境冲突确认</div>
+                  <div class="cl-d">通过 AI 创建新环境时，若与已有卡片冲突，主动询问用户意图，避免误覆盖。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">会话置顶不可用问题修复</div>
+                  <div class="cl-d">升级至匹配 v22.23.3，解决前端置顶等功能不可用的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">连接器</span><div class="cl-t">Proxy AK/SK 识别修复</div>
+                  <div class="cl-d">修复 AK/SK 凭据更新后 Proxy 无法识别的问题。</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <aside class="cl-rail" id="cl-rail">
+          <a href="#changelog" data-target="cl-v2026-10" class="active">2026年10月</a>
+        </aside>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -1316,7 +1519,8 @@
     { id: 'resources-agent', title: 'Agent 接入' },
     { id: 'files', title: '文件管理' },
     { id: 'settings', title: '设置与反馈' },
-    { id: 'video-tutorials', title: '视频指导' }
+    { id: 'video-tutorials', title: '视频指导' },
+    { id: 'changelog', title: '更新日志' }
   ];
 
   // 表格适配：宽表包一层横向滚动容器，避免在小屏下撑破布局
@@ -1371,6 +1575,40 @@
     nav.innerHTML = html;
     sec.appendChild(nav);
   });
+
+  // 更新日志：右侧版本导航（滚动高亮 + 点击跳转）
+  // 注意：不能用原生锚点跳转 —— 未知 hash 会触发 hashchange 把页面重置到简介页，
+  // 因此点击时 preventDefault 后用 scrollIntoView 平滑滚动，URL hash 保持 #changelog 不变
+  (function () {
+    const rail = document.getElementById('cl-rail');
+    if (!rail) return;
+    const links = Array.prototype.slice.call(rail.querySelectorAll('a[data-target]'));
+    if (!links.length) return;
+    const groups = links
+      .map(a => ({ a: a, el: document.getElementById(a.getAttribute('data-target')) }))
+      .filter(g => g.el);
+
+    function update() {
+      if (!document.getElementById('changelog').classList.contains('page-active')) return;
+      let current = groups[0];
+      groups.forEach(g => {
+        if (g.el.getBoundingClientRect().top <= 130) current = g;
+      });
+      links.forEach(a => a.classList.remove('active'));
+      current.a.classList.add('active');
+    }
+
+    links.forEach(a => {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        const el = document.getElementById(a.getAttribute('data-target'));
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  })();
 
   // 视频列表
   // 视频/封面均托管在 tools-artifact（国内可达，来源：视频内容(1).xlsx）；封面目录 screen/，缺传的用本地 video/posters/ 兜底
