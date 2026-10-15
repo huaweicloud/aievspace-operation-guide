@@ -1381,6 +1381,56 @@
         <div class="changelog">
           <div class="cl-month" id="cl-v2026-10">
             <h3 class="cl-month-h">2026年10月</h3>
+            <div class="cl-month-date">2026-10-15 · v1.6.1</div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">特性更新</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">自定义模型推理等级词汇兼容</div>
+                  <div class="cl-d">升级至 v0.0.1-alpha.30：使用 glm-5.3-flash 自定义模型时提供兼容的推理等级词汇（low/high/max），并支持在配置文件中自定义模型的推理词汇列表。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">KasmVNC Desktop 升级至 1.0.4</div>
+                  <div class="cl-d">新增 VNC 音频功能，支持通过 ai-shell 对话或 get-apps 脚本安装 DSH 桌面版。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">DevBridge 升级至 1.0.4</div>
+                  <div class="cl-d">进行安全加固并优化制品大小。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">文件预览功能增强</div>
+                  <div class="cl-d">PPT 文件预览新增搜索功能；Markdown 和 HTML 文件预览态增加刷新操作。</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">Bug 修复</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">沙箱孤儿进程问题修复</div>
+                  <div class="cl-d">修复偶现沙箱进程变为孤儿进程，导致端口被占用、OpenClaw 无法启动的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">环境列表接口调用频次优化</div>
+                  <div class="cl-d">修复环境管理列表接口频繁调用的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">GaussDB 升级至 1.0.4</div>
+                  <div class="cl-d">更新持久化补丁。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">PPT 预览报错信息细化</div>
+                  <div class="cl-d">细化 PPT 文件预览的报错信息，便于定位问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">文件浏览器现场恢复修复</div>
+                  <div class="cl-d">修复切换会话后偶现文件浏览器未恢复现场的问题。</div>
+                </li>
+              </ul>
+            </div>
+
             <div class="cl-month-date">2026-10-13 · v1.6.0</div>
 
             <div class="cl-cat">
