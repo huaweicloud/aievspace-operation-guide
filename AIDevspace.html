@@ -652,6 +652,7 @@
   }
   .cl-rail a:hover { color: var(--link); }
   .cl-rail a.active { color: var(--link); font-weight: 650; }
+  
 </style>
 </head>
 <body>
@@ -1376,12 +1377,61 @@
     <section id="changelog">
       <h2>更新日志</h2>
       <p class="lead">记录 AI 开发者空间每次更新的特性功能点、修复与兼容性影响。</p>
-
+          
       <div class="cl-layout">
         <div class="changelog">
+           <!-- CHANGELOG:START -->
+           <!-- CHANGELOG:END -->
           <div class="cl-month" id="cl-v2026-10">
             <h3 class="cl-month-h">2026年10月</h3>
-            <div class="cl-month-date">2026-10-16 · v1.6.2</div>
+             <div class="cl-ver" data-version="v1.6.3">
+             <div class="cl-month-date">2026-10-19 · v1.6.3</div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">新特性</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">环境管理新增状态筛选</div>
+                  <div class="cl-d">支持按未部署、运行中、已停止、异常、待开放等状态筛选环境。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">会话支持文件阅读/预览进度自动记忆</div>
+                  <div class="cl-d">PDF、PPT、文本、代码、Markdown 文件的阅读位置自动记住，无需重新翻找。</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">特性更新</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">配置热加载信号接收机制</div>
+                  <div class="cl-d">版本升级至 v0.0.1-alpha.31。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">acpws 版本升级</div>
+                  <div class="cl-d">新增配置热加载信号接口。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">KasmVNC Desktop 启动速度优化</div>
+                  <div class="cl-d">升级至 1.0.5，首次部署启动时间由 111s 优化至 52s。</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="cl-cat">
+              <div class="cl-cat-h">Bug 修复</div>
+              <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">预览限制与资源管理器菜单优化</div>
+                  <div class="cl-d">预览限制：Markdown 2MB、HTML 5MB；资源管理器菜单修改为根据空间确定方向。</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+             <div class="cl-ver" data-version="v1.6.2">
+             <div class="cl-month-date">2026-10-16 · v1.6.2</div>
 
             <div class="cl-cat">
               <div class="cl-cat-h">特性更新</div>
@@ -1410,7 +1460,9 @@
                 </li>
               </ul>
             </div>
+          </div>
 
+          <div class="cl-ver" data-version="v1.6.1">
             <div class="cl-month-date">2026-10-15 · v1.6.1</div>
 
             <div class="cl-cat">
@@ -1460,7 +1512,8 @@
                 </li>
               </ul>
             </div>
-
+          </div>
+           <div class="cl-ver" data-version="v1.6.0">
             <div class="cl-month-date">2026-10-13 · v1.6.0</div>
 
             <div class="cl-cat">
@@ -1585,6 +1638,7 @@
               </ul>
             </div>
           </div>
+        </div>
         </div>
         <aside class="cl-rail" id="cl-rail">
           <a href="#changelog" data-target="cl-v2026-10" class="active">2026年10月</a>
