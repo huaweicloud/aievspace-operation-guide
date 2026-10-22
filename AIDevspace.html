@@ -1385,21 +1385,25 @@
           <div class="cl-month" data-month="2026-10" id="cl-v2026-10">
             <h3 class="cl-month-h">2026年10月</h3>
             <div class="cl-ver" data-version="v1.8.0">
-              <div class="cl-month-date">2026-10-21 · v1.8.0</div>
+              <div class="cl-month-date">2026-10-22 · v1.8.0</div>
               <div class="cl-cat">
                 <div class="cl-cat-h">特性更新</div>
                 <ul class="cl-list">
                 <li>
-                  <span class="cl-tag">环境管理</span><div class="cl-t">DeepSeek Harness 升级至 v1.0.13</div>
-                  <div class="cl-d">支持 Compute Use（CUA）能力，Agent 可直接操作桌面完成任务；开放 DeepSeek 账号登录。</div>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">DeepSeek Harness升级至v1.0.13</div>
+                  <div class="cl-d">支持Compute Use（CUA）能力，Agent可直接操作桌面完成任务；开放DeepSeek账号登录。</div>
                 </li>
                 <li>
-                  <span class="cl-tag">环境管理</span><div class="cl-t">部署启动阶段新增内存检查</div>
-                  <div class="cl-d">系统内存资源不足时给出提示，避免因内存不足导致环境启动失败。</div>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">作业环境部署启动新增内存检查能力</div>
+                  <div class="cl-d">当系统内存资源不足时给出提示，避免因内存不足导致环境启动失败。</div>
                 </li>
                 <li>
-                  <span class="cl-tag">环境管理</span><div class="cl-t">优化 Next AI Draw.io 与 AI Shell 交互体验</div>
-                  <div class="cl-d">支持在 AI Shell 中通过自然语言对话直接生成图表，或打开已有 .drawio 文件，实现「边对话边调整」的实时预览工作流。</div>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">优化Draw.io与AI Shell交互体验</div>
+                  <div class="cl-d">支持在AI Shell中通过自然语言对话直接生成图表，或打开已有<code>.drawio</code>文件，实现「边对话边调整」的实时预览工作流。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">首页</span><div class="cl-t">调整每日AI知识精选推送时间</div>
+                  <div class="cl-d">调整为每天7:00–8:00间随机推送。</div>
                 </li>
                 </ul>
               </div>
@@ -1407,20 +1411,20 @@
                 <div class="cl-cat-h">Bug 修复</div>
                 <ul class="cl-list">
                 <li>
-                  <span class="cl-tag">环境管理</span><div class="cl-t">修复三方作业环境发布按钮可无限制点击提交的问题</div>
-                  <div class="cl-d">避免重复提交导致审核任务累积。</div>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">修复三方作业环境发布按钮重复提交问题</div>
+                  <div class="cl-d">避免无限制点击提交导致审核任务累积。</div>
                 </li>
                 <li>
-                  <span class="cl-tag">环境管理</span><div class="cl-t">修复作业环境关机再开机后左侧菜单栏 Agent 数据未刷新的问题</div>
-                  <div class="cl-d">环境重启后侧边栏 Agent 数据自动同步最新状态，无需手动刷新页面。</div>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">修复作业环境重启后Agent数据未刷新问题</div>
+                  <div class="cl-d">作业环境关机再开机后，左侧菜单栏Agent数据将正常同步。</div>
                 </li>
                 <li>
-                  <span class="cl-tag">前端</span><div class="cl-t">修复「设置-系统监控」页面磁盘信息展示不准确的问题</div>
-                  <div class="cl-d">磁盘占用、剩余空间等数据实时同步系统真实状态，消除展示误差。</div>
+                  <span class="cl-tag">前端</span><div class="cl-t">修复系统监控页面磁盘信息展示错误问题</div>
+                  <div class="cl-d">「设置-系统监控」页面的磁盘信息现在可准确展示。</div>
                 </li>
                 <li>
-                  <span class="cl-tag">连接器</span><div class="cl-t">修复 CodeArts 连接 devspace-connector-proxy 失败的问题</div>
-                  <div class="cl-d">CodeArts 与 devspace-connector-proxy 链路连通性恢复，可正常完成数据交互。</div>
+                  <span class="cl-tag">连接器</span><div class="cl-t">修复CodeArts连接代理服务失败问题</div>
+                  <div class="cl-d">解决CodeArts连接<code>devspace-connector-proxy</code>失败的问题。</div>
                 </li>
                 </ul>
               </div>
