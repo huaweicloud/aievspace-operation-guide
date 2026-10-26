@@ -1384,6 +1384,43 @@
            <!-- CHANGELOG:END -->
           <div class="cl-month" data-month="2026-10" id="cl-v2026-10">
             <h3 class="cl-month-h">2026年10月</h3>
+            <div class="cl-ver" data-version="v1.10.0">
+              <div class="cl-month-date">2026-10-26 · v1.10.0</div>
+              <div class="cl-cat">
+                <div class="cl-cat-h">特性更新</div>
+                <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">自定义环境发布功能临时维护升级</div>
+                  <div class="cl-d">暂不接受新发布，已发布环境不受影响，升级完成后即恢复。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">hwcloud CLI</span><div class="cl-t">hwcloud CLI 升级至 v0.0.1-alpha.33</div>
+                  <div class="cl-d">删除自定义模型后立即生效，无需重启。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">设置</span><div class="cl-t">升级模型供应商配置功能</div>
+                  <div class="cl-d">新增第三方与自定义两种配置方式，新增供应商时支持获取可用模型。</div>
+                </li>
+                </ul>
+              </div>
+              <div class="cl-cat">
+                <div class="cl-cat-h">Bug 修复</div>
+                <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">修复智能体作业环境自定义模型适配问题</div>
+                  <div class="cl-d">自定义环境的 skill 同步完成适配。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">连接器</span><div class="cl-t">修复定时任务凭证失效时无效请求问题</div>
+                  <div class="cl-d">优化定时任务逻辑，凭证失效时定时任务自动休眠，避免无效请求。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">AIShell</span><div class="cl-t">优化自定义模型配置错误提示</div>
+                  <div class="cl-d">配置失败时给出更清晰的引导信息。</div>
+                </li>
+                </ul>
+              </div>
+            </div>
             <div class="cl-ver" data-version="v1.9.0">
               <div class="cl-month-date">2026-10-23 · v1.9.0</div>
               <div class="cl-cat">
