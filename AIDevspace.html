@@ -1381,6 +1381,58 @@
       <div class="cl-layout">
         <div class="changelog">
            <!-- CHANGELOG:START -->
+          <div class="cl-month" data-month="2026-11" id="cl-v2026-11">
+            <h3 class="cl-month-h">2026年11月</h3>
+            <div class="cl-ver" data-version="v1.13.0">
+              <div class="cl-month-date">2026-11-02 · v1.13.0</div>
+              <div class="cl-cat">
+                <div class="cl-cat-h">新特性</div>
+                <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">系统监控</span><div class="cl-t">新增资源主动告警功能</div>
+                  <div class="cl-d">CPU、内存或磁盘使用过高时，账号区域自动亮起告警图标，点击即可进入系统监控查看详情；卡片上的「AI 处理」可一键交给智能助手分析占用情况、给出处理方案，确认后代为执行。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">新增安全扫描作业环境</div>
+                  <div class="cl-d">配套 Security Scan Suite 套件。</div>
+                </li>
+                </ul>
+              </div>
+              <div class="cl-cat">
+                <div class="cl-cat-h">特性更新</div>
+                <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">WorkSwarm、EduSwarm 版本升级</div>
+                  <div class="cl-d">WorkSwarm 升级至 1.0.17，EduSwarm 升级至 1.0.7，使用别名字段区分不同供应商和模型。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">前端</span><div class="cl-t">调整左侧栏 TOOLS 菜单位置</div>
+                  <div class="cl-d">移动至「环境管理」菜单上方。</div>
+                </li>
+                </ul>
+              </div>
+              <div class="cl-cat">
+                <div class="cl-cat-h">Bug 修复</div>
+                <ul class="cl-list">
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">修复 AI Shell 卡片使用次数展示问题</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">DeepSeek Harness 升级至 1.0.20</div>
+                  <div class="cl-d">修复供应商 ID 不符合校验规则时导致 Web 界面无法访问的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">OpenClaw 升级至 1.0.11</div>
+                  <div class="cl-d">修复供应商 ID 为 deepseek 时触发内置插件加载、导致服务启动缓慢的问题。</div>
+                </li>
+                <li>
+                  <span class="cl-tag">环境管理</span><div class="cl-t">KimiCode 升级至 1.0.8</div>
+                  <div class="cl-d">修复配置不同供应商包含相同模型 ID 时导致配置文件格式错误的问题。</div>
+                </li>
+                </ul>
+              </div>
+            </div>
+          </div>
            <!-- CHANGELOG:END -->
           <div class="cl-month" data-month="2026-10" id="cl-v2026-10">
             <h3 class="cl-month-h">2026年10月</h3>
@@ -1851,6 +1903,7 @@
         </div>
         </div>
         <aside class="cl-rail" id="cl-rail">
+          <a href="#changelog" data-target="cl-v2026-11">2026年11月</a>
           <a href="#changelog" data-target="cl-v2026-10" class="active">2026年10月</a>
         </aside>
       </div>
