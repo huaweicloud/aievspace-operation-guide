@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 开发者空间：AI SHELL + CodeArts 完成代码开发全流程</title>
+<style>
+  :root{
+    --hw-red:#CF0A2C;
+    --hw-red-dark:#A3001C;
+    --ink:#1f2329;
+    --ink-2:#4b5159;
+    --ink-3:#8a9099;
+    --line:#e8eaf0;
+    --bg:#ffffff;
+    --bg-soft:#f6f8fb;
+    --bg-soft2:#eef2f8;
+    --ok:#1a7f37;
+    --warn:#b54708;
+    --radius:14px;
+    --shadow:0 6px 24px rgba(31,35,41,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg-soft);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--hw-red);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(135deg,#fff 0%,#fff5f6 45%,#fdeef0 100%);
+    border-bottom:1px solid var(--line);padding:54px 0 40px;position:relative;overflow:hidden;
+  }
+  .hero:after{
+    content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(207,10,44,.10),transparent 70%);
+  }
+  .tag{display:inline-block;font-size:13px;letter-spacing:1px;color:var(--hw-red);background:#fff;border:1px solid #ffd2d9;padding:4px 12px;border-radius:999px;font-weight:600}
+  .hero h1{font-size:34px;line-height:1.3;margin:16px 0 10px;font-weight:800;letter-spacing:.5px}
+  .hero p.sub{font-size:17px;color:var(--ink-2);margin:0 0 22px;max-width:760px}
+  .hero .meta{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+  .hero .meta b{color:var(--ink-2);font-weight:600}
+
+  /* CTA */
+  .cta{
+    display:inline-flex;align-items:center;gap:10px;background:var(--hw-red);color:#fff;font-weight:700;
+    padding:14px 22px;border-radius:12px;font-size:16px;box-shadow:0 8px 22px rgba(207,10,44,.28);
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(207,10,44,.34);text-decoration:none;color:#fff}
+  .cta.ghost{background:#fff;color:var(--hw-red);border:1.5px solid var(--hw-red);box-shadow:none}
+  .cta.ghost:hover{background:#fff5f6}
+
+  section{padding:42px 0;border-bottom:1px solid var(--line)}
+  section.bg{background:var(--bg)}
+  h2{font-size:25px;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--hw-red);color:#fff;font-size:16px;font-weight:800;flex:0 0 auto}
+  h3{font-size:18px;font-weight:700;margin:26px 0 8px}
+  h4{font-size:16px}
+  p{margin:10px 0;color:var(--ink-2)}
+  .lead{color:var(--ink-2);font-size:16px}
+  ul,ol{color:var(--ink-2);padding-left:22px}
+  li{margin:7px 0}
+  code{background:var(--bg-soft2);padding:1px 6px;border-radius:5px;font-size:13.5px;font-family:"SFMono-Regular",Consolas,Menlo,monospace;color:var(--ink)}
+
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);margin:18px 0}
+  .card h4{margin-top:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .pill{display:inline-block;background:var(--bg-soft2);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-size:13px;color:var(--ink-2);margin:2px 4px 2px 0}
+  .feature{border-left:4px solid var(--hw-red);background:#fff;padding:14px 16px;border-radius:0 10px 10px 0;margin:12px 0;box-shadow:var(--shadow)}
+  .feature h4{margin:0 0 4px;font-size:16px}
+  .feature p{margin:0;font-size:14.5px}
+
+  /* 图片 */
+  figure{margin:20px 0}
+  figure img{display:block;width:100%;height:auto;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line);background:#fff}
+  figcaption{font-size:13.5px;color:var(--ink-3);margin-top:8px;text-align:center;line-height:1.6}
+
+  /* 代码 / 命令 */
+  pre{background:#0f1419;color:#e6edf3;border-radius:12px;padding:16px 18px;overflow:auto;font-size:13.5px;line-height:1.6;margin:14px 0}
+  pre code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;white-space:pre;background:none;color:inherit;padding:0}
+  .tok-c{color:#7d8590}
+  .tok-k{color:#ff7b72}
+  .tok-s{color:#a5d6ff}
+  .tok-f{color:#d2a8ff}
+  .cmd{background:var(--bg-soft2);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-family:monospace;font-size:13.5px;color:var(--ink);margin:12px 0;word-break:break-all}
+
+  /* 对话气泡 */
+  .quote{position:relative;background:#fff5f6;border-left:4px solid var(--hw-red);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:15px;color:var(--ink);box-shadow:var(--shadow)}
+  .quote b{color:var(--hw-red)}
+
+  /* Steps */
+  .step{display:flex;gap:14px;margin:18px 0}
+  .step .badge{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--hw-red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-top:2px}
+  .step .body{flex:1}
+  .step .body h4{margin:0 0 4px;font-size:16.5px}
+  .step .body p{margin:4px 0}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top}
+  th{background:var(--bg-soft2);color:var(--ink);font-weight:700}
+  td code{background:var(--bg-soft2);padding:1px 6px;border-radius:5px;font-size:13px}
+  @media(max-width:760px){table{font-size:13.5px}th,td{padding:9px 10px}}
+
+  .note{border:1px solid #ffe2b8;background:#fff8ee;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{color:var(--ok);font-weight:600}
+
+  footer{background:#fff;padding:30px 0;color:var(--ink-3);font-size:13.5px;text-align:center}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+  .toc a{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13.5px;color:var(--ink-2);font-weight:600}
+  .toc a:hover{border-color:var(--hw-red);color:var(--hw-red);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">AI 开发者空间 · 一站式能力总览</span>
+    <h1>AI 开发者空间：AI SHELL + CodeArts 完成代码开发全流程</h1>
+    <p class="sub">打开浏览器，面对的是一个聊天框——你用自然语言告诉它你想做什么，它替你完成从<b>写代码、启动服务、预览效果、分享端口、操作云资源到代码上传</b>的全流程。</p>
+    <div class="meta">
+      <span><b>适合：</b>产品经理 / 开发者 / 运维人员</span>
+      <span><b>形态：</b>浏览器内的云端开发环境</span>
+      <span><b>关键词：</b>AI Shell · CodeArts · DevBridge · 华为云资源 · GitCode</span>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/aidevspace" target="_blank" rel="noopener">🚀 打开 AI 开发者空间 ↗</a>
+    </div>
+    <div class="toc">
+      <a href="#what">定位与价值</a>
+      <a href="#overview">全链路能力</a>
+      <a href="#code">自然语言写代码</a>
+      <a href="#preview">预览与迭代</a>
+      <a href="#bridge">DevBridge 端口分享</a>
+      <a href="#cloud">聊天即运维</a>
+      <a href="#gitcode">GitCode 版本管理</a>
+      <a href="#scene">数据大屏实战</a>
+      <a href="#faq">安全与费用</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1 -->
+<section id="what" class="bg">
+  <div class="wrap">
+    <h2><span class="num">1</span>AI 开发者空间是什么</h2>
+    <p class="lead">AI 开发者空间是一个运行在华为云上的在线开发环境。你打开浏览器，面对的是一个聊天框——你用自然语言告诉它你想做什么，它替你完成从写代码、启动服务、预览效果、分享端口、操作云资源到代码上传的全流程。</p>
+
+    <figure>
+      <img src="./pic/developer-space-home.jpeg" alt="AI 开发者空间主页" loading="lazy" />
+      <figcaption>上图展示了 AI 开发者空间的主页界面，核心就是一个聊天框，你用自然语言描述需求，它替你完成后续所有操作。</figcaption>
+    </figure>
+
+    <p>传统开发中，光是"让一个项目跑起来"就需要：本地安装编程语言运行时、配置依赖管理工具、处理版本冲突、开放端口、配置反向代理、申请公网 IP、登录云控制台手动点选资源、再用 Git 客户端推送代码。每一步都可能卡住，每一步都要切换工具。AI 开发者空间把这些全部内置并串联起来，你只需要说话，它在后台完成所有操作，把结果交给你。</p>
+
+    <div class="feature">
+      <h4>适合谁用</h4>
+      <p>想快速验证想法的产品经理、不想折腾环境配置的开发者、需要操作华为云资源但不想记控制台路径的运维人员，以及任何想用一句话把想法变成可运行产品的人。</p>
+    </div>
+
+    <h3>它替你省掉的那些事</h3>
+    <div class="grid3">
+      <div class="card" style="margin:0">
+        <h4>环境与依赖</h4>
+        <p>语言运行时、依赖管理工具、版本冲突处理，全部预装并在后台自动完成。</p>
+      </div>
+      <div class="card" style="margin:0">
+        <h4>端口与访问</h4>
+        <p>端口自动选择、预览 URL 自动生成、公网分享由 DevBridge 隧道接管。</p>
+      </div>
+      <div class="card" style="margin:0">
+        <h4>云资源与代码</h4>
+        <p>聊天里查询与操作云资源；GitCode 扫码登录、建仓、推代码一步到位。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="overview">
+  <div class="wrap">
+    <h2><span class="num">2</span>一站式能力总览</h2>
+    <p class="lead">从"我有个想法"到"代码上线存档"，AI 开发者空间覆盖以下完整链路：</p>
+
+    <table>
+      <thead><tr><th>步骤</th><th>你需要做的</th><th>开发者空间替你做的</th></tr></thead>
+      <tbody>
+        <tr><td>描述需求</td><td>说一句话："帮我做一个数据可视化大屏"</td><td>自动生成项目代码、创建目录结构</td></tr>
+        <tr><td>安装依赖</td><td>什么都不用做</td><td>自动安装所需的框架、库、工具链</td></tr>
+        <tr><td>启动服务</td><td>什么都不用做</td><td>自动选择可用端口、启动 Web 服务</td></tr>
+        <tr><td>预览效果</td><td>点击返回的链接</td><td>生成可直接在浏览器打开的预览 URL</td></tr>
+        <tr><td>分享给外部</td><td>说一句"帮我创建隧道分享端口"</td><td>通过 DevBridge 生成公网可访问链接</td></tr>
+        <tr><td>操作云资源</td><td>说一句"帮我查一下有哪些 ECS"</td><td>调用华为云 API，返回资源列表</td></tr>
+        <tr><td>上传代码</td><td>说一句"帮我传到 GitCode"</td><td>扫码登录、建仓库、推送代码，一步到位</td></tr>
+      </tbody>
+    </table>
+
+    <p>开发者空间的环境管理页面如下图所示，码道（CodeArts）、DevBridge 等核心组件都在其中：</p>
+
+    <figure>
+      <img src="./pic/environment-management.jpeg" alt="开发者空间环境管理页面" loading="lazy" />
+      <figcaption>上图展示了开发者空间的环境管理页面，码道（CodeArts）、DevBridge 等核心组件集成其中，一站式覆盖代码开发、预览、分享、云资源操作全流程。</figcaption>
+    </figure>
+
+    <div>
+      <span class="pill">CodeArts 写代码</span>
+      <span class="pill">自动装依赖</span>
+      <span class="pill">预览 URL</span>
+      <span class="pill">DevBridge 隧道</span>
+      <span class="pill">华为云资源操作</span>
+      <span class="pill">GitCode 版本管理</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="code" class="bg">
+  <div class="wrap">
+    <h2><span class="num">3</span>写代码</h2>
+    <p class="lead">你想做一个网站、一个管理系统、一个 API 服务，或者一个数据可视化大屏——只需要用一句话描述需求，AI 开发者空间就会自动为你生成完整的项目代码。</p>
+    <p>它背后连接的是 <b>CodeArts（码道）</b>——华为云提供的 AI 编程助手。你不需要了解它是怎么连接的，只需要知道：你描述需求，它写代码。代码写完后，所需的依赖包（比如 Node.js 的 npm 包、Python 的 pip 包）也会自动安装，服务会自动启动。整个过程你不需要在本地装任何东西，不需要打开任何 IDE。</p>
+
+    <h3>你能让它做什么</h3>
+    <table>
+      <thead><tr><th>项目类型</th><th>示例需求</th></tr></thead>
+      <tbody>
+        <tr><td>Web 网站</td><td>"帮我做一个产品展示官网，首页带轮播图"</td></tr>
+        <tr><td>管理系统</td><td>"帮我写一个员工管理后台，支持增删改查"</td></tr>
+        <tr><td>API 服务</td><td>"帮我做一个 RESTful API，提供用户注册登录接口"</td></tr>
+        <tr><td>数据可视化</td><td>"帮我做一个销售数据可视化大屏，用 ECharts"</td></tr>
+        <tr><td>前端页面</td><td>"帮我用 React 写一个待办事项应用"</td></tr>
+        <tr><td>全栈应用</td><td>"帮我做一个博客系统，前端 Vue 后端 Express"</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>对比：</b>人工写代码需要打开编辑器、搭项目骨架、查文档、手写每一行、调试报错；在这里，你只管提需求，它把代码写好、依赖装好、服务跑起来，直接进入下一步。</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="preview">
+  <div class="wrap">
+    <h2><span class="num">4</span>效果预览：写完立刻能看</h2>
+    <p class="lead">代码写完后，AI 开发者空间会自动启动 Web 服务并生成一个预览 URL。你直接在浏览器里打开这个链接，就能看到运行效果——无论是一个网页、一个管理系统界面，还是一个数据大屏。</p>
+    <p>你不需要自己去配 nginx、做端口转发、或者折腾本地 hosts 文件。预览链接是华为云开发者空间自动生成的，格式类似于：</p>
+    <div class="cmd">https://&lt;端口号&gt;-&lt;容器标识&gt;.workspace.developer.huaweicloud.com/</div>
+    <p>只要你的开发空间在运行，这个链接就一直有效。</p>
+
+    <table>
+      <thead><tr><th>预览能力</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>自动启动</td><td>代码写完后自动检测可用端口并启动服务</td></tr>
+        <tr><td>即时访问</td><td>生成预览 URL，浏览器直接打开即可看到效果</td></tr>
+        <tr><td>持续可用</td><td>开发空间运行期间链接持续有效，可反复访问</td></tr>
+        <tr><td>无需配置</td><td>不需要手动配 nginx、端口转发、hosts 文件</td></tr>
+      </tbody>
+    </table>
+
+    <p>看到效果后如果想改，直接在聊天里说"把首页颜色改成蓝色"或"加一个导出按钮"，它会修改代码并重新启动服务，刷新页面就能看到更新。</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="bridge" class="bg">
+  <div class="wrap">
+    <h2><span class="num">5</span>端口分享：把开发中的服务分享出去</h2>
+    <p class="lead">预览 URL 只有你自己能访问。如果你想把正在开发的服务分享给同事、客户或者其他设备——比如让同事看看 demo 效果、让手机端测试一下页面适配、或者接收外部系统的 webhook 回调——AI 开发者空间通过 <b>DevBridge 开发隧道</b>帮你实现。</p>
+
+    <div class="feature">
+      <h4>DevBridge 是什么</h4>
+      <p>华为云提供的开发隧道服务，能把开发者空间里运行的本地服务，通过华为云中继基础设施暴露成一个公网可访问的链接。外部用户不需要任何特殊工具，用浏览器打开链接就能访问。</p>
+    </div>
+
+    <table>
+      <thead><tr><th>能力</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>一键创建隧道</td><td>说一句"帮我创建隧道分享 8080 端口"，自动完成全部配置</td></tr>
+        <tr><td>公网可访问</td><td>生成 <code>https://隧道ID-端口.区域-bridge.myhuaweicloud.com</code> 格式的公网链接</td></tr>
+        <tr><td>支持多端口</td><td>一个隧道可以同时分享多个端口</td></tr>
+        <tr><td>可设过期时间</td><td>默认 8 小时，最长可设 720 小时，到期自动回收</td></tr>
+        <tr><td>无需公网 IP</td><td>不需要给开发空间申请公网 IP，隧道通过出站连接建立</td></tr>
+      </tbody>
+    </table>
+
+    <p>DevBridge WebUI 界面如下图所示，可查看和管理已创建的隧道：</p>
+
+    <figure>
+      <img src="./pic/devbridge-webui.jpg" alt="DevBridge WebUI 界面" loading="lazy" />
+      <figcaption>上图展示了 DevBridge WebUI 界面，可直观查看已创建的隧道列表、状态、公网链接及过期时间，方便管理。</figcaption>
+    </figure>
+
+    <div class="note"><b>对比：</b>人工做这件事需要申请公网 IP、配置安全组放行端口、设置反向代理、处理 HTTPS 证书——步骤多且容易出错。在这里，一句话搞定。</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="cloud">
+  <div class="wrap">
+    <h2><span class="num">6</span>华为云资源操作：聊天即运维</h2>
+
+    <h3>什么是云服务</h3>
+    <p>云服务就是把计算、存储、网络等 IT 基础设施放在华为云的数据中心里，你按需使用、按量付费，不需要自己买服务器、租机房、拉网线。AI 开发者空间把华为云各类资源的查询和操作能力全部内置，你用聊天就能完成日常运维工作，不需要登录华为云控制台手动点选。</p>
+
+    <figure>
+      <img src="./pic/huaweicloud-console.jpg" alt="华为云控制台主页" loading="lazy" />
+      <figcaption>上图展示了华为云控制台主页，计算、存储、网络、数据库等各类云服务产品入口一目了然。传统方式需要在这里手动点选，而开发者空间用聊天即可完成。</figcaption>
+    </figure>
+
+    <h3>账单与成本查询（示例）</h3>
+    <p>开发者空间不仅支持资源操作，也支持查询账户余额、消费明细和资源包余量。例如，你可以直接说"查一下我的账单"，它会返回余额状态、本月消费、上月对比等关键信息。</p>
+
+    <figure>
+      <img src="./pic/billing-report.jpg" alt="账单简报" loading="lazy" />
+      <figcaption>上图展示了查询账户账单的返回结果，包含余额、消费明细和费用趋势，所有信息一目了然。</figcaption>
+    </figure>
+
+    <h3>计算资源</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>ECS</b>（弹性云服务器）</td><td>云上的虚拟机，相当于租了一台远程电脑。用来部署应用、跑脚本、搭环境。开发者空间支持免密 SSH 登录 ECS，自动部署公钥、建立持久连接、用完自动清理密钥。</td></tr>
+        <tr><td><b>CCE</b>（云容器引擎）</td><td>华为云提供的 Kubernetes 集群服务。用来运行容器化应用、管理 Pod 和节点伸缩。开发者空间支持安装 kubectl 和 kubectl-cce 插件，直接用聊天查询集群状态、分析 Pod/Node 的 CPU/内存指标、排查异常。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>存储资源</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>OBS</b>（对象存储服务）</td><td>云上的文件仓库，类似网盘但面向应用。用来存图片、视频、备份文件、托管静态网站。开发者空间支持创建桶、上传文件/目录、配置静态网站托管、绑定自定义域名。</td></tr>
+        <tr><td><b>OBS 静态网站托管</b></td><td>把 OBS 桶变成一个能直接通过域名访问的静态网站。上传 HTML/CSS/JS 文件后配置托管，用户通过浏览器就能访问你的网页。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>数据库资源</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>RDS</b>（关系型数据库服务）</td><td>免运维的云数据库，支持 MySQL、PostgreSQL、SQL Server 等引擎。不用自己装数据库、配主从备份、管磁盘扩容。开发者空间支持查实例列表、分析慢 SQL、巡检健康状态、管理备份恢复、调参数——相当于一个能聊天的 DBA 助手。</td></tr>
+      </tbody>
+    </table>
+
+    <p>下图演示了如何查询 RDS 实例：开发者空间会自动探测多个区域，返回实例列表（即使为空也能清晰告知结果），并基于结果给出后续建议（例如新建 RDS 并编写后端 API）。</p>
+
+    <figure>
+      <img src="./pic/rds-query.jpg" alt="RDS 实例查询结果" loading="lazy" />
+      <figcaption>上图展示了查询 RDS 实例的返回结果：自动探测多区域、返回实例列表，并给出后续操作建议。</figcaption>
+    </figure>
+
+    <h3>网络资源</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>VPC</b>（虚拟私有云）</td><td>云上的私有网络，给你的资源划分隔离的网络空间</td></tr>
+        <tr><td><b>EIP</b>（弹性公网 IP）</td><td>云资源接入互联网的公网 IP，让外部能访问你的服务</td></tr>
+        <tr><td><b>ELB</b>（弹性负载均衡）</td><td>把流量分发到多台服务器，提升可用性和吞吐量</td></tr>
+        <tr><td><b>NAT 网关</b></td><td>让 VPC 内的资源通过同一个公网 IP 访问外网</td></tr>
+        <tr><td><b>DNS</b>（云解析服务）</td><td>域名解析，把你的域名指向云资源的 IP</td></tr>
+      </tbody>
+    </table>
+    <p>开发者空间支持查询以上全部网络资源的详情、拓扑、安全组规则，不需要去控制台翻菜单。</p>
+
+    <h3>身份与权限</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>IAM</b>（身份与访问管理）</td><td>管理谁能访问哪些云资源。查用户/用户组/策略/委托/AK/SK 状态，确认权限配置是否正确。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>容器镜像</h3>
+    <table>
+      <thead><tr><th>服务名</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>SWR</b>（容器镜像服务）</td><td>云上的 Docker 镜像仓库，存和管理容器镜像。企业版支持独立实例、安全扫描、跨实例同步、自定义域名。配合 CCE 使用：镜像推到 SWR，CCE 拉取部署。</td></tr>
+      </tbody>
+    </table>
+
+    <h3>基础设施编排</h3>
+    <table>
+      <thead><tr><th>能力</th><th>是什么 &amp; 一般用来干啥</th></tr></thead>
+      <tbody>
+        <tr><td><b>Terraform 编排</b></td><td>用代码描述云资源架构，一键创建/销毁整套基础设施。说一句"帮我用 Terraform 部署一个带 VPC、ECS、EIP 的网站架构"，它自动生成配置文件、校验规格可用性、预估费用、等你确认后执行部署。</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>对比：</b>人工操作这些资源需要登录华为云控制台、在十几个产品页面之间切换、手动填写参数、记住资源 ID 的依赖关系、反复核对规格是否可用。在 AI 开发者空间里，你说一句话，它替你查、替你配、替你执行。</div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="gitcode" class="bg">
+  <div class="wrap">
+    <h2><span class="num">7</span>GitCode 版本管理</h2>
+
+    <h3>什么是 GitCode</h3>
+    <p>GitCode 是一个代码托管平台，类似于 GitHub，提供 Git 仓库管理、代码审查、协作开发能力。代码放在 GitCode 上，不会因为本地环境丢失而消失，每次修改都有版本记录，团队成员可以协同开发、提交 PR（合并请求）和 Issue（问题跟踪）。</p>
+
+    <h3>开发者空间能做什么</h3>
+    <table>
+      <thead><tr><th>操作</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>扫码登录</td><td>首次使用时弹出二维码，手机扫码授权，自动获取访问令牌，全程不需要手动输密码</td></tr>
+        <tr><td>创建仓库</td><td>说一句"在 GitCode 帮我建一个叫 xxx 的仓库"，自动创建</td></tr>
+        <tr><td>推送代码</td><td>代码写完后说"帮我推到 GitCode"，自动 git init、add、commit、push</td></tr>
+        <tr><td>提交 PR</td><td>说"帮我提一个 PR"，自动创建合并请求</td></tr>
+        <tr><td>提交 Issue</td><td>说"帮我提一个 Issue 记录这个 bug"，自动创建问题单</td></tr>
+        <tr><td>查询仓库</td><td>查看已有仓库列表、仓库详情</td></tr>
+      </tbody>
+    </table>
+
+    <p><b>实际登录与授权流程：</b>当 Token 过期时，开发者空间会自动提示重新授权，并生成二维码或授权链接。你只需扫码或在浏览器中授权，系统便会自动轮询并保存 Token，随后获取用户名并进入确认环节。</p>
+
+    <figure>
+      <img src="./pic/gitcode-auth.jpg" alt="GitCode 授权登录界面" loading="lazy" />
+      <figcaption>上图显示了 AI SHELL 中的 GitCode 授权流程：检测到 Token 过期 → 生成授权链接 → 轮询等待授权 → 获取用户名并确认仓库信息。</figcaption>
+    </figure>
+
+    <div class="note"><b>安全提醒：</b>每次写操作前，开发者空间都会确认目标仓库和分支信息，避免误操作。操作完成后提醒你是否需要清除本地令牌以保证安全。</div>
+
+    <p>人工做这件事需要：打开 GitCode 网页、登录、手动建仓库、在本地配 Git、处理 SSH key、敲 git 命令、再回到网页提 PR。在这里，从登录到推送全程聊天完成。</p>
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="scene">
+  <div class="wrap">
+    <h2><span class="num">8</span>完整场景：做一个数据可视化大屏</h2>
+    <p class="lead">下面用一个真实场景，展示从第一句话到最终成果的全过程。</p>
+
+    <div class="step">
+      <div class="badge">1</div>
+      <div class="body">
+        <h4>写代码</h4>
+        <div class="quote"><b>你：</b>"帮我做一个销售数据可视化大屏，用 ECharts，要展示各区域销售额、月度趋势、Top 10 产品。"</div>
+        <p>AI 开发者空间自动生成项目代码：前端用 ECharts 绘制图表，布局适配大屏分辨率，包含柱状图、折线图、排行榜样式。依赖自动安装，服务自动启动。</p>
+        <figure>
+          <img src="./pic/project-structure.jpg" alt="代码编写与部署完成" loading="lazy" />
+          <figcaption>该图展示了代码编写完成并成功部署的过程，项目结构、依赖安装和服务启动均已就绪。</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">2</div>
+      <div class="body">
+        <h4>预览效果</h4>
+        <p>服务启动后，返回预览链接。你打开浏览器，看到大屏已经渲染出来——图表、配色、布局都已就位。你想调整，直接说"把标题改成'2024 年度销售总览'"，它改代码、重启服务，刷新即更新。</p>
+        <figure>
+          <img src="./pic/dashboard-preview.jpg" alt="数据可视化大屏预览效果" loading="lazy" />
+          <figcaption>大屏采用深色科技风、三列布局，包含柱状图、折线图、排行榜、环形图、仪表盘等，适配 1920×1080 分辨率。</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">3</div>
+      <div class="body">
+        <h4>接入数据库</h4>
+        <div class="quote"><b>你：</b>"帮我查一下 RDS 有哪些实例，我想接真实数据。"</div>
+        <p>开发者空间查询你的 RDS 实例列表，返回实例 ID 和连接信息。接着你说"帮我改一下代码，从 RDS 的 MySQL 数据库读销售数据"，它修改后端代码，配置数据库连接，大屏数据变成实时查询。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">4</div>
+      <div class="body">
+        <h4>托管到 OBS</h4>
+        <div class="quote"><b>你：</b>"帮我把大屏部署到 OBS 静态网站托管。"</div>
+        <p>开发者空间创建 OBS 桶、上传编译后的静态文件、配置网站托管、绑定自定义域名。部署完成后，通过域名就能直接访问大屏。</p>
+        <figure>
+          <img src="./pic/obs-hosting.jpg" alt="OBS 静态网站托管效果" loading="lazy" />
+          <figcaption>上图展示了 OBS 管理控制台中的桶状态和静态网站托管配置，文件已上传完毕，可通过域名直接访问。</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">5</div>
+      <div class="body">
+        <h4>分享给其他人看</h4>
+        <div class="quote"><b>你：</b>"帮我创建一个 DevBridge 隧道，把 8080 端口分享出去。"</div>
+        <p>开发者空间创建隧道，返回公网链接：</p>
+        <div class="cmd">https://xxx-8080.cn-north-4-bridge.myhuaweicloud.com</div>
+        <p>你把链接发给其他人，对方用手机或电脑打开链接就能看到大屏效果。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">6</div>
+      <div class="body">
+        <h4>代码存档</h4>
+        <div class="quote"><b>你：</b>"帮我把代码传到 GitCode。"</div>
+        <p>开发者空间弹出 GitCode 扫码登录二维码，你扫码授权后，它自动创建仓库、推送代码。代码永久保存在 GitCode 上，随时可以拉取继续开发。</p>
+        <figure>
+          <img src="./pic/gitcode-repo.jpg" alt="GitCode 代码仓上传成功" loading="lazy" />
+          <figcaption>上图展示了 GitCode 仓库页面，代码已成功推送，包含完整的项目文件和提交记录。</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0">整个过程</h4>
+      <p style="margin:6px 0">6 步，6 句话。没有打开过任何 IDE，没有敲过一行 git 命令，没有登录过任何云控制台。</p>
+      <div>
+        <span class="pill">1 句话写代码</span>
+        <span class="pill">自动预览</span>
+        <span class="pill">接 RDS 实时数据</span>
+        <span class="pill">OBS 托管</span>
+        <span class="pill">DevBridge 分享</span>
+        <span class="pill">GitCode 存档</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section id="faq" class="bg">
+  <div class="wrap">
+    <h2><span class="num">9</span>常见问题</h2>
+
+    <div class="card">
+      <h4 style="margin-top:0">凭证安全吗？</h4>
+      <p>安全。所有云资源操作使用的是华为云 AK/SK 凭证，存储在环境变量中，不会出现在聊天对话或日志里。GitCode 的访问令牌保存在本地文件（权限 0600，仅所有者可读），操作完成后可一键清除。任何情况下都不会在对话中展示密钥明文。</p>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0">需要付费吗？</h4>
+      <p>AI 开发者空间本身的使用不额外收费。你创建的华为云资源（ECS、OBS、RDS 等）按华为云标准资费计费。DevBridge 隧道有免费额度。详细定价参考华为云价格计算器。</p>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0">能开发什么类型的项目？</h4>
+      <p>支持主流的 Web 前端（React、Vue、HTML/CSS/JS）、后端（Node.js/Express、Python/Flask）、全栈应用、API 服务、数据可视化、静态网站等。只要能用文字描述清楚需求，就能生成对应代码。</p>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0">和本地 IDE 有什么区别？</h4>
+      <p>本地 IDE 需要你自己装环境、配依赖、管版本、处理端口和防火墙。AI 开发者空间把这些全部内置：环境预装好、依赖自动装、端口自动选、预览自动生成、隧道一键开。你专注描述需求，它专注执行。</p>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-top:0">需要提前准备什么？</h4>
+      <p>只需要一个华为云账号和一台能打开浏览器的设备。如果想操作云资源，确保账号下有对应资源的访问权限。如果想用 GitCode，准备好 GitCode 账号用于扫码授权。其他一切，开发者空间替你搞定。</p>
+    </div>
+
+    <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/aidevspace" target="_blank" rel="noopener">🚀 立即打开 AI 开发者空间 ↗</a>
+      <a class="cta ghost" href="#overview">↑ 回到能力总览</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    AI 开发者空间 · 一站式能力总览 ｜ AI SHELL + CodeArts 完成代码开发全流程<br/>
+    本页为能力介绍与操作说明，具体产品能力与计费以华为云官方文档与平台实际为准。
+  </div>
+</footer>
+
+</body>
+</html>

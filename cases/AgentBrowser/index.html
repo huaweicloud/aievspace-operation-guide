@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agent Browser 端到端测试验收实践：装环境 → 开发 → 真实浏览器验收</title>
+<style>
+  :root{
+    --hw-red:#CF0A2C;
+    --hw-red-dark:#A3001C;
+    --ink:#1f2329;
+    --ink-2:#4b5159;
+    --ink-3:#8a9099;
+    --line:#e8eaf0;
+    --bg:#ffffff;
+    --bg-soft:#f6f8fb;
+    --bg-soft2:#eef2f8;
+    --ok:#1a7f37;
+    --warn:#b54708;
+    --radius:14px;
+    --shadow:0 6px 24px rgba(31,35,41,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg-soft);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--hw-red);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+  .wrap p{max-width:920px}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(135deg,#fff 0%,#fff5f6 45%,#fdeef0 100%);
+    border-bottom:1px solid var(--line);padding:54px 0 40px;position:relative;overflow:hidden;
+  }
+  .hero:after{
+    content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(207,10,44,.10),transparent 70%);
+  }
+  .tag{display:inline-block;font-size:13px;letter-spacing:1px;color:var(--hw-red);background:#fff;border:1px solid #ffd2d9;padding:4px 12px;border-radius:999px;font-weight:600}
+  .hero h1{font-size:34px;line-height:1.3;margin:16px 0 10px;font-weight:800;letter-spacing:.5px}
+  .hero p.sub{font-size:17px;color:var(--ink-2);margin:0 0 22px;max-width:780px}
+  .hero .meta{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+  .hero .meta b{color:var(--ink-2);font-weight:600}
+
+  /* CTA */
+  .cta{
+    display:inline-flex;align-items:center;gap:10px;background:var(--hw-red);color:#fff;font-weight:700;
+    padding:14px 22px;border-radius:12px;font-size:16px;box-shadow:0 8px 22px rgba(207,10,44,.28);
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(207,10,44,.34);text-decoration:none;color:#fff}
+  .cta.ghost{background:#fff;color:var(--hw-red);border:1.5px solid var(--hw-red);box-shadow:none}
+  .cta.ghost:hover{background:#fff5f6}
+
+  section{padding:42px 0;border-bottom:1px solid var(--line)}
+  section.bg{background:var(--bg)}
+  h2{font-size:25px;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--hw-red);color:#fff;font-size:16px;font-weight:800;flex:0 0 auto}
+  h3{font-size:18px;font-weight:700;margin:26px 0 8px}
+  h4{font-size:16px}
+  p{margin:10px 0;color:var(--ink-2)}
+  .lead{color:var(--ink-2);font-size:16px}
+  ul,ol{color:var(--ink-2);padding-left:22px}
+  li{margin:7px 0}
+  code{background:var(--bg-soft2);padding:1px 6px;border-radius:5px;font-size:13.5px;font-family:"SFMono-Regular",Consolas,Menlo,monospace;color:var(--ink)}
+
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);margin:18px 0}
+  .card h4{margin-top:0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .pill{display:inline-block;background:var(--bg-soft2);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-size:13px;color:var(--ink-2);margin:2px 4px 2px 0}
+  .feature{border-left:4px solid var(--hw-red);background:#fff;padding:14px 16px;border-radius:0 10px 10px 0;margin:12px 0;box-shadow:var(--shadow)}
+  .feature h4{margin:0 0 4px;font-size:16px}
+  .feature p{margin:0;font-size:14.5px}
+
+  /* 图片 */
+  figure{margin:18px 0}
+  figure img{display:block;width:100%;height:auto;border-radius:10px;box-shadow:var(--shadow);border:1px solid var(--line);background:#fff}
+  figcaption{font-size:13px;color:var(--ink-3);margin-top:8px;text-align:center;line-height:1.6}
+  .gal{display:grid;grid-template-columns:1fr;gap:14px;margin:8px 0 16px}
+  .gal figure{margin:0}
+  @media(max-width:760px){.gal{grid-template-columns:1fr}}
+
+  /* 代码 / 命令 / 提示词 */
+  pre{background:#0f1419;color:#e6edf3;border-radius:12px;padding:16px 18px;overflow:auto;font-size:13.5px;line-height:1.7;margin:14px 0}
+  pre code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;white-space:pre;background:none;color:inherit;padding:0}
+  .cmd{background:var(--bg-soft2);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-family:monospace;font-size:13.5px;color:var(--ink);margin:12px 0;word-break:break-all}
+  .prompt{
+    background:#fff6f7;border:1px solid #ffd2d9;border-left:4px solid var(--hw-red);
+    border-radius:0 10px 10px 0;padding:14px 16px;margin:12px 0;color:var(--ink);
+    font-family:"SFMono-Regular",Consolas,Menlo,monospace;font-size:13px;line-height:1.8;
+    white-space:pre-wrap;overflow:auto;
+  }
+  .quote{background:#fff5f6;border-left:4px solid var(--hw-red);border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:15px;color:var(--ink);box-shadow:var(--shadow)}
+
+  /* Steps */
+  .step{display:flex;gap:14px;margin:20px 0}
+  .step .badge{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--hw-red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-top:2px}
+  .step .body{flex:1;min-width:0}
+  .step .body h4{margin:0 0 4px;font-size:16.5px}
+  .step .body p{margin:6px 0}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top}
+  th{background:var(--bg-soft2);color:var(--ink);font-weight:700}
+  td code{background:var(--bg-soft2);padding:1px 6px;border-radius:5px;font-size:13px}
+  @media(max-width:760px){table{font-size:13.5px}th,td{padding:9px 10px}}
+
+  .note{border:1px solid #ffe2b8;background:#fff8ee;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{color:var(--ok);font-weight:600}
+
+  /* 强调块 */
+  .urt{background:linear-gradient(135deg,#fff,#fff6f7);border:1.5px solid #ffd2d9;border-radius:var(--radius);padding:22px 24px;margin:18px 0;box-shadow:var(--shadow)}
+  .urt h3{margin-top:0}
+
+  footer{background:#fff;padding:30px 0;color:var(--ink-3);font-size:13.5px;text-align:center}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+  .toc a{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13.5px;color:var(--ink-2);font-weight:600}
+  .toc a:hover{border-color:var(--hw-red);color:var(--hw-red);text-decoration:none}
+
+  /* 图片放大查看 */
+  figure img{cursor:zoom-in}
+  .lb-mask{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(15,20,25,.88);padding:24px;cursor:zoom-out}
+  .lb-mask.on{display:flex}
+  .lb-mask img{max-width:96vw;max-height:90vh;width:auto;height:auto;border-radius:8px;background:#fff;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .lb-tip{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);color:#fff;font-size:13px;opacity:.7}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">AI 开发者空间 · 环境管理实践</span>
+    <h1>基于 AI 开发者空间的 Agent Browser 端到端测试验收实践</h1>
+    <p class="sub">Agent 已经能拉代码、改代码、跑单测，但「改完在页面上到底能不能用」这件事，命令行回答不了。本实践用 Agent Browser 作业环境，把「<b>装环境 → 开发 → 端到端验收</b>」串成一条完整链路。</p>
+    <div class="meta">
+      <span><b>适用：</b>前端开发 / 测试 / 交付验收</span>
+      <span><b>目标仓库：</b>opentiny/tiny-robot</span>
+      <span><b>关键能力：</b>Agent Browser 作业环境（浏览器 · 自动化 · MCP）</span>
+      <span><b>关键词：</b>作业环境部署 · MCP 工具链 · 浏览器交互 · DOM 断言 · 双证据验收</span>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/ai-devspace" target="_blank" rel="noopener">🚀 打开 AI 开发者空间 ↗</a>
+    </div>
+    <div class="toc">
+      <a href="#bg">背景与痛点</a>
+      <a href="#highlight">四大亮点</a>
+      <a href="#pre">环境与前提</a>
+      <a href="#concept">能力与工具</a>
+      <a href="#steps">五步实现</a>
+      <a href="#verify">验收用例与证据</a>
+      <a href="#faq">问题排查</a>
+      <a href="#summary">链路总结</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1 -->
+<section id="bg" class="bg">
+  <div class="wrap">
+    <h2><span class="num">1</span>实践背景</h2>
+    <p class="lead">Agent 已经能拉代码、改代码、跑单测，但「改完在页面上到底能不能用」这件事，命令行回答不了：刷新后的状态恢复、真实输入与点击、渲染之后的 DOM，都不在单测覆盖范围内。</p>
+    <p>普通网页抓取也不行——它取的是静态 HTML 转成的文本，本地 Vite 页面还没渲染，DOM 里连输入框都没有。</p>
+    <div class="feature">
+      <h4>AI 开发者空间里的 Agent Browser 作业环境正好补上这一段</h4>
+      <p>装上之后，它以 MCP 浏览器工具的形式挂给空间内的 Agent，可以连同一沙箱里刚起起来的 dev server，像人一样打开页面、输入、点击、刷新、截图。本实践用一个真实的开源仓库，把「装环境 → 开发 → 端到端验收」串成一条完整链路。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="highlight">
+  <div class="wrap">
+    <h2><span class="num">2</span>实践亮点</h2>
+    <div class="grid2">
+      <div class="feature" style="margin:0">
+        <h4>一次安装，任意 Agent 可用</h4>
+        <p>把 Agent Browser 作业环境装好并启到运行中，之后每个 Agent 对话都自动看得见这套工具。</p>
+      </div>
+      <div class="feature" style="margin:0">
+        <h4>自然语言驱动</h4>
+        <p>只说要做什么，Agent 自己选工具、自己传参、自己排执行顺序。</p>
+      </div>
+      <div class="feature" style="margin:0">
+        <h4>浏览器接进开发闭环</h4>
+        <p>命令行负责改代码与跑门禁，浏览器负责在真实页面上验收，两者证据分开留。</p>
+      </div>
+      <div class="feature" style="margin:0">
+        <h4>结果可复核</h4>
+        <p>验收结论要带截图完整路径和当时的 DOM 文本原文，不收「已完成」三个字。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="pre" class="bg">
+  <div class="wrap">
+    <h2><span class="num">3</span>环境与前置条件</h2>
+    <table>
+      <thead><tr><th style="width:130px">项目</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>实践平台</td><td>华为云 AI 开发者空间（<code>devstation.developer.huaweicloud.com/ai-devspace</code>）</td></tr>
+        <tr><td>Agent 平台</td><td>AI Shell / CodeArts / WorkSwarm 等空间内置 Agent 均可</td></tr>
+        <tr><td>关键能力</td><td>Agent Browser <b>作业环境</b>（开发工具分类，需先安装/部署，标签 <span class="pill">浏览器</span><span class="pill">自动化</span><span class="pill">MCP</span>）</td></tr>
+        <tr><td>目标仓库</td><td><a href="https://github.com/opentiny/tiny-robot" target="_blank" rel="noopener">github.com/opentiny/tiny-robot</a>（Vue &gt; 3 + TypeScript，pnpm workspace，默认分支 <code>develop</code>）</td></tr>
+        <tr><td>本地服务</td><td><code>pnpm dev</code> → <code>http://localhost:5173/</code>（与浏览器在同一沙箱）</td></tr>
+        <tr><td>输出物</td><td>改动文件清单、测试/构建结论、两张验收截图、一张验收报告表</td></tr>
+      </tbody>
+    </table>
+
+    <h3>三个前提</h3>
+    <ol>
+      <li><b>先把 Agent Browser 作业环境装上并启到运行中</b>：环境管理 → 开发工具 → <code>Agent Browser</code>，点「部署」（首次约 1–2 分钟）；已装过但停了就点「启动」，认状态不认按钮名。也可以让 AI Shell 里的 Agent 代装，见步骤 1。本次采集时卡片是「<b>运行中</b>」，按钮为「停止 / 卸载」，见步骤 1 配图。</li>
+      <li>装好之后回 <code>AGENTS</code> <b>新建一个会话</b>；旧会话里可能看不到新挂载的工具。</li>
+      <li>dev 服务和浏览器必须在<b>同一个沙箱</b>，localhost 地址才可达。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="concept">
+  <div class="wrap">
+    <h2><span class="num">4</span>核心概念：Agent Browser 是什么</h2>
+    <p class="lead"><b>定义：</b>平台里的一个<b>作业环境</b>——沙箱中的无头 Chromium，以 MCP 工具的形式挂给空间里的所有 Agent。它需要先在「环境管理」里<b>安装（部署）</b>，首次约 1–2 分钟；装好并启到「运行中」后，工具才出现在每个 Agent 的工具表里，工具名前缀是 <code>MCP__JOB-ENV__AGENT-BROWSER_*</code>。Agent 侧不用另外装 Chromium。</p>
+
+    <h3>它补上的那一层能力</h3>
+    <table>
+      <thead><tr><th style="width:120px"></th><th>网页抓取 / WebFetch</th><th>Agent Browser</th></tr></thead>
+      <tbody>
+        <tr><td>拿到什么</td><td>静态 HTML 转成的文本</td><td>真实渲染后的页面、DOM 结构、截图</td></tr>
+        <tr><td>JS 动态内容</td><td>看不到</td><td>能等、能滚、能取</td></tr>
+        <tr><td>交互</td><td>不能</td><td>点击、输入、下拉、勾选、翻页、多标签</td></tr>
+        <tr><td>定向提取</td><td>做不到（整页转写）</td><td>按元素或标题层级圈范围</td></tr>
+        <tr><td>留证</td><td>只有文字</td><td>截图路径、前后视觉对照</td></tr>
+      </tbody>
+    </table>
+
+    <h3>29 个工具 / 9 类</h3>
+    <div>
+      <span class="pill">启动会话 <code>open</code> <code>close</code></span>
+      <span class="pill">快照 <code>snapshot</code></span>
+      <span class="pill">导航 <code>back</code> <code>forward</code> <code>reload</code> <code>scroll</code></span>
+      <span class="pill">页面读取 <code>read</code> <code>get_text</code> <code>get_title</code> <code>get_url</code> <code>screenshot</code></span>
+      <span class="pill">交互 <code>click</code> <code>fill</code> <code>type</code> <code>press</code> <code>select</code> <code>check</code> <code>uncheck</code></span>
+      <span class="pill">等待 <code>wait_for_load</code> <code>wait_for_selector</code> <code>wait_for_text</code> <code>wait_ms</code></span>
+      <span class="pill">标签页 <code>tab_*</code></span>
+      <span class="pill">脚本 <code>eval</code></span>
+      <span class="pill">配置 <code>tools_profiles</code></span>
+    </div>
+
+    <div class="quote"><b>固定心智：</b><code>open</code> → <code>snapshot</code>（拿 <code>@ref</code>）→ <code>click / fill / type</code> → 页面变了就<b>重新 snapshot</b>（旧 <code>@ref</code> 失效）→ <code>close</code>。</div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="steps" class="bg">
+  <div class="wrap">
+    <h2><span class="num">5</span>实现步骤</h2>
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="badge">1</div>
+      <div class="body">
+        <h4>安装 Agent Browser 作业环境</h4>
+        <p>浏览器能力不是默认就有的，先把 <code>Agent Browser</code> 这个作业环境装上并启到运行中。两条路任选其一：</p>
+
+        <p><b>方式 A｜在 AI Shell 里让 Agent 代装</b>（推荐，体现平台能力）：新建一个会话，贴入下面这条指令，<b>等它这一轮跑完</b>，回话说环境已就绪再继续。</p>
+        <div class="prompt">帮我安装 Agent Browser 作业环境，装好后确认状态为「运行中」，并告诉我用了哪些工具</div>
+
+        <p><b>方式 B｜在环境管理里手动装</b>：左侧导航点 <b>环境管理</b> → 切到 <b>开发工具</b> 分类 → 找到 <code>Agent Browser</code> 卡片 → 点 <b>部署 / 启动</b>，等状态变成「运行中」。</p>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/step1_env.png" alt="环境管理：作业环境列表，左侧 AGENTS 与 TOOLS 导航" loading="lazy" />
+            <figcaption>步骤1-1 环境管理：作业环境列表，左侧 AGENTS 与 TOOLS 导航</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/step1_devtools.png" alt="「开发工具」分类共 8 个作业环境，顶部是已停止 / 运行中 / 未部署统计" loading="lazy" />
+            <figcaption>步骤1-2 「开发工具」分类共 8 个作业环境，顶部是已停止 / 运行中 / 未部署统计</figcaption>
+          </figure>
+        </div>
+
+        <figure>
+          <img src="./assets/case864/step1_card.png" alt="Agent Browser 作业环境卡片" loading="lazy" />
+          <figcaption>步骤1-3 Agent Browser 作业环境卡片：状态「运行中」、按钮「停止 / 卸载」，标签浏览器 / 自动化 / MCP</figcaption>
+        </figure>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/round1_1.png" alt="完整对话（上）：在 AI Shell 下发安装指令" loading="lazy" />
+            <figcaption>步骤1-4 完整对话（上）：在 AI Shell 下发安装指令，Agent 的 Thought 与 load_skill / shell 工具调用</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/round1_4.png" alt="完整对话（下）：Agent 给出结论" loading="lazy" />
+            <figcaption>步骤1-5 完整对话（下）：Agent 给出结论——6 个 job-env-manager REST API 请求，确认 state=running、CLI 与 Chromium 已就位</figcaption>
+          </figure>
+        </div>
+
+        <div class="note"><b>备注（本次实采）：</b>环境此前已装好并处于「运行中」，所以 Agent 做的是<b>确认</b>而不是重新安装——它用 <code>load_skill</code> 加载 <code>job-environment</code> skill 拿到作业环境 API 指南，再用 <code>shell (curl)</code> 调 <code>job-env-manager</code> REST API 共 6 个请求（模板列表、已注册环境列表、环境详情、接口声明、日志、环境内执行），确认 <code>agent-browser</code> 已注册、<code>state=running</code>，且 CLI 与 Chromium 已就位。卡片上还有「卸载」，不要误点。<b>装完记得新建会话</b>，旧会话里可能看不到新挂载的工具。</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="badge">2</div>
+      <div class="body">
+        <h4>新建会话，确认能力可用</h4>
+        <ol>
+          <li>回左侧 <code>AGENTS</code>，任选一个 Agent（本实践用 <b>AI Shell</b>），点「<b>+ 新建</b>」。</li>
+          <li>在输入框里发一条冒烟指令，确认浏览器真的能起来：</li>
+        </ol>
+        <div class="prompt">用已装好的 Agent Browser 作业环境打开 https://github.com/opentiny/tiny-robot，把页面标题告诉我</div>
+        <p><b>等这一轮跑完</b>：正常返回仓库页面标题说明能力通了；如果回显里出现连不上页面或改用网页抓取，先回步骤 1 看作业环境状态，不要反复改提示词。</p>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/step2_newchat.png" alt="AI Shell 新建会话界面" loading="lazy" />
+            <figcaption>步骤2-1 AI Shell 新建会话界面：中间欢迎区，底部输入框可像聊天一样提需求</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/round2_1.png" alt="完整对话（上）：冒烟指令与工具调用" loading="lazy" />
+            <figcaption>步骤2-2 完整对话（上）：冒烟指令的用户消息与 Agent 打开页面的工具调用</figcaption>
+          </figure>
+        </div>
+        <figure>
+          <img src="./assets/case864/round2_4.png" alt="完整对话（下）：Agent 给出页面标题与工具链说明" loading="lazy" />
+          <figcaption>步骤2-3 完整对话（下）：Agent 给出页面标题与工具链说明</figcaption>
+        </figure>
+
+        <div class="note"><b>备注（本次实采）：</b>冒烟<b>成功</b>，但过程中遇到网络策略——GitHub 域名 DNS 能解析、TCP 443 端口连接超时，环境内国内站点正常。Agent 自动改用同一仓库的 GitCode 镜像 <code>https://gitcode.com/opentiny/tiny-robot</code>，用 <code>shell + job-env-manager exec API</code> 在 Agent Browser 环境里执行 <code>agent-browser open</code> 和 <code>agent-browser get title</code>，拿到标题 <code>opentiny/tiny-robot — AtonGit</code>。<b>这不是 webfetch 降级，也不是临时装 Chromium</b>：浏览器工具是通的，只是目标站点不可达。看到这类回显应换可访问的镜像源，而不是回步骤 1 重装环境。</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="badge">3</div>
+      <div class="body">
+        <h4>下发实践任务（拉仓库 + 开发特性 + 跑门禁）</h4>
+        <p>在新建会话里下发下面这段提示词。<b>目标特性</b>：给 Sender 输入框增加「输入草稿本地保存与恢复」——纯前端、不调模型服务、状态跨刷新，只有真实浏览器验得出来。</p>
+        <div class="prompt">先确认 Agent Browser 作业环境已安装且处于「运行中」，没装好就先按步骤 1 装好。
+拉取 https://github.com/opentiny/tiny-robot（develop 分支），pnpm install 装好依赖。
+先看 packages/components/src/sender/index.type.ts 已有哪些 props，别重复实现已有能力。
+
+给 Sender 增加「输入草稿本地保存与恢复」：
+  B1 输入变化后防抖 500ms 写入 localStorage 的 tiny-robot:sender-draft，
+     输入框下方显示「草稿已保存」；
+  B2 页面加载时草稿存在且输入框为空则自动回填，显示「已恢复草稿」；
+  B3 点清空按钮或提交后删除草稿和提示。
+只改 packages/components/src/sender/ 和 playground 里接入这一处，别动其它模块。
+改完跑 pnpm test 和 pnpm build，把两条命令的结论贴给我。
+先不要关浏览器，等我下一条指令。</div>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/round3_1.png" alt="完整对话（上）：任务提示词与仓库检查工具调用" loading="lazy" />
+            <figcaption>步骤3-1 完整对话（上）：任务提示词的用户消息气泡，Agent 的 Thought 与仓库检查工具调用</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/round3_2.png" alt="完整对话（下）：仓库可达性与改动范围回显" loading="lazy" />
+            <figcaption>步骤3-2 完整对话（下）：Agent 就仓库可达性与改动范围给出的后续回显</figcaption>
+          </figure>
+        </div>
+
+        <div class="note"><b>备注：</b>这一轮包含 clone、装依赖、改代码、跑测试，是全流程里最耗时的一轮。<b>等 Agent 把 <code>pnpm test</code> / <code>pnpm build</code> 的结论贴回来</b>，再进入步骤 4。<code>SenderProps</code> 里已经有 <code>maxLength</code>、<code>showWordLimit</code>、<code>clearable</code>，别把「字数统计」当新特性；<code>pnpm test</code> 是仓库自带测试，不等于端到端验收。演示页在 <code>packages/playground/</code>（Vite，<code>src/App.vue</code>）。截图里的提示词为便于展示排成紧凑单行，完整分行版本以上方代码块为准。</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="badge">4</div>
+      <div class="body">
+        <h4>起本地服务，用浏览器做端到端验收</h4>
+        <p><b>等步骤 3 这一轮结束后</b>，在同一会话下发：</p>
+        <div class="prompt">确认 Agent Browser 作业环境处于「运行中」。
+在同一沙箱 pnpm dev 起服务（http://localhost:5173/），用它的浏览器做端到端验收：
+  A1 在 Sender 输入框填入「帮我写一封周报」，等到页面出现「草稿已保存」，
+     执行 reload，重新 snapshot，确认输入框文本仍是「帮我写一封周报」且出现「已恢复草稿」；
+  A2 点清空按钮，确认「草稿已保存」消失，再 reload，确认输入框为空且没有「已恢复草稿」；
+  两条各截一张图，保存为 e2e-a1.png / e2e-a2.png，把完整路径告诉我。
+如果 Sender 演示区不在首页，先切过去，并在报告里写明你点了哪一项。
+每次交互后重新 snapshot，不要用固定 sleep 等结果。</div>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/round4_1.png" alt="完整对话（上）：端到端验收提示词与 Agent 的 Thought" loading="lazy" />
+            <figcaption>步骤4-1 完整对话（上）：端到端验收提示词的用户消息气泡与 Agent 的 Thought</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/round4_3.png" alt="完整对话（下）：起服务、打开页面与交互的回显" loading="lazy" />
+            <figcaption>步骤4-2 完整对话（下）：Agent 起服务、打开页面与交互的回显</figcaption>
+          </figure>
+        </div>
+
+        <div class="note"><b>备注：</b>两行提示文字是特意写进特性里的，让 <code>wait_for_text</code> 有明确的等待目标，不用靠固定毫秒猜时间。<code>reload</code> 之后必须重拍 <code>snapshot</code>，之前的 <code>@ref</code> 已经失效。这一轮 Agent 要起服务、开浏览器、做两轮交互并截图，<b>等它把两张截图的完整路径贴回来</b>再进入步骤 5。截图里的提示词为紧凑单行版，完整分行版本以上方代码块为准。</div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="badge">5</div>
+      <div class="body">
+        <h4>输出验收报告</h4>
+        <p><b>等步骤 4 这一轮结束后</b>，在同一会话下发：</p>
+        <div class="prompt">把结果整理成一张验收表：用例 | 通过/不通过 | 证据（截图路径 + 当时的 DOM 文本原文摘录）| 备注。
+用例为 A0（pnpm test / pnpm build）、A1、A2、A3（核对改动范围只涉及 sender/ 与 playground 接入处）。
+失败的用例如实写失败，不要补截图、不要编造差异；只回「已完成」不算交付。
+边界：遇到登录页、验证码或模型接口报错就停下来告诉我，不要自动登录、不要猜账号。
+完成后关闭 Agent Browser 作业环境的浏览器并停掉 dev 服务。</div>
+
+        <div class="gal">
+          <figure>
+            <img src="./assets/case864/round5_1.png" alt="完整对话（上）：验收报告要求与 Agent 的 Thought" loading="lazy" />
+            <figcaption>步骤5-1 完整对话（上）：验收报告要求的用户消息气泡与 Agent 的 Thought</figcaption>
+          </figure>
+          <figure>
+            <img src="./assets/case864/round5_5.png" alt="完整对话（下）：Agent 汇总改动范围、构建与测试结果" loading="lazy" />
+            <figcaption>步骤5-2 完整对话（下）：Agent 汇总改动范围、构建与测试结果的回显</figcaption>
+          </figure>
+        </div>
+
+        <div class="note"><b>备注：</b>步骤 3、4、5 是<b>三轮独立对话，逐条发、每轮等结束</b>，不是一口气连发；三步留在同一个会话里是为了保留上下文，换会话会丢失已改代码和已起服务的上下文。这里的配图是各轮<b>完整的一问一答</b>（用户消息 + Agent 回复），不再是「把提示词贴进输入框」的准备画面。本次采集因前一轮未结束就继续下发，三条消息进入队列由 Agent 连续执行，最后一张截图停在 <code>pnpm test</code> 执行中——按「对话节奏」逐轮等待，才能拿到这一轮独立的验收表。截图里的提示词为紧凑单行版，完整分行版本以上方代码块为准。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="verify">
+  <div class="wrap">
+    <h2><span class="num">6</span>结果验证</h2>
+    <table>
+      <thead><tr><th style="width:56px">用例</th><th>步骤</th><th>预期</th><th>证据</th></tr></thead>
+      <tbody>
+        <tr><td>A0</td><td><code>pnpm test</code>、<code>pnpm build</code></td><td>均通过</td><td>命令结论</td></tr>
+        <tr><td>A1</td><td>填入 → 等「草稿已保存」→ <code>reload</code> → 重拍 <code>snapshot</code></td><td>文本仍是「帮我写一封周报」，出现「已恢复草稿」</td><td><code>e2e-a1.png</code> + 两处 DOM 文本</td></tr>
+        <tr><td>A2</td><td>点清空 → 提示消失 → <code>reload</code></td><td>输入框为空，无「已恢复草稿」</td><td><code>e2e-a2.png</code> + 输入框 DOM 文本</td></tr>
+        <tr><td>A3</td><td>对比改动清单</td><td>只涉及 <code>sender/</code> 与 playground 接入处</td><td>改动文件清单</td></tr>
+      </tbody>
+    </table>
+
+    <h3>验收报告模板（执行后回填，不要预填）</h3>
+    <table>
+      <thead><tr><th style="width:56px">用例</th><th style="width:110px">通过/不通过</th><th>证据（截图完整路径 + DOM 原文摘录）</th><th style="width:90px">备注</th></tr></thead>
+      <tbody>
+        <tr><td>A0</td><td></td><td></td><td></td></tr>
+        <tr><td>A1</td><td></td><td></td><td></td></tr>
+        <tr><td>A2</td><td></td><td></td><td></td></tr>
+        <tr><td>A3</td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <h3>三条硬要求</h3>
+    <ol>
+      <li>截图必须是能打开的<b>完整路径</b>；</li>
+      <li>断言附当时的 <b>DOM 文本原文</b>；</li>
+      <li>失败就写失败，没有差异写「无差异」，<b>不要补造证据</b>。</li>
+    </ol>
+
+    <div class="urt">
+      <h3>Success Criteria</h3>
+      <p style="margin:6px 0">按本实践步骤完成操作并自检——</p>
+      <ul>
+        <li class="ok">Agent Browser 作业环境已安装且处于运行中</li>
+        <li class="ok">每轮都等 Agent 跑完再发下一条</li>
+        <li class="ok">A0 通过；A1 / A2 各有一张可打开的截图与 DOM 摘录</li>
+        <li class="ok">验收表四行填写完整</li>
+        <li class="ok">浏览器与 dev 服务已收尾</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="faq" class="bg">
+  <div class="wrap">
+    <h2><span class="num">7</span>常见问题</h2>
+    <table>
+      <thead><tr><th style="width:150px">情况</th><th>现象</th><th>处理</th></tr></thead>
+      <tbody>
+        <tr><td><b>目标仓库拉不下来</b></td><td>DNS 能解析但 TCP 443 超时，或 <code>BROWSER.NAVIGATE</code> 拿不到页面</td><td>换可访问的镜像源（本次用 GitCode 的同一仓库）；先用 <code>get_title</code> 确认浏览器工具本身是通的，别急着重装环境</td></tr>
+        <tr><td><b>没等上一轮跑完就连发</b></td><td>界面出现「按顺序自动发送后续排队消息 / 恢复队列」「立即发送（中断当前回合）」，提示词进队列，后一轮拿到前一轮的半截结果</td><td>一轮一发，等工具调用停止、输入框恢复、结论出现再发下一条；已经排队就等队列跑完，别点「中断当前回合」</td></tr>
+        <tr><td>作业环境没装好就派活</td><td><code>BROWSER.NAVIGATE</code> 拿不到页面，或工具列表里看不到 <code>agent-browser_*</code></td><td>回步骤 1 安装 Agent Browser 作业环境并启到运行中，别改提示词</td></tr>
+        <tr><td>装完没新建会话</td><td>调不到 <code>agent-browser_*</code></td><td>点「+ 新建」重新挂载工具</td></tr>
+        <tr><td>dev 服务没就绪</td><td><code>open</code> 连接被拒</td><td>等端口起来，用 <code>wait_for_selector</code> 等元素，别用 <code>wait_ms</code> 硬等</td></tr>
+        <tr><td><code>@ref</code> 失效</td><td>点击报错或点错元素</td><td>页面变过就重新 <code>snapshot</code></td></tr>
+        <tr><td>Sender 不在首页</td><td>找不到输入框</td><td>在 playground 里切到对应演示项，报告里写明切了什么</td></tr>
+        <tr><td>模型接口报错 / 登录墙 / 验证码</td><td>半截数据被当成结果</td><td>停下报告，不自动登录、不猜账号</td></tr>
+        <tr><td>收尾</td><td>环境一直跑，持续消耗核时</td><td>关浏览器、停 dev 服务；卡片上的「停止」可用，「卸载」别点</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="summary">
+  <div class="wrap">
+    <h2><span class="num">8</span>实践总结</h2>
+    <p class="lead">一条链路两种能力：<b>命令行</b>把代码改好、门禁跑绿；<b>Agent Browser 作业环境</b>连同一沙箱里的 localhost，用真实交互和 DOM 断言确认特性在页面上能用。两段证据分开交回，才算端到端验收完成。</p>
+
+    <pre><code>安装 Agent Browser 作业环境 → 新建会话 → 冒烟确认
+  →〔等本轮结束〕→ 下发任务（开发 + 门禁）
+  →〔等本轮结束〕→ 起 dev 服务 + 浏览器 A1/A2 验收
+  →〔等本轮结束〕→ 验收表与证据 → 收尾</code></pre>
+
+    <div>
+      <span class="pill">装环境一次，全 Agent 可用</span>
+      <span class="pill">自然语言驱动</span>
+      <span class="pill">真实交互 + DOM 断言</span>
+      <span class="pill">截图完整路径留证</span>
+      <span class="pill">逐轮等待，不连发</span>
+    </div>
+
+    <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/ai-devspace" target="_blank" rel="noopener">🚀 去 AI 开发者空间装环境 ↗</a>
+      <a class="cta ghost" href="#steps">↑ 回到实现步骤</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    AI 开发者空间 · Agent Browser 端到端测试验收实践 ｜ 装环境 → 开发 → 真实浏览器验收<br/>
+    本页为教学演示案例，具体产品能力与计费以华为云官方文档与平台实际为准。
+  </div>
+</footer>
+
+<div class="lb-mask" id="lb" aria-hidden="true"><img alt="" /><div class="lb-tip">点击任意处或按 Esc 关闭 · 原始分辨率 1536×864</div></div>
+<script>
+  (function(){
+    var lb = document.getElementById('lb'), im = lb.querySelector('img');
+    function close(){
+      lb.classList.remove('on');
+      lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('click', function(e){
+      var t = e.target;
+      if (t.tagName === 'IMG' && t.closest('figure')) {
+        im.src = t.currentSrc || t.src;
+        im.alt = t.alt || '';
+        lb.classList.add('on');
+        lb.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      } else if (lb.classList.contains('on')) {
+        close();
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && lb.classList.contains('on')) close();
+    });
+  })();
+</script>
+</body>
+</html>

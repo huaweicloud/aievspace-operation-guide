@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 开发者空间环境管理实践：GaussDB 一站式上手（视频 + 一键直达环境）</title>
+<style>
+  :root{
+    --hw-red:#CF0A2C;
+    --hw-red-dark:#A3001C;
+    --ink:#1f2329;
+    --ink-2:#4b5159;
+    --ink-3:#8a9099;
+    --line:#e8eaf0;
+    --bg:#ffffff;
+    --bg-soft:#f6f8fb;
+    --bg-soft2:#eef2f8;
+    --ok:#1a7f37;
+    --warn:#b54708;
+    --radius:14px;
+    --shadow:0 6px 24px rgba(31,35,41,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg-soft);line-height:1.7;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--hw-red);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+
+  /* Hero */
+  .hero{
+    background:linear-gradient(135deg,#fff 0%,#fff5f6 45%,#fdeef0 100%);
+    border-bottom:1px solid var(--line);padding:54px 0 40px;position:relative;overflow:hidden;
+  }
+  .hero:after{
+    content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(207,10,44,.10),transparent 70%);
+  }
+  .tag{display:inline-block;font-size:13px;letter-spacing:1px;color:var(--hw-red);background:#fff;border:1px solid #ffd2d9;padding:4px 12px;border-radius:999px;font-weight:600}
+  .hero h1{font-size:34px;line-height:1.3;margin:16px 0 10px;font-weight:800;letter-spacing:.5px}
+  .hero p.sub{font-size:17px;color:var(--ink-2);margin:0 0 22px;max-width:760px}
+  .hero .meta{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+  .hero .meta b{color:var(--ink-2);font-weight:600}
+
+  /* CTA */
+  .cta{
+    display:inline-flex;align-items:center;gap:10px;background:var(--hw-red);color:#fff;font-weight:700;
+    padding:14px 22px;border-radius:12px;font-size:16px;box-shadow:0 8px 22px rgba(207,10,44,.28);
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(207,10,44,.34);text-decoration:none;color:#fff}
+  .cta.ghost{background:#fff;color:var(--hw-red);border:1.5px solid var(--hw-red);box-shadow:none}
+  .cta.ghost:hover{background:#fff5f6}
+
+  section{padding:42px 0;border-bottom:1px solid var(--line)}
+  section.bg{background:var(--bg)}
+  h2{font-size:25px;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--hw-red);color:#fff;font-size:16px;font-weight:800;flex:0 0 auto}
+  h3{font-size:18px;font-weight:700;margin:26px 0 8px}
+  p{margin:10px 0;color:var(--ink-2)}
+  .lead{color:var(--ink-2);font-size:16px}
+  ul,ol{color:var(--ink-2);padding-left:22px}
+  li{margin:7px 0}
+
+  .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);margin:18px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  .pill{display:inline-block;background:var(--bg-soft2);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-size:13px;color:var(--ink-2);margin:2px 4px 2px 0}
+  .feature{border-left:4px solid var(--hw-red);background:#fff;padding:14px 16px;border-radius:0 10px 10px 0;margin:12px 0;box-shadow:var(--shadow)}
+  .feature h4{margin:0 0 4px;font-size:16px}
+  .feature p{margin:0;font-size:14.5px}
+
+  /* Video */
+  .video-wrap{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#000;margin:18px 0}
+  .video-wrap video{display:block;width:100%;height:auto;max-height:520px;background:#000}
+  .video-cap{font-size:13.5px;color:var(--ink-3);margin-top:8px;text-align:center}
+
+  /* Code */
+  pre{background:#0f1419;color:#e6edf3;border-radius:12px;padding:16px 18px;overflow:auto;font-size:13.5px;line-height:1.6;margin:14px 0}
+  pre code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;white-space:pre}
+  .tok-c{color:#7d8590}
+  .tok-k{color:#ff7b72}
+  .tok-s{color:#a5d6ff}
+  .tok-f{color:#d2a8ff}
+  .cmd{background:var(--bg-soft2);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-family:monospace;font-size:13.5px;color:var(--ink);margin:12px 0;word-break:break-all}
+
+  /* Steps */
+  .step{display:flex;gap:14px;margin:18px 0}
+  .step .badge{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--hw-red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-top:2px}
+  .step .body{flex:1}
+  .step .body h4{margin:0 0 4px;font-size:16.5px}
+  .step .body p{margin:4px 0}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top}
+  th{background:var(--bg-soft2);color:var(--ink);font-weight:700}
+  td code{background:var(--bg-soft2);padding:1px 6px;border-radius:5px;font-size:13px}
+
+  .note{border:1px solid #ffe2b8;background:#fff8ee;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{color:var(--ok);font-weight:600}
+
+  /* URL-TO-ENV highlight */
+  .urt{background:linear-gradient(135deg,#fff,#fff6f7);border:1.5px solid #ffd2d9;border-radius:var(--radius);padding:22px 24px;margin:18px 0;box-shadow:var(--shadow)}
+  .urt .linkbox{background:#0f1419;color:#cdd9e5;border-radius:10px;padding:12px 14px;font-family:monospace;font-size:12.5px;word-break:break-all;margin:12px 0;max-height:120px;overflow:auto}
+  .urt .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+
+  footer{background:#fff;padding:30px 0;color:var(--ink-3);font-size:13.5px;text-align:center}
+  .toc{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+  .toc a{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13.5px;color:var(--ink-2);font-weight:600}
+  .toc a:hover{border-color:var(--hw-red);color:var(--hw-red);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">AI 开发者空间 · 环境管理实践</span>
+    <h1>GaussDB 一站式上手：视频导学 + 一键直达环境</h1>
+    <p class="sub">本实践依托华为云 <b>AI 开发者空间（AI DevSpace）</b> 的环境管理能力，结合官方介绍视频与 <b>URL TO ENV</b> 直达能力，让你无需手动搭建，点击一个链接即可进入预置的 GaussDB 工作环境，跟着视频边看边练。</p>
+    <div class="meta">
+      <span><b>适用：</b>数据库初学者 / 开发者 / 高校实训</span>
+      <span><b>预计时长：</b>30 分钟</span>
+      <span><b>云资源消耗：</b>环境由平台预置，按平台规则</span>
+      <span><b>关键词：</b>GaussDB · AI DevSpace · URL TO ENV · 环境管理</span>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/aidevspace?target=/workenv-tui/gaussdb&dc=XM4xSsRAFMbxq4SvzkJWzSZMqYJsr5Vs8TLvZTeSeRMySQrDgK1Wgpew8wJeJ55DsuWWH_zh-81QcgKDv_ev5fcteaAxhPvb5PFpjxR2DIN3zSsNjdcAM4Malil0ZGVd9kSq0sKAZZLWd9IjBXtHje4ZBnlebmvLZZFRfsOSlcVVmeUlF9WOLdEOKVoa1Z5gnmd0vh9g8m1xHQ8pVITvvNZN72BqaoOkCIN04dy2VJ2Pl8-f5eP70u2dI10BL77aiE4bR0pH6ZOxS45ryhXiIcb4HwAA__8&dc_sign=081cebb5535af9ca102c2b889544bcbbf6b7a7e46208c222826ad2d829349558" target="_blank" rel="noopener">🚀 一键直达 GaussDB 环境 ↗</a>
+      <a class="cta ghost" href="#video">▶ 观看 GaussDB 介绍视频</a>
+    </div>
+    <div class="toc">
+      <a href="#intro">案例介绍</a>
+      <a href="#gain">收获什么</a>
+      <a href="#pre">前置条件</a>
+      <a href="#video">视频导学</a>
+      <a href="#urtenv">URL TO ENV</a>
+      <a href="#practice">实践操作</a>
+      <a href="#trouble">排障</a>
+      <a href="#security">安全与清理</a>
+      <a href="#summary">总结</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1. INTRO -->
+<section id="intro" class="bg">
+  <div class="wrap">
+    <h2><span class="num">1</span>案例介绍</h2>
+    <p class="lead">本案例的核心理念是：<b>“环境即链接，开箱即练”</b>。传统上学习一款分布式数据库，往往要先申请资源、装驱动、配网络、等初始化，门槛高、耗时长。AI 开发者空间把这套流程下沉为平台能力——它为你<b>预置好云端工作环境（WorkEnv）</b>，并通过一条可分享的链接直接把你“送进”环境里。</p>
+
+    <div class="grid3">
+      <div class="feature"><h4>什么是 AI 开发者空间</h4><p>华为云官方云端开发环境，内置 AI Shell 与 hcloud CLI，浏览器内即可完成开发、调试与运行，无需本地安装。</p></div>
+      <div class="feature"><h4>什么是环境管理</h4><p>平台以“工作环境”为单位管理开发资源。GaussDB 环境已预装数据库客户端与连接配置，进入即用。</p></div>
+      <div class="feature"><h4>什么是 GaussDB</h4><p>华为云自研的企业级分布式数据库，兼容 MySQL / PostgreSQL，具备高可用、弹性伸缩与金融级可靠。</p></div>
+    </div>
+
+    <h3>为什么要做这个案例</h3>
+    <ul>
+      <li><b>零搭建成本：</b>免去资源申请、驱动安装、网络配置等前置步骤，打开链接即可上手。</li>
+      <li><b>视频 + 实操闭环：</b>先看官方视频建立认知，再在真实环境里动手，知识记得牢。</li>
+      <li><b>可分享、可复现：</b>URL TO ENV 链接可发给同学/同事，每个人进入的都是同一套标准环境，结果一致。</li>
+      <li><b>贴合平台范式：</b>本案例沿用 AI DevSpace 实践页的“介绍 → 收获 → 前置 → 实操 → 排障 → 清理”结构，迁移到其他 WorkEnv 同样适用。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2. GAIN -->
+<section id="gain">
+  <div class="wrap">
+    <h2><span class="num">2</span>你会收获什么</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>产出物</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>一个可直接使用的 GaussDB 环境</td><td>通过 URL TO ENV 进入的预置 WorkEnv，已包含 GaussDB 客户端与连接信息</td></tr>
+          <tr><td>GaussDB 核心认知</td><td>分布式架构、计算存储分离、高可用与兼容性（结合视频讲解）</td></tr>
+          <tr><td>一套实操流程</td><td>进环境 → 连接 → 建库建表 → 增删改查 → 验证，可复用于任意 GaussDB 场景</td></tr>
+          <tr><td>URL TO ENV 方法论</td><td>掌握环境直达能力，能自己生成与分享环境链接</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:6px">
+      <span class="pill">计算存储分离</span>
+      <span class="pill">分布式架构</span>
+      <span class="pill">高可用多副本</span>
+      <span class="pill">弹性伸缩</span>
+      <span class="pill">MySQL/PostgreSQL 兼容</span>
+      <span class="pill">HTAP 混合负载</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3. PRE -->
+<section id="pre" class="bg">
+  <div class="wrap">
+    <h2><span class="num">3</span>开始前，请准备</h2>
+    <ul>
+      <li>☑️ <b>华为云账号</b>（已注册即可）。</li>
+      <li>☑️ <b>AI 开发者空间（AI DevSpace）</b>：华为云官方云端开发环境，从华为云官网进入即可；本案例的 GaussDB 环境即运行其中。</li>
+      <li>☑️ <b>一个可正常访问的浏览器</b>：用于打开 URL TO ENV 链接与播放视频。</li>
+    </ul>
+    <div class="note"><b>提示：</b>本案例演示的是“进入预置环境 + 数据库基本操作”，属于查询/低成本的练习。环境是否计费以 AI DevSpace 平台规则为准；练习结束后请按第 8 节及时清理或停止环境，避免产生不必要的资源占用。</div>
+  </div>
+</section>
+
+<!-- 4. VIDEO -->
+<section id="video">
+  <div class="wrap">
+    <h2><span class="num">4</span>视频导学：GaussDB 介绍 + 案例</h2>
+    <p class="lead">在看实操之前，先通过官方视频建立对 GaussDB 的整体认知。视频涵盖 GaussDB 的产品定位、核心架构特性与典型落地案例，是后续动手的“地图”。</p>
+    <div class="video-wrap">
+      <video controls preload="metadata" poster="">
+        <source src="gaussdb-video.mp4" type="video/mp4" />
+        您的浏览器不支持内嵌视频，请直接打开 <a href="gaussdb-video.mp4">gaussdb-video.mp4</a> 观看。
+      </video>
+    </div>
+    <p class="video-cap">▲ 视频：GaussDB 介绍 + 案例（时长约 2 分钟；源文件 /root/Downloads/GaussDB介绍+案例视频.mp4，已随本案例一同打包为 gaussdb-video.mp4）</p>
+
+    <h3>视频要点速记（建议边看边勾）</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4 style="margin-top:0">产品与架构</h4>
+        <ul>
+          <li>GaussDB 是华为云自研的企业级分布式数据库。</li>
+          <li>采用<b>计算与存储分离</b>架构，支持横向弹性扩展。</li>
+          <li>高可用：多副本、跨可用区（AZ）容灾。</li>
+          <li>兼容 MySQL / PostgreSQL 生态，迁移成本低。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">典型场景与案例</h4>
+        <ul>
+          <li>金融、政企核心交易系统的高并发、强一致场景。</li>
+          <li>HTAP 混合负载：一套引擎兼顾事务与分析。</li>
+          <li>云上弹性：随业务峰谷按需扩缩容。</li>
+          <li>结合视频中的真实案例，理解“为什么选 GaussDB”。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>观看建议：</b>视频中出现的术语（如分布式、计算存储分离、HTAP）会在第 6 节实操前后反复用到，建议配合视频在环境中实际敲一遍 SQL，印象最深。</div>
+  </div>
+</section>
+
+<!-- 5. URL TO ENV -->
+<section id="urtenv" class="bg">
+  <div class="wrap">
+    <h2><span class="num">5</span>核心能力：URL TO ENV 一键直达环境</h2>
+    <p class="lead">这是本案例的“杀手锏”。<b>URL TO ENV</b> 是 AI 开发者空间的<b>环境直达能力</b>：把“进入某个预置工作环境”封装成一条可点击的链接。任何人点击，都会直接进入指定的 GaussDB 工作环境（<code>/workenv-tui/gaussdb</code>），无需手动选择或配置。</p>
+
+    <div class="urt">
+      <h3 style="margin-top:0">🚀 一键直达预置的 GaussDB 环境</h3>
+      <p style="margin:6px 0">点击下方按钮，浏览器会直接打开 AI DevSpace 并自动进入 GaussDB 工作环境，即可跟着视频动手：</p>
+      <div class="row">
+        <a class="cta" href="https://devstation.developer.huaweicloud.com/aidevspace?target=/workenv-tui/gaussdb&dc=XM4xSsRAFMbxq4SvzkJWzSZMqYJsr5Vs8TLvZTeSeRMySQrDgK1Wgpew8wJeJ55DsuWWH_zh-81QcgKDv_ev5fcteaAxhPvb5PFpjxR2DIN3zSsNjdcAM4Malil0ZGVd9kSq0sKAZZLWd9IjBXtHje4ZBnlebmvLZZFRfsOSlcVVmeUlF9WOLdEOKVoa1Z5gnmd0vh9g8m1xHQ8pVITvvNZN72BqaoOkCIN04dy2VJ2Pl8-f5eP70u2dI10BL77aiE4bR0pH6ZOxS45ryhXiIcb4HwAA__8&dc_sign=081cebb5535af9ca102c2b889544bcbbf6b7a7e46208c222826ad2d829349558" target="_blank" rel="noopener">🚀 一键直达 GaussDB 环境 ↗</a>
+        <button class="cta ghost" onclick="copyEnv()" style="cursor:pointer">📋 复制环境链接</button>
+      </div>
+    </div>
+
+    <div class="note"><b>安全说明：</b>环境直达链接相当于进入该环境的钥匙，仅分享给可信的人；若链接外泄，建议回到 AI DevSpace 平台重新生成或回收对应环境令牌。链接本身不包含你的账号密码。</div>
+
+    <h3>它解决了什么痛点</h3>
+    <ul>
+      <li><b>对教学/布道：</b>讲师把一条链接发到群里，学员点开就是统一环境，省去“你装没装好、版本对不对”的混乱。</li>
+      <li><b>对协作：</b>同事复现你的数据库 Demo，不用照着文档一步步配环境，直达即一致。</li>
+      <li><b>对评审/验收：</b>评委点链接即可进入你准备好的 GaussDB 环境查看运行结果，所见即所得。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6. PRACTICE -->
+<section id="practice">
+  <div class="wrap">
+    <h2><span class="num">6</span>实践操作：在 GaussDB 环境里动手</h2>
+    <p class="lead">下面每一步都建立在“已通过第 5 节的链接进入 GaussDB 环境”的前提下。请结合第 4 节视频中的概念边做边理解。</p>
+
+    <div class="step">
+      <div class="badge">1</div>
+      <div class="body">
+        <h4>通过 URL TO ENV 进入 GaussDB 环境</h4>
+        <p>点击第 5 节的“一键直达”按钮（或复制链接到浏览器打开）。AI DevSpace 加载后，会自动定位到 <code>/workenv-tui/gaussdb</code> 工作环境——你会看到预装好的数据库客户端与连接信息面板。</p>
+        <p class="ok">完成标志：✅ 工作台显示 GaussDB 工作环境，且能看到连接入口/终端。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">2</div>
+      <div class="body">
+        <h4>连接 GaussDB 并确认版本</h4>
+        <p>在环境终端中使用预置的连接命令/客户端连上数据库，先确认版本与兼容模式（GaussDB 兼容 MySQL 或 PostgreSQL，语法略有差异，请按环境实际提示选择）。</p>
+        <div class="cmd"># 示例（GaussDB 兼容 MySQL 模式，具体命令以环境内提示为准）
+gsql / mysql -h &lt;环境提供的host&gt; -u &lt;user&gt; -p
+SELECT version();</div>
+        <p class="ok">完成标志：✅ 成功进入数据库命令行，<code>version()</code> 有返回。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">3</div>
+      <div class="body">
+        <h4>建库、建表、写入示例数据</h4>
+        <p>按视频里“典型场景”的思路，创建一个业务库与一张订单表，插入几条样例数据。下面给出兼容 MySQL 模式的示例：</p>
+        <pre><code><span class="tok-c">-- 创建业务数据库</span>
+<span class="tok-k">CREATE DATABASE</span> shop <span class="tok-k">DEFAULT CHARACTER SET</span> utf8mb4;
+<span class="tok-k">USE</span> shop;
+
+<span class="tok-c">-- 创建订单表（体现 GaussDB 的分布式/高可用能力：普通 DDL 即可）</span>
+<span class="tok-k">CREATE TABLE</span> orders (
+  id        <span class="tok-k">BIGINT</span> <span class="tok-k">PRIMARY KEY</span> <span class="tok-k">AUTO_INCREMENT</span>,
+  customer  <span class="tok-k">VARCHAR</span>(64)  <span class="tok-k">NOT NULL</span>,
+  amount    <span class="tok-k">DECIMAL</span>(10,2) <span class="tok-k">NOT NULL</span>,
+  status    <span class="tok-k">VARCHAR</span>(16)  <span class="tok-k">DEFAULT</span> <span class="tok-s">'NEW'</span>,
+  created_at <span class="tok-k">DATETIME</span> <span class="tok-k">DEFAULT</span> <span class="tok-f">CURRENT_TIMESTAMP</span>
+);
+
+<span class="tok-c">-- 插入示例数据</span>
+<span class="tok-k">INSERT INTO</span> orders(customer, amount, status) <span class="tok-k">VALUES</span>
+  (<span class="tok-s">'Alice'</span>, 199.00, <span class="tok-s">'PAID'</span>),
+  (<span class="tok-s">'Bob'</span>,   59.90, <span class="tok-s">'NEW'</span>),
+  (<span class="tok-s">'Carol'</span>, 899.00, <span class="tok-s">'PAID'</span>);</code></pre>
+        <p class="ok">完成标志：✅ 表创建成功，<code>SELECT COUNT(*) FROM orders;</code> 返回 3。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">4</div>
+      <div class="body">
+        <h4>查询与聚合：体验 GaussDB 的分析能力</h4>
+        <p>借助 HTAP 能力，事务表上直接跑分析查询（这正是视频里强调的“一套引擎兼顾 TP 与 AP”）：</p>
+        <pre><code><span class="tok-c">-- 已支付订单总额与笔数</span>
+<span class="tok-k">SELECT</span> status,
+       <span class="tok-f">COUNT</span>(*)        <span class="tok-k">AS</span> cnt,
+       <span class="tok-f">SUM</span>(amount)    <span class="tok-k">AS</span> total
+<span class="tok-k">FROM</span> orders
+<span class="tok-k">GROUP BY</span> status;
+
+<span class="tok-c">-- 单笔最大订单（体验分布式下的聚合）</span>
+<span class="tok-k">SELECT</span> customer, amount
+<span class="tok-k">FROM</span> orders
+<span class="tok-k">ORDER BY</span> amount <span class="tok-k">DESC</span>
+<span class="tok-k">LIMIT</span> 1;</code></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="badge">5</div>
+      <div class="body">
+        <h4>验证并收尾</h4>
+        <p>确认数据正确，把“建库建表 → 写入 → 查询”的完整过程截图/记录，作为你的实践产出。随后进入第 8 节做环境清理。</p>
+        <p class="ok">完成标志：✅ 查询结果与预期一致，过程可复现。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. TROUBLE -->
+<section id="trouble" class="bg">
+  <div class="wrap">
+    <h2><span class="num">7</span>功能检查与排障</h2>
+    <table>
+      <thead><tr><th>现象</th><th>可能原因</th><th>处理建议</th></tr></thead>
+      <tbody>
+        <tr><td>点击链接后没有进入 GaussDB 环境</td><td>环境直达链接失效或未登录华为云账号</td><td>确认已登录；核对链接是否完整；必要时重新获取环境链接。</td></tr>
+        <tr><td>提示无权限 / 环境未就绪</td><td>该环境实例已被回收或需先激活</td><td>回到 AI DevSpace 工作台确认环境状态，按平台提示激活或重新进入。</td></tr>
+        <tr><td>连接数据库失败</td><td>host/账号/端口与视频演示不一致，或环境未初始化完成</td><td>以环境内实际提供的连接信息为准，等待初始化完成后再连。</td></tr>
+        <tr><td>SQL 语法报错</td><td>GaussDB 兼容模式（MySQL / PostgreSQL）与示例不符</td><td>先确认当前实例兼容模式；本案例示例基于 MySQL 模式，PostgreSQL 模式需调整语法（如 <code>SERIAL</code>、<code>::</code> 类型转换等）。</td></tr>
+        <tr><td>视频无法播放</td><td>浏览器不支持或文件未随页面一同部署</td><td>改用本地播放器打开 <code>gaussdb-video.mp4</code>；确保视频文件与本页面在同一目录。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 8. SECURITY -->
+<section id="security">
+  <div class="wrap">
+    <h2><span class="num">8</span>安全与清理</h2>
+    <ul>
+      <li><b>链接管理：</b>环境直达链接相当于进入该环境的钥匙，仅分享给可信对象；疑似泄露时回到平台回收/重生成令牌。</li>
+      <li><b>凭据不外泄：</b>数据库连接信息只在环境内使用，不要写入聊天、代码、截图或公开仓库。</li>
+      <li><b>及时清理：</b>实践完成后，按 AI DevSpace 平台规则停止或释放 GaussDB 环境，删除练习用的测试库表，避免不必要的资源占用。</li>
+      <li><b>数据合规：</b>本案例使用自建的样例数据，请勿在其中存放真实业务或个人敏感数据。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 9. SUMMARY -->
+<section id="summary" class="bg">
+  <div class="wrap">
+    <h2><span class="num">9</span>总结与延伸</h2>
+    <p class="lead">你刚刚完成了一条“<b>视频认知 → 链接直达 → 真实环境动手</b>”的最短学习路径。这套范式的价值在于：把“环境准备”这件最磨人的事，变成一条可点击、可分享、可复现的链接。</p>
+    <h3>可迁移的方法论</h3>
+    <ul>
+      <li>把任意 AI DevSpace 的 WorkEnv 通过 <b>URL TO ENV</b> 封装成直达链接，用于教学、协作与评审。</li>
+      <li>“视频 + 环境 + 实操”三段式，适用于 GaussDB 之外的各类云端开发实践。</li>
+      <li>理解 URL TO ENV 环境直达链接的构成，就能自己生成和分享环境链接。</li>
+    </ul>
+    <h3>下一步可以做什么</h3>
+    <ul>
+      <li>把练习库替换为更接近真实的业务模型（多表关联、索引优化）。</li>
+      <li>尝试 GaussDB 的弹性伸缩与高可用切换，观察分布式特性。</li>
+      <li>参考同类 AI DevSpace 实践（如华为云 Skill 创建、OBS 云相册等），用同样的 URL TO ENV 思路做你的下一个案例。</li>
+    </ul>
+    <div style="margin-top:18px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="cta" href="https://devstation.developer.huaweicloud.com/aidevspace?target=/workenv-tui/gaussdb&dc=XM4xSsRAFMbxq4SvzkJWzSZMqYJsr5Vs8TLvZTeSeRMySQrDgK1Wgpew8wJeJ55DsuWWH_zh-81QcgKDv_ev5fcteaAxhPvb5PFpjxR2DIN3zSsNjdcAM4Malil0ZGVd9kSq0sKAZZLWd9IjBXtHje4ZBnlebmvLZZFRfsOSlcVVmeUlF9WOLdEOKVoa1Z5gnmd0vh9g8m1xHQ8pVITvvNZN72BqaoOkCIN04dy2VJ2Pl8-f5eP70u2dI10BL77aiE4bR0pH6ZOxS45ryhXiIcb4HwAA__8&dc_sign=081cebb5535af9ca102c2b889544bcbbf6b7a7e46208c222826ad2d829349558" target="_blank" rel="noopener">🚀 再进一次 GaussDB 环境</a>
+      <a class="cta ghost" href="#video">▶ 重看 GaussDB 视频</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    AI 开发者空间环境管理实践 · GaussDB 案例 ｜ 视频与 URL TO ENV 直达能力结合 ｜ 内容参考华为云 AI DevSpace 实践页与 HarmonyOS 实践中心案例范式<br/>
+    本页为教学演示案例，具体产品能力与计费以华为云官方文档与平台实际为准。
+  </div>
+</footer>
+
+<script>
+  var ENV_URL="https://devstation.developer.huaweicloud.com/aidevspace?target=/workenv-tui/gaussdb&dc=XM4xSsRAFMbxq4SvzkJWzSZMqYJsr5Vs8TLvZTeSeRMySQrDgK1Wgpew8wJeJ55DsuWWH_zh-81QcgKDv_ev5fcteaAxhPvb5PFpjxR2DIN3zSsNjdcAM4Malil0ZGVd9kSq0sKAZZLWd9IjBXtHje4ZBnlebmvLZZFRfsOSlcVVmeUlF9WOLdEOKVoa1Z5gnmd0vh9g8m1xHQ8pVITvvNZN72BqaoOkCIN04dy2VJ2Pl8-f5eP70u2dI10BL77aiE4bR0pH6ZOxS45ryhXiIcb4HwAA__8&dc_sign=081cebb5535af9ca102c2b889544bcbbf6b7a7e46208c222826ad2d829349558";
+  function copyEnv(){
+    navigator.clipboard.writeText(ENV_URL).then(function(){
+      alert('环境链接已复制到剪贴板，可粘贴分享给同学/同事。');
+    },function(){
+      alert('复制失败，请直接点击上方按钮打开环境。');
+    });
+  }
+</script>
+</body>
+</html>
