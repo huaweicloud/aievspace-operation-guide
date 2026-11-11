@@ -10,7 +10,7 @@
 :root{
   --ink:#0d1526; --ink2:#475467; --ink3:#667085; --ink4:#98a2b3;
   --line:#e4e7ec; --line2:#eff1f4; --bg:#f6f7f9; --card:#fff;
-  --brand:#c7000b; --brand-2:#8f0008; --brand-soft:#fff1f2; --brand-line:#ffd8dc;
+  --brand:#4191FA; --brand-2:#2f6fd0; --brand-soft:#eef4fe; --brand-line:#d5e6fb;
   --ai:#2f6bff; --ai-2:#1b4dcf; --ai-soft:#eef4ff; --ai-line:#d3e2ff;
   --ok:#067647; --ok-soft:#ecfdf3; --ok-line:#a6efc5;
   --warn:#b54708; --warn-soft:#fffaeb; --warn-line:#fedf89;
@@ -34,12 +34,12 @@ h1,h2,h3,h4{margin:0;letter-spacing:-.015em;line-height:1.28;font-weight:750}
 
 /* ============ topbar ============ */
 #pbar{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
-  background:linear-gradient(90deg,var(--brand),#ff6b6b 40%,var(--ai));transition:width .1s linear}
+  background:linear-gradient(90deg,var(--brand),#5b9bf7 40%,var(--ai));transition:width .1s linear}
 .topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.86);
   backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid var(--line)}
 .topbar-in{max-width:1500px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:18px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.brand .mk{width:26px;height:26px;border-radius:8px;background:linear-gradient(140deg,var(--brand),#ff4d4f);display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800;box-shadow:0 4px 10px -4px rgba(199,0,11,.6)}
+.brand .mk{width:26px;height:26px;border-radius:8px;background:linear-gradient(140deg,var(--brand),#2f6fd0);display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800;box-shadow:0 4px 10px -4px rgba(47,111,208,.6)}
 .brand b{font-size:14px;font-weight:750;white-space:nowrap}
 .brand span{font-size:12px;color:var(--ink3);white-space:nowrap}
 
@@ -48,7 +48,7 @@ h1,h2,h3,h4{margin:0;letter-spacing:-.015em;line-height:1.28;font-weight:750}
 .hero{position:relative;overflow:hidden;background:#fff;border-bottom:1px solid var(--line)}
 .hero::before{content:"";position:absolute;inset:0;
   background:
-    radial-gradient(880px 340px at 8% -14%,#ffe7ea 0%,rgba(255,231,234,0) 70%),
+    radial-gradient(880px 340px at 8% -14%,#e8f1ff 0%,rgba(232,241,255,0) 70%),
     radial-gradient(760px 320px at 88% -6%,#e6efff 0%,rgba(230,239,255,0) 68%),
     repeating-linear-gradient(90deg,rgba(13,21,38,.035) 0 1px,transparent 1px 64px),
     repeating-linear-gradient(0deg,rgba(13,21,38,.035) 0 1px,transparent 1px 64px);
@@ -146,7 +146,7 @@ ol.ops>li .hint{color:var(--ink3);font-size:13px}
 /* ui button chip */
 .bt{display:inline-flex;align-items:center;gap:5px;padding:0 8px;height:23px;border:1px solid #d5dae2;border-radius:7px;
   background:linear-gradient(#fff,#f7f9fb);box-shadow:0 1px 0 rgba(16,24,40,.07);font-size:12.8px;font-weight:650;color:#101828;white-space:nowrap;vertical-align:1px}
-.bt.p{background:linear-gradient(#d90429,#c7000b);border-color:#a80009;color:#fff;box-shadow:0 1px 2px rgba(199,0,11,.35)}
+.bt.p{background:linear-gradient(#4191fa,#4191FA);border-color:#2f6fd0;color:#fff;box-shadow:0 1px 2px rgba(47,111,208,.35)}
 .bt.a{background:var(--ai);border-color:var(--ai-2);color:#fff}
 .bt.line{background:#fff;color:var(--ink2)}
 
@@ -357,7 +357,7 @@ footer .fin b{color:var(--ink2)}
 :root{
   --ink:#1f2329; --ink2:#4b5159; --ink3:#8a9099; --ink4:#a9afb9;
   --line:#e8eaf0; --line2:#f0f2f7; --bg:#f6f8fb; --card:#fff;
-  --brand:#CF0A2C; --brand-2:#A3001C; --brand-soft:#fff5f6; --brand-line:#ffd2d9;
+  --brand:#4191FA; --brand-2:#2F6FD0; --brand-soft:#f5f8ff; --brand-line:#d5e6fb;
   --ai:#475467; --ai-2:#1f2329; --ai-soft:#f2f4f8; --ai-line:#e4e7ec;
   --ok:#1a7f37; --ok-soft:#f0f9f3; --ok-line:#c9e9d3;
   --warn:#b54708; --warn-soft:#fff8ee; --warn-line:#ffe2b8;
@@ -375,9 +375,9 @@ h1,h2,h3,h4{letter-spacing:0}
 .brand .mk{background:var(--brand);box-shadow:none}
 
 /* hero */
-.hero{background:linear-gradient(135deg,#fff 0%,#fff5f6 45%,#fdeef0 100%)}
+.hero{background:linear-gradient(135deg,#fff 0%,#f5f8ff 45%,#eef4fe 100%)}
 .hero::before{
-  background:radial-gradient(880px 340px at 8% -14%,rgba(207,10,44,.10),transparent 70%);
+  background:radial-gradient(880px 340px at 8% -14%,rgba(65,145,250,.10),transparent 70%);
   mask-image:none;
 }
 .hero-in{padding:54px 28px 40px}
@@ -400,10 +400,10 @@ h1,h2,h3,h4{letter-spacing:0}
 .entry a:hover,.urlrow a:hover{color:var(--brand)}
 .cta{
   display:inline-flex;align-items:center;gap:10px;background:var(--brand);color:#fff;font-weight:700;
-  padding:13px 22px;border-radius:12px;font-size:15px;box-shadow:0 8px 22px rgba(207,10,44,.28);
+  padding:13px 22px;border-radius:12px;font-size:15px;box-shadow:0 8px 22px rgba(65,145,250,.28);
   transition:transform .15s ease,box-shadow .15s ease;
 }
-.cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(207,10,44,.34);text-decoration:none;color:#fff}
+.cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(65,145,250,.34);text-decoration:none;color:#fff}
 
 /* 顶部流程卡片 */
 .ribbonwrap .rl{color:var(--ink3)}
@@ -495,8 +495,16 @@ footer{background:#fff}
   a{color:inherit}
 }
 </style>
+  <link rel="stylesheet" href="../guide-theme.css" />
 </head>
 <body>
+<nav class="guide-crumb">
+  <a href="../../AIDevspace.html#practice-cases">操作指南</a>
+  <span class="sep">/</span>
+  <span>实践案例</span>
+  <span class="sep">/</span>
+  <span class="cur">自定义作业环境：从创建到上线</span>
+</nav>
 <div id="pbar"></div>
 
 <!-- ======= HERO ======= -->

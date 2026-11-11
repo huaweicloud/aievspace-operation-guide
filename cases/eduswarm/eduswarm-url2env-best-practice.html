@@ -8,7 +8,7 @@
 <style>
   :root{
     --bg:#fdfdfc; --fg:#1b1f24; --muted:#666e79; --line:#e6e3dd;
-    --card:#ffffff; --accent:#1558c0; --accent-soft:#eef4fe;
+    --card:#ffffff; --accent:#4191FA; --accent-soft:#eef4fe;
     --code-bg:#f4f2ee;
     --toc:15rem; --gap:clamp(2rem,3vw,3.25rem); --measure:42rem; --pad:clamp(1.25rem,3.2vw,3.5rem);
   }
@@ -138,8 +138,16 @@
     a[href^="http"]::after{content:" (" attr(href) ")"; font-size:8pt; color:#555}
   }
 </style>
+  <link rel="stylesheet" href="../guide-theme.css" />
 </head>
 <body>
+<nav class="guide-crumb">
+  <a href="../../AIDevspace.html#practice-cases">操作指南</a>
+  <span class="sep">/</span>
+  <span>实践案例</span>
+  <span class="sep">/</span>
+  <span class="cur">从 EduSwarm 跳转到 AI 开发者空间</span>
+</nav>
 <div class="progress" id="prog"></div>
 
 <div class="wrap">
