@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>从开发者作品展览馆作品跳转到 AI 开发者空间运行作品</title>
+  <style>
+    :root {
+      --bg: #fdfdfc;
+      --fg: #1b1f24;
+      --muted: #666e79;
+      --line: #e6e3dd;
+      --card: #ffffff;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+      --code-bg: #f4f2ee;
+      --toc: 15rem;
+      --gap: clamp(2rem, 3vw, 3.25rem);
+      --measure: 42rem;
+      --pad: clamp(1.25rem, 3.2vw, 3.5rem);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #15171a;
+        --fg: #e5e7ea;
+        --muted: #9aa3ae;
+        --line: #2a2e34;
+        --card: #1b1e22;
+        --accent: #7fb0f5;
+        --accent-soft: #1c2735;
+        --code-bg: #22262b;
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      font-size: 17px
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC", system-ui, sans-serif;
+      line-height: 1.85;
+    }
+
+    @media (min-width:1600px) {
+      html {
+        font-size: 18px
+      }
+    }
+
+    @media (min-width:2100px) {
+      html {
+        font-size: 19px
+      }
+    }
+
+    @media (min-width:1800px) {
+      :root {
+        --measure: 45rem
+      }
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      z-index: 60
+    }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: minmax(0, var(--measure)) var(--toc);
+      justify-content: center;
+      column-gap: var(--gap);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+
+    main {
+      grid-column: 1;
+      min-width: 0;
+      padding: 2.6rem 0 5rem
+    }
+
+    main>* {
+      max-width: min(var(--measure), 100%)
+    }
+
+    h1 {
+      font-size: clamp(1.58rem, 1.3rem + .55vw, 1.8rem);
+      line-height: 1.4;
+      margin: 0 0 .9rem;
+      letter-spacing: -.01em;
+      font-weight: 700
+    }
+
+    .lead {
+      font-size: 1.08em;
+      line-height: 1.8;
+      margin: 0 0 1.6rem
+    }
+
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem 2rem;
+      margin: 0 0 2rem;
+      padding: 0 0 1.4rem;
+      border-bottom: 1px solid var(--line);
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .facts b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    h2 {
+      font-size: 1.32em;
+      line-height: 1.45;
+      font-weight: 650;
+      margin: 3.4rem 0 1rem;
+      text-wrap: balance;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 1.5rem
+    }
+
+    h2:first-of-type {
+      margin-top: 1.6rem;
+      padding-top: 0;
+      border-top: 0
+    }
+
+    h3 {
+      font-size: 1.06em;
+      font-weight: 650;
+      margin: 2.2rem 0 .7rem
+    }
+
+    .sec-no {
+      color: var(--muted);
+      font-weight: 500;
+      margin-right: .6rem;
+      font-variant-numeric: tabular-nums
+    }
+
+    p {
+      margin: 0 0 1.1rem
+    }
+
+    ul,
+    ol {
+      margin: 0 0 1.15rem;
+      padding-left: 1.4rem
+    }
+
+    li {
+      margin: .4rem 0
+    }
+
+    strong {
+      font-weight: 650
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent)
+    }
+
+    a:hover {
+      border-bottom-color: var(--accent)
+    }
+
+    .nb {
+      white-space: nowrap
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .87em;
+      background: var(--code-bg);
+      padding: .12em .36em;
+      border-radius: 4px;
+      word-break: break-word
+    }
+
+    pre {
+      margin: 1.2rem 0 1.8rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.15rem;
+      overflow: auto;
+      font-size: .82rem;
+      line-height: 1.7
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      white-space: pre-wrap;
+      word-break: break-all
+    }
+
+    .step {
+      margin: 2rem 0 2.4rem
+    }
+
+    .step h3 {
+      display: flex;
+      align-items: baseline;
+      gap: .6rem;
+      margin: 0 0 .5rem
+    }
+
+    .step h3 .n {
+      flex: none;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      align-self: center
+    }
+
+    .done {
+      margin: .9rem 0 0;
+      font-size: .9rem;
+      color: var(--muted)
+    }
+
+    .done::before {
+      content: "完成标志";
+      display: inline-block;
+      margin-right: .5rem;
+      font-size: .72rem;
+      letter-spacing: .06em;
+      color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 99px;
+      padding: .05rem .5rem;
+      vertical-align: 1px
+    }
+
+    figure {
+      margin: 1.5rem 0 2.1rem
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      cursor: zoom-in
+    }
+
+    figcaption {
+      margin-top: .6rem;
+      font-size: .84em;
+      line-height: 1.65;
+      color: var(--muted)
+    }
+
+    figcaption b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    .tablewrap {
+      overflow-x: auto;
+      margin: 1.3rem 0 2rem
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .9em;
+      line-height: 1.7;
+      min-width: 28rem
+    }
+
+    th,
+    td {
+      padding: .6rem .75rem;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line)
+    }
+
+    thead th {
+      font-size: .82em;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      background: var(--card)
+    }
+
+    tbody tr:nth-child(even) {
+      background: color-mix(in srgb, var(--line) 22%, transparent)
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0
+    }
+
+    .note {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      padding: .85rem 1.05rem;
+      margin: 1.3rem 0 1.8rem;
+      font-size: .95em
+    }
+
+    .note p:last-child {
+      margin: 0
+    }
+
+    .note .lbl {
+      display: block;
+      font-size: .74em;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: .25rem
+    }
+
+    aside {
+      grid-column: 2;
+      min-width: 0
+    }
+
+    nav.toc {
+      position: sticky;
+      top: 0;
+      max-height: 100vh;
+      overflow: auto;
+      padding: 2.8rem 0 3rem;
+      font-size: .88rem
+    }
+
+    nav.toc .hd {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin: 0 0 1rem
+    }
+
+    nav.toc ol {
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    nav.toc li {
+      margin: .05rem 0
+    }
+
+    nav.toc a {
+      display: block;
+      padding: .24rem .7rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.5
+    }
+
+    nav.toc a:hover {
+      color: var(--fg);
+      background: var(--accent-soft)
+    }
+
+    nav.toc a.on {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 600
+    }
+
+    .end {
+      margin-top: 3.6rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: .86em;
+      color: var(--muted)
+    }
+
+    #lb {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+      display: none;
+      place-items: center;
+      z-index: 100;
+      padding: 2rem;
+      cursor: zoom-out
+    }
+
+    #lb.on {
+      display: grid
+    }
+
+    #lb img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px
+    }
+
+    @media (max-width:60rem) {
+      .wrap {
+        grid-template-columns: 1fr;
+        padding: 0 1.35rem
+      }
+
+      main {
+        grid-column: 1;
+        padding-top: 1.5rem
+      }
+
+      aside {
+        display: none
+      }
+
+      main>* {
+        max-width: 100%
+      }
+    }
+
+    @media print {
+
+      aside,
+      .progress,
+      #lb {
+        display: none
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 10.5pt;
+        line-height: 1.6
+      }
+
+      .wrap {
+        display: block;
+        max-width: none;
+        padding: 0
+      }
+
+      main>* {
+        max-width: none
+      }
+
+      h2 {
+        break-after: avoid;
+        border-top: 1px solid #ccc
+      }
+
+      figure,
+      table,
+      .step,
+      .note {
+        break-inside: avoid
+      }
+
+      a {
+        color: #000;
+        border-bottom: 0
+      }
+
+      a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: #555
+      }
+    }
+  /* 背景对齐 GaussDB：浅灰底 + 顶部浅红渐变光带 */
+    :root {
+      --bg: #f6f8fb;
+      --fg: #1f2329;
+      --muted: #5b6472;
+      --line: #e8eaf0;
+      --card: #ffffff;
+      --code-bg: #f4f6fa;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+    }
+
+    body {
+      background-color: #f6f8fb;
+      background-image:
+        radial-gradient(circle at 94% 30px, rgba(207, 10, 44, .10), transparent 58%),
+        linear-gradient(135deg, #fff 0%, #fff5f6 45%, #fdeef0 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 380px;
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" id="prog"></div>
+
+  <div class="wrap">
+    <main>
+      <h1>从开发者作品展览馆作品<span class="nb">跳转到</span> AI 开发者空间<span class="nb">运行作品</span></h1>
+      <p class="lead">从 Buddy 陪伴搭子的作品页到能填写的 HelloCard 页面，观众只需要点一次「体验作品」。中间的登录、环境创建、克隆、部署和 2 小时公网隧道，都被一条 URL2ENV
+        深链提前安排好；这篇文章记录的就是这条链路怎么跑通，以及作者侧应该把哪些信息放进链接。</p>
+      <p class="facts">
+        <span>适合人群：<b>作品投稿作者、展览馆运营、需要让观众无门槛体验作品的人</b></span>
+        <span>预计时间：<b>5 分钟</b></span>
+        <span>前置条件：<b>华为云账号（观众侧）；作品运行配置（作者侧）</b></span>
+      </p>
+
+      <h2 id="s1"><span class="sec-no">一</span>先认识 Buddy 陪伴搭子和「体验作品」</h2>
+
+      <p>Buddy 陪伴搭子来自 2026 高校训练营，作者是 hwstaff_blue_dev · 中南大学，源码在 GitCode 的
+        <code>sunzy1940/buddy-companion</code>。这个案例没有铺开全部能力，只选其中的 HelloCard
+        做验收对象：表单能不能填、页面能不能通过公网打开，一眼就能判断，适合当作展览现场的完整演示。</p>
+
+      <p>「体验作品」按钮也不是普通跳转。展览馆在作品接入时保存运行配置，服务端压缩、签名后交给开发者空间。点开链接，AI Shell 按里面的 <code>target</code> 打开，<code>dc</code>
+        展开成一条可执行提示词，<code>autoSend</code> 又让这条提示词不用等人再敲一遍。</p>
+
+      <p>下文先按观众的路径走一遍，再倒回作者侧看这条链接是怎么配置出来的。这样拆开的原因很简单：观众关心页面能不能用，作者关心链接里的提示词、端口和安全边界。</p>
+
+      <figure>
+        <img src="assets/gallery-work-entry.png" alt="开发者作品展览馆作品页，显示 Buddy 陪伴搭子标题和体验作品按钮">
+        <figcaption><b>图 1</b>　Buddy 陪伴搭子作品页，「体验作品」由展览馆服务端生成的深链驱动。</figcaption>
+      </figure>
+
+      <h2 id="s2"><span class="sec-no">二</span>以前的做法：给一个作品页，剩下观众自己来</h2>
+
+      <p>没有深链时，一次作品体验会被拆成几件事：找仓库、读 README、判断运行方式，最后还得想办法让页面给别人访问。开发者做这些不难，但在展览或评审现场，每多一步，愿意等的人就少一批。</p>
+
+      <p>对作者来说，麻烦也不只出现在第一次投稿。项目结构变了、端口变了、启动命令变了，散落在文档里的说明都要跟着补。作品介绍越完整，运行路径越容易被忽略，断层也就越明显。</p>
+
+      <h2 id="s3"><span class="sec-no">三</span>URL 即环境带来的变化：从看作品到跑作品</h2>
+
+      <p>URL2ENV 做的事情很直接：<strong>把运行作品的动作写进链接</strong>。展览馆保存的那份 <code>dc</code> 载荷包含提示词和运行参数，服务端签名后交给开发者空间；开发者空间校验签名，再按
+        <code>target</code> 进入 AI Shell，把提示词交给 Agent 执行。</p>
+
+      <p>这条链路里有四层信息：</p>
+
+      <ul>
+        <li><code>target=/aishell</code> 决定落地界面；</li>
+        <li><code>dc</code> 携带提示词、运行参数和 <code>autoSend</code> 行为；</li>
+        <li><code>dc_sign</code> 保证载荷没有被中途改写；</li>
+        <li><code>utm_source=uni-operation</code> 记录这次体验来自展览馆投放。</li>
+      </ul>
+
+      <p>对观众来说，差别不在「多了一个按钮」，而在点开前就已经有了明确的执行顺序：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:9rem">环节</th>
+              <th>没有深链</th>
+              <th>有深链</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>入口动作</td>
+              <td>复制仓库地址，另开环境</td>
+              <td>点一次「体验作品」</td>
+            </tr>
+            <tr>
+              <td>任务描述</td>
+              <td>自己写克隆、启动和暴露访问的命令</td>
+              <td>提示词已经随链接送进 AI Shell</td>
+            </tr>
+            <tr>
+              <td>执行方式</td>
+              <td>观众逐条命令试运行</td>
+              <td>Agent 按载荷里的指令执行</td>
+            </tr>
+            <tr>
+              <td>访问结果</td>
+              <td>常常停在 localhost</td>
+              <td>得到一条可分享的 DevBridge 隧道地址</td>
+            </tr>
+            <tr>
+              <td>作者维护</td>
+              <td>重复写「如何运行」的说明</td>
+              <td>一份配置随作品页持续复用</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s4"><span class="sec-no">四</span>开始前要确认的几件事</h2>
+
+      <ul>
+        <li><strong>华为云账号</strong>：观众侧已注册即可。没登录会先跳华为云登录，登录完回到深链。</li>
+        <li><strong>作品页能看到「体验作品」</strong>：<a
+            href="https://gallerytest.developer.huaweicloud.com/gallery/1bc001b1-552e-4731-bb1c-49f6ef8f0440">gallerytest.developer.huaweicloud.com/gallery/1bc001b1-552e-4731-bb1c-49f6ef8f0440</a>。
+        </li>
+        <li><strong>作品侧已配置运行信息</strong>：观众不用手工生成链接；作者侧只要确认仓库可访问、启动方式稳定、端口和提示词一致。</li>
+      </ul>
+
+      <h2 id="s5"><span class="sec-no">五</span>动手体验：从作品页点一次「体验作品」</h2>
+
+      <p>这一段按观众看到的顺序走完整链路。整条会话不需要观众重新描述任务，只需要在浏览器和 AI Shell 之间核对结果。</p>
+
+      <div class="step">
+        <h3><span class="n">1</span>打开作品页，点「体验作品」</h3>
+        <p>按钮在作品标题下方。点击后新开开发者空间；首次进入会先登录并完成环境初始化，已登录用户则直接落到 AI Shell。</p>
+        <p class="done">作品页里的标题、简介和「体验作品」按钮都能正常显示。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">2</span>确认 AI Shell 里的自动发送行为</h3>
+        <p>AI Shell 打开时，预置提示词已经作为用户消息出现在会话里，不需要再按一次发送。Agent 先拆任务：克隆仓库、加载 DevBridge 隧道 skill、检查项目结构。</p>
+        <figure>
+          <img src="assets/gallery-aishell-autosend-landing.png" alt="AI Shell 会话显示自动发送的预置提示词，Agent 已开始执行克隆和加载 skill">
+          <figcaption><b>图 2</b>　AI Shell 落地页。预置提示词已自动发送，Agent 已开始克隆仓库和加载 skill。</figcaption>
+        </figure>
+        <p class="done">会话标题和预置提示词可见，Agent 输出执行计划。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">3</span>看 Agent 完成克隆、运行和隧道创建</h3>
+        <p>Agent 识别出这是一个静态 HTML 贺卡页面后，用 <code>python3 -m http.server 8080</code> 起服务，再通过 DevBridge 建 2
+          小时隧道。最后把本地访问结果、隧道有效期和公网 URL 一起列出来。</p>
+        <figure>
+          <img src="assets/gallery-aishell-final-result.png" alt="AI Shell 完成情况，显示项目克隆、HTTP 服务启动、2 小时隧道和公网访问地址">
+          <figcaption><b>图 3</b>　完成情况。项目克隆、8080 服务、2 小时隧道和公网访问地址一次给出。</figcaption>
+        </figure>
+        <p class="done">拿到 Agent 验证过的公网访问地址，并看到 HTTP 200 结果。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">4</span>打开隧道地址，验证作品真正可体验</h3>
+        <p>在另一个浏览器会话打开返回的隧道 URL。首次访问这类域名可能先出现安全提示，确认后进入作品页。这里最终加载出 HelloCard 表单，收件人、祝福语、主题和卡片风格都能直接填。</p>
+        <figure>
+          <img src="assets/gallery-tunnel-access-page.png" alt="通过 DevBridge 隧道访问 HelloCard 电子贺卡页面">
+          <figcaption><b>图 4</b>　通过隧道 URL 打开的 HelloCard 页面。观众不需要安装任何东西。</figcaption>
+        </figure>
+        <p class="done">作品页面在公网 URL 上加载成功，表单可交互。</p>
+      </div>
+
+      <h2 id="s6"><span class="sec-no">六</span>给投稿作者：这条链接是怎么创建的</h2>
+
+      <p>展览馆不是让作者在「链接生成」界面手工填表。作品接入时保存配置，服务端转换成 <code>dc</code> 载荷并附签名。作者真正要把控的是最小可体验动作：哪个仓库、什么分支、怎么启动、怎么暴露给浏览器。</p>
+
+      <p>Buddy 这条深链对应的载荷结构如下：</p>
+
+      <pre><code>{
+  "name": "体验作品",
+  "customizations": {
+    "aidevspace": {
+      "launch": [{
+        "port": 5173,
+        "aishell": {
+          "prompt": "git clone -b main https://gitcode.com/sunzy1940/buddy-companion.git，请运行此 git 项目，并基于 huawei-cloud-jobenv-devbridge-tunnel skills，为其建立一条 2 小时的隧道",
+          "autoSend": true,
+          "cwd": "/root",
+          "mode": "auto",
+          "reasoning": "high",
+          "model": "hwdevspace/glm-5.2"
+        }
+      }],
+      "steps": [{}]
+    }
+  }
+}</code></pre>
+
+      <p>这条配置里值得反复检查的是下面几个字段：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:10rem">字段</th>
+              <th>在本案例中的作用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>prompt</code></td>
+              <td>写清仓库、分支、运行要求和隧道交付物，是整个体验的启动脚本。</td>
+            </tr>
+            <tr>
+              <td><code>autoSend</code></td>
+              <td>设为 true 后提示词直接发送，适合仓库公开、动作无破坏性的展览作品。</td>
+            </tr>
+            <tr>
+              <td><code>cwd</code></td>
+              <td>指定 Agent 的工作目录，避免克隆位置漂移。</td>
+            </tr>
+            <tr>
+              <td><code>mode</code> / <code>reasoning</code></td>
+              <td>本例用 auto / high，让 Agent 先判断项目类型，再执行部署。</td>
+            </tr>
+            <tr>
+              <td><code>model</code></td>
+              <td>显式指定 hwdevspace/glm-5.2，减少不同环境默认模型造成的表现差异。</td>
+            </tr>
+            <tr>
+              <td><code>port</code></td>
+              <td>给运行入口留出端口约定。本例最终由 Agent 读项目后选择 8080。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>转换后的链接形态可以简化成：</p>
+
+      <pre><code>https://devstation.developer.huaweicloud.com/aidevspace?target=/aishell&amp;utm_source=uni-operation&amp;dc=&lt;压缩载荷&gt;&amp;dc_sign=&lt;签名&gt;</code></pre>
+
+      <div class="note">
+        <span class="lbl">配置建议</span>
+        <p>端口固定时，提示词和 <code>port</code> 要写同一个值。比如静态页面直接写「使用 python3 -m http.server 8080 启动」，比让每个会话重新推断端口更稳。</p>
+      </div>
+
+      <p>对外发布前，我建议至少验收三种状态：</p>
+
+      <ol>
+        <li>已登录状态下点按钮，能直接进入 AI Shell 并自动执行。</li>
+        <li>退出登录后点按钮，登录完成能回到同一条深链。</li>
+        <li>Agent 输出的隧道 URL 能在另一个浏览器会话打开作品页。</li>
+      </ol>
+
+      <h2 id="s7"><span class="sec-no">七</span>用之前要知道的几件事</h2>
+
+      <ul>
+        <li><strong>环境是临时的</strong>：体验版容器环境有剩余时长，到点释放。作品页面本身可以重新点链接再创建，但用户在环境里产生的数据要提前保存。</li>
+        <li><strong>隧道只有 2 小时</strong>：Agent 创建的 DevBridge 隧道用于现场体验。过期后，重新从作品页进入，Agent 会生成新的隧道地址。</li>
+        <li><strong>链接有效，不等于环境一直在</strong>：URL2ENV 链接每次都会拉起新的体验现场，这正是它适合展览和评审的原因。</li>
+        <li><strong><code>autoSend</code> 要慎用</strong>：它代表用户落地后立即执行。只对公开仓库、无密钥、无删除或付费动作的演示链路开启。</li>
+        <li><strong>载荷里不要放敏感信息</strong>：<code>dc</code> 能被浏览器地址栏携带，作者侧只放仓库地址、启动动作和参数，不放 AK/SK、token 或私有数据。</li>
+        <li><strong>长链接别手工截断</strong>：缺 <code>dc</code> 或 <code>dc_sign</code> 都会影响落地。展览场景应复用作品页按钮，而不是复制粘贴一长串文本。</li>
+      </ul>
+
+      <h2 id="s8"><span class="sec-no">八</span>常见问题</h2>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:12rem">现象</th>
+              <th style="width:12rem">原因</th>
+              <th>处理</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>点按钮没反应</td>
+              <td>浏览器拦截了新窗口</td>
+              <td>允许站点弹窗后重试，或直接从作品页再次点击</td>
+            </tr>
+            <tr>
+              <td>落在通用工作台</td>
+              <td>作品配置未生效，或用的是普通跳转链接</td>
+              <td>检查作品接入配置，确认有 <code>target=/aishell</code> 和 <code>dc</code></td>
+            </tr>
+            <tr>
+              <td>提示词没有自动发送</td>
+              <td><code>autoSend</code> 不是 true，或链接被截断</td>
+              <td>重新保存配置，检查 <code>dc</code> 和 <code>dc_sign</code></td>
+            </tr>
+            <tr>
+              <td>Agent 卡在依赖或启动</td>
+              <td>仓库结构变化，或启动命令不稳定</td>
+              <td>更新作品配置里的最小运行路径，必要时重进链接拿新环境</td>
+            </tr>
+            <tr>
+              <td>隧道地址打不开</td>
+              <td>本地服务未启动，或 2 小时隧道过期</td>
+              <td>回 AI Shell 看服务状态；过期后重新点击「体验作品」</td>
+            </tr>
+            <tr>
+              <td>模型或推理参数不可用</td>
+              <td>载荷指定了当前环境不支持的组合</td>
+              <td>更新 <code>model</code>、<code>mode</code>、<code>reasoning</code> 后重新生成链接</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s9"><span class="sec-no">九</span>相关资源</h2>
+
+      <ul>
+        <li>Buddy 陪伴搭子作品页：<a
+            href="https://gallerytest.developer.huaweicloud.com/gallery/1bc001b1-552e-4731-bb1c-49f6ef8f0440">gallerytest.developer.huaweicloud.com/gallery/1bc001b1-552e-4731-bb1c-49f6ef8f0440</a>
+        </li>
+        <li>AI 开发者空间体验版：<a
+            href="https://devstation.developer.huaweicloud.com/aidevspace">devstation.developer.huaweicloud.com/aidevspace</a>
+        </li>
+        <li>作品仓库：<a href="https://gitcode.com/sunzy1940/buddy-companion">gitcode.com/sunzy1940/buddy-companion</a></li>
+      </ul>
+    </main>
+
+    <aside>
+      <nav class="toc" aria-label="本页内容">
+        <p class="hd">本页内容</p>
+        <ol id="toclist">
+          <li><a href="#s1">一　先认识 Buddy 陪伴搭子</a></li>
+          <li><a href="#s2">二　以前的做法</a></li>
+          <li><a href="#s3">三　URL 即环境带来的变化</a></li>
+          <li><a href="#s4">四　开始前，请准备</a></li>
+          <li><a href="#s5">五　动手体验</a></li>
+          <li><a href="#s6">六　这条链接是怎么创建的</a></li>
+          <li><a href="#s7">七　用之前要知道</a></li>
+          <li><a href="#s8">八　常见问题</a></li>
+          <li><a href="#s9">九　相关资源</a></li>
+        </ol>
+      </nav>
+    </aside>
+  </div>
+
+  <div id="lb" role="dialog" aria-label="放大的截图"><img alt=""></div>
+
+  <script>
+    (function () {
+      var links = [].slice.call(document.querySelectorAll('#toclist a'));
+      var heads = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+      var bar = document.getElementById('prog');
+
+      function update() {
+        var idx = 0;
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i] && heads[i].getBoundingClientRect().top <= 140) idx = i;
+        }
+        links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0) + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+
+      var lb = document.getElementById('lb'), img = lb.querySelector('img');
+      document.querySelectorAll('figure img').forEach(function (el) {
+        el.addEventListener('click', function () { img.src = el.src; lb.classList.add('on'); });
+      });
+      lb.addEventListener('click', function () { lb.classList.remove('on'); img.src = ''; });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { lb.classList.remove('on'); img.src = ''; }
+      });
+    })();
+  </script>
+</body>
+
+</html>

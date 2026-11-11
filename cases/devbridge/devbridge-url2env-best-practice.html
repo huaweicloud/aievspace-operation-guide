@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>用一条链接直达 DevBridge TUI（作业环境场景）</title>
+  <style>
+    :root {
+      --bg: #fdfdfc;
+      --fg: #1b1f24;
+      --muted: #666e79;
+      --line: #e6e3dd;
+      --card: #ffffff;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+      --code-bg: #f4f2ee;
+      --toc: 15rem;
+      --gap: clamp(2rem, 3vw, 3.25rem);
+      --measure: 42rem;
+      --pad: clamp(1.25rem, 3.2vw, 3.5rem);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #15171a;
+        --fg: #e5e7ea;
+        --muted: #9aa3ae;
+        --line: #2a2e34;
+        --card: #1b1e22;
+        --accent: #7fb0f5;
+        --accent-soft: #1c2735;
+        --code-bg: #22262b;
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      font-size: 17px
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC", system-ui, sans-serif;
+      line-height: 1.85;
+    }
+
+    @media (min-width:1600px) {
+      html {
+        font-size: 18px
+      }
+    }
+
+    @media (min-width:2100px) {
+      html {
+        font-size: 19px
+      }
+    }
+
+    @media (min-width:1800px) {
+      :root {
+        --measure: 45rem
+      }
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      z-index: 60
+    }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: minmax(0, var(--measure)) var(--toc);
+      justify-content: center;
+      column-gap: var(--gap);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+
+    main {
+      grid-column: 1;
+      min-width: 0;
+      padding: 2.6rem 0 5rem
+    }
+
+    main>* {
+      max-width: min(var(--measure), 100%)
+    }
+
+    h1 {
+      font-size: clamp(1.58rem, 1.3rem + .55vw, 1.8rem);
+      line-height: 1.4;
+      margin: 0 0 .9rem;
+      letter-spacing: -.01em;
+      font-weight: 700
+    }
+
+    .lead {
+      font-size: 1.08em;
+      line-height: 1.8;
+      margin: 0 0 1.6rem
+    }
+
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem 2rem;
+      margin: 0 0 2rem;
+      padding: 0 0 1.4rem;
+      border-bottom: 1px solid var(--line);
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .facts b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    h2 {
+      font-size: 1.32em;
+      line-height: 1.45;
+      font-weight: 650;
+      margin: 3.4rem 0 1rem;
+      text-wrap: balance;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 1.5rem
+    }
+
+    h2:first-of-type {
+      margin-top: 1.6rem;
+      padding-top: 0;
+      border-top: 0
+    }
+
+    h3 {
+      font-size: 1.06em;
+      font-weight: 650;
+      margin: 2.2rem 0 .7rem
+    }
+
+    .sec-no {
+      color: var(--muted);
+      font-weight: 500;
+      margin-right: .6rem;
+      font-variant-numeric: tabular-nums
+    }
+
+    p {
+      margin: 0 0 1.1rem
+    }
+
+    ul,
+    ol {
+      margin: 0 0 1.15rem;
+      padding-left: 1.4rem
+    }
+
+    li {
+      margin: .4rem 0
+    }
+
+    strong {
+      font-weight: 650
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent)
+    }
+
+    a:hover {
+      border-bottom-color: var(--accent)
+    }
+
+    .nb {
+      white-space: nowrap
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .87em;
+      background: var(--code-bg);
+      padding: .12em .36em;
+      border-radius: 4px;
+      word-break: break-word
+    }
+
+    pre {
+      margin: 1.2rem 0 1.8rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.15rem;
+      overflow: auto;
+      font-size: .82rem;
+      line-height: 1.7
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      white-space: pre-wrap;
+      word-break: break-all
+    }
+
+    .step {
+      margin: 2rem 0 2.4rem
+    }
+
+    .step h3 {
+      display: flex;
+      align-items: baseline;
+      gap: .6rem;
+      margin: 0 0 .5rem
+    }
+
+    .step h3 .n {
+      flex: none;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      align-self: center
+    }
+
+    .done {
+      margin: .9rem 0 0;
+      font-size: .9rem;
+      color: var(--muted)
+    }
+
+    .done::before {
+      content: "完成标志";
+      display: inline-block;
+      margin-right: .5rem;
+      font-size: .72rem;
+      letter-spacing: .06em;
+      color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 99px;
+      padding: .05rem .5rem;
+      vertical-align: 1px
+    }
+
+    figure {
+      margin: 1.5rem 0 2.1rem
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      cursor: zoom-in
+    }
+
+    figcaption {
+      margin-top: .6rem;
+      font-size: .84em;
+      line-height: 1.65;
+      color: var(--muted)
+    }
+
+    figcaption b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    .tablewrap {
+      overflow-x: auto;
+      margin: 1.3rem 0 2rem
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .9em;
+      line-height: 1.7;
+      min-width: 28rem
+    }
+
+    th,
+    td {
+      padding: .6rem .75rem;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line)
+    }
+
+    thead th {
+      font-size: .82em;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      background: var(--card)
+    }
+
+    tbody tr:nth-child(even) {
+      background: color-mix(in srgb, var(--line) 22%, transparent)
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0
+    }
+
+    .note {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      padding: .85rem 1.05rem;
+      margin: 1.3rem 0 1.8rem;
+      font-size: .95em
+    }
+
+    .note p:last-child {
+      margin: 0
+    }
+
+    .note .lbl {
+      display: block;
+      font-size: .74em;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: .25rem
+    }
+
+    .ph-box {
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      padding: 2.6rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9em
+    }
+
+    aside {
+      grid-column: 2;
+      min-width: 0
+    }
+
+    nav.toc {
+      position: sticky;
+      top: 0;
+      max-height: 100vh;
+      overflow: auto;
+      padding: 2.8rem 0 3rem;
+      font-size: .88rem
+    }
+
+    nav.toc .hd {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin: 0 0 1rem
+    }
+
+    nav.toc ol {
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    nav.toc li {
+      margin: .05rem 0
+    }
+
+    nav.toc a {
+      display: block;
+      padding: .24rem .7rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.5
+    }
+
+    nav.toc a:hover {
+      color: var(--fg);
+      background: var(--accent-soft)
+    }
+
+    nav.toc a.on {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 600
+    }
+
+    .end {
+      margin-top: 3.6rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: .86em;
+      color: var(--muted)
+    }
+
+    #lb {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+      display: none;
+      place-items: center;
+      z-index: 100;
+      padding: 2rem;
+      cursor: zoom-out
+    }
+
+    #lb.on {
+      display: grid
+    }
+
+    #lb img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px
+    }
+
+    @media (max-width:60rem) {
+      .wrap {
+        grid-template-columns: 1fr;
+        padding: 0 1.35rem
+      }
+
+      main {
+        grid-column: 1;
+        padding-top: 1.5rem
+      }
+
+      aside {
+        display: none
+      }
+
+      main>* {
+        max-width: 100%
+      }
+    }
+
+    @media print {
+
+      aside,
+      .progress,
+      #lb {
+        display: none
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 10.5pt;
+        line-height: 1.6
+      }
+
+      .wrap {
+        display: block;
+        max-width: none;
+        padding: 0
+      }
+
+      main>* {
+        max-width: none
+      }
+
+      h2 {
+        break-after: avoid;
+        border-top: 1px solid #ccc
+      }
+
+      figure,
+      table,
+      .step,
+      .note {
+        break-inside: avoid
+      }
+
+      a {
+        color: #000;
+        border-bottom: 0
+      }
+
+      a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: #555
+      }
+    }
+  /* 背景对齐 GaussDB：浅灰底 + 顶部浅红渐变光带 */
+    :root {
+      --bg: #f6f8fb;
+      --fg: #1f2329;
+      --muted: #5b6472;
+      --line: #e8eaf0;
+      --card: #ffffff;
+      --code-bg: #f4f6fa;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+    }
+
+    body {
+      background-color: #f6f8fb;
+      background-image:
+        radial-gradient(circle at 94% 30px, rgba(207, 10, 44, .10), transparent 58%),
+        linear-gradient(135deg, #fff 0%, #fff5f6 45%, #fdeef0 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 380px;
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" id="prog"></div>
+
+  <div class="wrap">
+    <main>
+      <h1>用一条链接<span class="nb">直达</span> DevBridge TUI</h1>
+      <p class="lead">DevBridge 的价值点在一个很具体的动作：创建隧道，拿到公网地址。但以前把它交给人试用，往往要先解释平台入口、菜单和环境。现在可以改成一条作业环境深链——点开、登录、落地就是
+        DevBridge TUI，用户直接进入创建隧道的现场。</p>
+      <p class="facts">
+        <span>适合人群：<b>运营、支持、想把 DevBridge 放进文档或工单的人</b></span>
+        <span>预计时间：<b>10 分钟</b></span>
+        <span>前置条件：<b>华为云账号（已注册即可）</b></span>
+      </p>
+
+      <h2 id="s1"><span class="sec-no">一</span>先认识 DevBridge</h2>
+
+      <p>DevBridge 是 AI 开发者空间里的一个作业环境，底层能力来自开发者隧道。它的界面不是网页表单，而是 TUI：进去就是命令行，创建隧道、拿公网地址都在里面完成。</p>
+
+      <p>支持文档或工单里的入口需要满足一个条件：读者点开后不用再猜去哪里。我把这条链接的目标定成三件事：</p>
+
+      <ul>
+        <li>从链接点进去，不经过任何配置界面；</li>
+        <li>落地就是 DevBridge TUI，命令行可直接输入；</li>
+        <li>用户第一件事是创建隧道，而不是先找入口。</li>
+      </ul>
+
+      <p>文章先走一遍点开后的使用路径，再回到「链接生成」界面，看这条链接是怎么配置的。</p>
+
+      <figure>
+        <img src="assets/developer-tunnel-overview.jpg" alt="开发者隧道产品页，介绍一条命令开放本地服务到公网">
+        <figcaption><b>图 1</b>　DevBridge 的底层能力来自开发者隧道，用一条命令把本地服务开放到公网。</figcaption>
+      </figure>
+
+      <h2 id="s2"><span class="sec-no">二</span>以前的做法：给个入口，剩下自己来</h2>
+
+      <p>如果只给一条 DevBridge 空间页或 AI 开发者空间首页链接，读者点开后面对的是通用工作台。DevBridge 不一定在显眼位置，用哪个菜单、进哪个环境、打开后能做什么，都要自己判断。</p>
+
+      <p>这些步骤对熟悉平台的人不算难，但文档和工单里最怕这种前置学习。读者本来只想开条隧道，却要先在平台里找回上下文。</p>
+
+      <h2 id="s3"><span class="sec-no">三</span>URL 即环境带来的变化：从找入口到进现场</h2>
+
+      <p>「链接生成」产出的作业环境链接不是导航入口。它把目标环境、环境名和渠道一起编进 URL，落地时由开发者空间恢复到指定 TUI。这类链接叫 <strong>URL 即环境（URL to ENV）</strong>。</p>
+
+      <p>对读者来说，点击前就能从环境名知道会发生什么；打开后也不需要再做一层选择：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:9rem">环节</th>
+              <th>没有深链</th>
+              <th>有深链</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>进入时要做的判断</td>
+              <td>选菜单、选环境</td>
+              <td>没有，链接已经替你选好</td>
+            </tr>
+            <tr>
+              <td>要理解的界面</td>
+              <td>平台结构、环境管理</td>
+              <td>只需要知道 TUI 里能做什么</td>
+            </tr>
+            <tr>
+              <td>点击前的预期</td>
+              <td>不知道打开后是什么</td>
+              <td>环境名写着「打开 DevBridge TUI」</td>
+            </tr>
+            <tr>
+              <td>来源追踪</td>
+              <td>无法区分链接来自哪个文档</td>
+              <td>渠道参数统一记录投放来源</td>
+            </tr>
+            <tr>
+              <td>卡住时</td>
+              <td>不知道自己走没走对</td>
+              <td>落地不对一眼能看出来</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s4"><span class="sec-no">四</span>开始前要确认的几件事</h2>
+
+      <ul>
+        <li><strong>华为云账号</strong>：已注册即可，不需要充值。</li>
+        <li><strong>能打开 DevBridge 空间</strong>：<a
+            href="https://devstation.connect.huaweicloud.com/space/devbridge">devstation.connect.huaweicloud.com/space/devbridge</a>。
+        </li>
+        <li><strong>AI Shell 左侧栏能看到 TOOLS → 链接生成（BETA）</strong>：做链接时需要。看不到说明当前账号没在开放名单里，需要找管理员开通。</li>
+      </ul>
+
+      <h2 id="s5"><span class="sec-no">五</span>动手体验：点一次这条链接</h2>
+
+      <p>还没登录过开发者空间的话，会先跳登录，登录完自动回到这条链接。</p>
+
+      <div class="step">
+        <h3><span class="n">1</span>打开链接</h3>
+        <p>本案例链接由「作业环境」场景生成，<code>target</code> 指向 <code>/workenv-tui/devbridge</code>。按钮或二维码都可以作为入口。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">2</span>落地 DevBridge TUI</h3>
+        <p>环境配置完成后直接进入 TUI，不是工作台首页。终端就位，可以直接输入命令。</p>
+        <figure>
+          <img src="assets/p31.png" alt="新会话打开链接后直达 DevBridge TUI，终端已就位">
+          <figcaption><b>图 2</b>　落地页。到这儿就能直接操作，不用再找入口。</figcaption>
+        </figure>
+        <p class="done">看到 DevBridge TUI 命令行，可以直接输入。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">3</span>在 TUI 里创建隧道</h3>
+        <p>按 TUI 引导输入 <code>devbridge create</code>，拿到公网地址。到这里才算完成闭环：环境直达只解决了“去哪里”，真正有价值的输出是这条可访问的公网 URL。</p>
+        <figure class="ph">
+          <img src="assets/p33.png" alt="创建隧道与公网地址结果。">
+          <figcaption><b>图 3</b>　创建隧道与公网地址结果。</figcaption>
+        </figure>
+        <p class="done">拿到可访问的公网地址。</p>
+      </div>
+
+      <h2 id="s6"><span class="sec-no">六</span>给自己要分享的场景做一条这样的链接</h2>
+
+      <p>从开发者空间的 AI Shell 打开左侧栏 <strong>TOOLS → 链接生成（BETA）</strong>。三种场景对应三种落地方式：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:11rem">场景</th>
+              <th>落地效果</th>
+              <th>用在哪</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI Shell 预置提示词</td>
+              <td>打开 AI Shell，把写好的提示词填进去，默认不自动发送</td>
+              <td>进去就能照着问</td>
+            </tr>
+            <tr>
+              <td>作业环境</td>
+              <td>打开指定作业环境的命令行或网页界面</td>
+              <td>本案例走这条</td>
+            </tr>
+            <tr>
+              <td>自定义</td>
+              <td>进容器前先跑几条命令，再开端口或预置提示词</td>
+              <td>需要先把服务拉起来</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">1</span>选「作业环境」场景，选 DevBridge · TUI</h3>
+        <p>下拉列表支持按名字搜索，选中后环境名自动带出。基础地址会自动填好，不用改。</p>
+        <figure>
+          <img src="assets/p34.png" alt="作业环境场景表单，下拉列表中选择 DevBridge TUI">
+          <figcaption><b>图 4</b>　作业环境场景。下拉列表里选 DevBridge · TUI。</figcaption>
+        </figure>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">2</span>环境名写动作型，渠道按规范</h3>
+        <p>环境名会显示给最终用户，上限 30 个字符。写成动作型命名，用户点之前就知道会发生什么：</p>
+        <pre><code>打开 DevBridge TUI
+体验开发者隧道
+创建公网访问连接</code></pre>
+        <p>同一个入口被多个文档复用时，渠道不要每次随手填写，提前定规范：</p>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:9rem">渠道名</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>case-doc</code></td>
+                <td>案例文档</td>
+              </tr>
+              <tr>
+                <td><code>training</code></td>
+                <td>培训或课程</td>
+              </tr>
+              <tr>
+                <td><code>support</code></td>
+                <td>支持工单</td>
+              </tr>
+              <tr>
+                <td><code>product-doc</code></td>
+                <td>产品文档</td>
+              </tr>
+              <tr>
+                <td><code>demo</code></td>
+                <td>现场演示</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figure>
+          <img src="assets/devbridge-tui-link-generation.jpg" alt="作业环境场景配置完成的链接生成表单">
+          <figcaption><b>图 5</b>　配置完成的表单。环境名「打开 DevBridge TUI」，渠道按来源统一命名。</figcaption>
+        </figure>
+        <p class="done">基础地址、作业环境、环境名、渠道四项填写完整，环境名是动作型表述。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">3</span>生成链接，看链接结构</h3>
+        <p>结果区给出完整链接，下面依次是立即体验、复制链接、二维码三个按钮。</p>
+        <figure>
+          <img src="assets/p35.png" alt="作业环境链接生成结果，显示完整链接与三个按钮">
+          <figcaption><b>图 6</b>　生成结果。完整链接可在「历史链接」里再次获取。</figcaption>
+        </figure>
+        <p>链接里有三个字段要注意：<code>target=/workenv-tui/devbridge</code> 决定落点，<code>dc</code> 带着环境与渠道信息，<code>dc_sign</code>
+          做签名校验。复制时不要截断，聊天工具常把长链接折成省略号。</p>
+        <p class="done">点「立即体验」能落到 DevBridge TUI；复制出来的链接发给同事也能用。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">4</span>生成二维码</h3>
+        <p>弹窗支持下载 SVG / PNG，放进文档或线下材料。</p>
+        <figure>
+          <img src="assets/p37.png" alt="扫码打开二维码弹窗，支持下载 SVG 和 PNG">
+          <figcaption><b>图 7</b>　「扫码打开」弹窗。下载的二维码可独立扫码跳转。</figcaption>
+        </figure>
+        <p class="done">二维码弹窗可正常打开，下载的图片可独立扫码。</p>
+      </div>
+
+      <div class="note">
+        <span class="lbl">发布前</span>
+        <p>发布前至少做三种冷启动验证：当前已登录状态直开、新会话登录后直达、手机扫码落地。三种入口都落到 DevBridge TUI，再对外发。</p>
+      </div>
+
+      <h2 id="s7"><span class="sec-no">七</span>用之前要知道的几件事</h2>
+
+      <ul>
+        <li><strong>环境是临时的</strong>：体验版顶栏一直显示剩余时长，到点销毁。要留的东西，用户得自己先存出去。</li>
+        <li><strong>链接有效，不等于环境一直在</strong>：链接本身长期可用，每次点开都是新容器，隧道要重新创建。</li>
+        <li><strong>链接不带登录态</strong>：没登录会先跳华为云登录，登录完自动回到这条链接。</li>
+        <li><strong>环境名上限 30 字</strong>：超了会被截断，别把使用说明塞进环境名。</li>
+        <li><strong>渠道只做统计</strong>：链接里只保留环境定位和渠道信息，不放敏感信息。</li>
+      </ul>
+
+      <h2 id="s8"><span class="sec-no">八</span>常见问题</h2>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:12rem">现象</th>
+              <th style="width:12rem">原因</th>
+              <th>处理</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>落在通用工作台</td>
+              <td>这条是普通链接，不是深链</td>
+              <td>用带 <code>target=/workenv-tui/devbridge</code> 的链接</td>
+            </tr>
+            <tr>
+              <td>打开的不是 TUI</td>
+              <td>场景或作业环境选错</td>
+              <td>回链接生成页检查作业环境是否为 DevBridge · TUI</td>
+            </tr>
+            <tr>
+              <td>生成的链接打不开</td>
+              <td>链接被截断，缺 <code>dc</code> 或 <code>dc_sign</code></td>
+              <td>重新完整复制</td>
+            </tr>
+            <tr>
+              <td>二维码扫不出来</td>
+              <td>截图或压缩导致码点丢失</td>
+              <td>下载原始 PNG 再投放</td>
+            </tr>
+            <tr>
+              <td>环境名被截断</td>
+              <td>超过 30 个字符</td>
+              <td>缩短为动作型短语</td>
+            </tr>
+            <tr>
+              <td>隧道创建失败</td>
+              <td>本地服务未启动或端口占用</td>
+              <td>看 TUI 输出，确认服务状态后重试</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s9"><span class="sec-no">九</span>相关资源</h2>
+
+      <ul>
+        <li>DevBridge 空间：<a
+            href="https://devstation.connect.huaweicloud.com/space/devbridge">devstation.connect.huaweicloud.com/space/devbridge</a>
+        </li>
+        <li>AI 开发者空间体验版：<a
+            href="https://devstation.developer.huaweicloud.com/aidevspace">devstation.developer.huaweicloud.com/aidevspace</a>
+        </li>
+        <li>链接生成入口：AI 开发者空间 → TOOLS → 链接生成 → 作业环境</li>
+      </ul>
+    </main>
+
+    <aside>
+      <nav class="toc" aria-label="本页内容">
+        <p class="hd">本页内容</p>
+        <ol id="toclist">
+          <li><a href="#s1">一　先认识 DevBridge</a></li>
+          <li><a href="#s2">二　以前的做法</a></li>
+          <li><a href="#s3">三　URL 即环境带来的变化</a></li>
+          <li><a href="#s4">四　开始前，请准备</a></li>
+          <li><a href="#s5">五　动手体验</a></li>
+          <li><a href="#s6">六　做一条这样的链接</a></li>
+          <li><a href="#s7">七　用之前要知道</a></li>
+          <li><a href="#s8">八　常见问题</a></li>
+          <li><a href="#s9">九　相关资源</a></li>
+        </ol>
+      </nav>
+    </aside>
+  </div>
+
+  <div id="lb" role="dialog" aria-label="放大的截图"><img alt=""></div>
+
+  <script>
+    (function () {
+      var links = [].slice.call(document.querySelectorAll('#toclist a'));
+      var heads = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+      var bar = document.getElementById('prog');
+
+      function update() {
+        var idx = 0;
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i] && heads[i].getBoundingClientRect().top <= 140) idx = i;
+        }
+        links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0) + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+
+      var lb = document.getElementById('lb'), img = lb.querySelector('img');
+      document.querySelectorAll('figure img').forEach(function (el) {
+        el.addEventListener('click', function () { img.src = el.src; lb.classList.add('on'); });
+      });
+      lb.addEventListener('click', function () { lb.classList.remove('on'); img.src = ''; });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { lb.classList.remove('on'); img.src = ''; }
+      });
+    })();
+  </script>
+</body>
+
+</html>

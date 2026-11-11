@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>从 GitCode 仓库跳转到 AI 开发者空间部署开源项目</title>
+  <style>
+    :root {
+      --bg: #fdfdfc;
+      --fg: #1b1f24;
+      --muted: #666e79;
+      --line: #e6e3dd;
+      --card: #ffffff;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+      --code-bg: #f4f2ee;
+      --toc: 15rem;
+      --gap: clamp(2rem, 3vw, 3.25rem);
+      --measure: 42rem;
+      --pad: clamp(1.25rem, 3.2vw, 3.5rem);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #15171a;
+        --fg: #e5e7ea;
+        --muted: #9aa3ae;
+        --line: #2a2e34;
+        --card: #1b1e22;
+        --accent: #7fb0f5;
+        --accent-soft: #1c2735;
+        --code-bg: #22262b;
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      font-size: 17px
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC", system-ui, sans-serif;
+      line-height: 1.85;
+    }
+
+    @media (min-width:1600px) {
+      html {
+        font-size: 18px
+      }
+    }
+
+    @media (min-width:2100px) {
+      html {
+        font-size: 19px
+      }
+    }
+
+    @media (min-width:1800px) {
+      :root {
+        --measure: 45rem
+      }
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      z-index: 60
+    }
+
+    .wrap {
+      display: grid;
+      grid-template-columns: minmax(0, var(--measure)) var(--toc);
+      justify-content: center;
+      column-gap: var(--gap);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+
+    main {
+      grid-column: 1;
+      min-width: 0;
+      padding: 2.6rem 0 5rem
+    }
+
+    main>* {
+      max-width: min(var(--measure), 100%)
+    }
+
+    h1 {
+      font-size: clamp(1.58rem, 1.3rem + .55vw, 1.8rem);
+      line-height: 1.4;
+      margin: 0 0 .9rem;
+      letter-spacing: -.01em;
+      font-weight: 700
+    }
+
+    .lead {
+      font-size: 1.08em;
+      line-height: 1.8;
+      margin: 0 0 1.6rem
+    }
+
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem 2rem;
+      margin: 0 0 2rem;
+      padding: 0 0 1.4rem;
+      border-bottom: 1px solid var(--line);
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .facts b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    h2 {
+      font-size: 1.32em;
+      line-height: 1.45;
+      font-weight: 650;
+      margin: 3.4rem 0 1rem;
+      text-wrap: balance;
+      padding-top: 2rem;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 1.5rem
+    }
+
+    h2:first-of-type {
+      margin-top: 1.6rem;
+      padding-top: 0;
+      border-top: 0
+    }
+
+    h3 {
+      font-size: 1.06em;
+      font-weight: 650;
+      margin: 2.2rem 0 .7rem
+    }
+
+    .sec-no {
+      color: var(--muted);
+      font-weight: 500;
+      margin-right: .6rem;
+      font-variant-numeric: tabular-nums
+    }
+
+    p {
+      margin: 0 0 1.1rem
+    }
+
+    ul,
+    ol {
+      margin: 0 0 1.15rem;
+      padding-left: 1.4rem
+    }
+
+    li {
+      margin: .4rem 0
+    }
+
+    strong {
+      font-weight: 650
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent)
+    }
+
+    a:hover {
+      border-bottom-color: var(--accent)
+    }
+
+    .nb {
+      white-space: nowrap
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .87em;
+      background: var(--code-bg);
+      padding: .12em .36em;
+      border-radius: 4px;
+      word-break: break-word
+    }
+
+    pre {
+      margin: 1.2rem 0 1.8rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.15rem;
+      overflow: auto;
+      font-size: .82rem;
+      line-height: 1.7
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      white-space: pre-wrap;
+      word-break: break-all
+    }
+
+    .step {
+      margin: 2rem 0 2.4rem
+    }
+
+    .step h3 {
+      display: flex;
+      align-items: baseline;
+      gap: .6rem;
+      margin: 0 0 .5rem
+    }
+
+    .step h3 .n {
+      flex: none;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      align-self: center
+    }
+
+    .done {
+      margin: .9rem 0 0;
+      font-size: .9rem;
+      color: var(--muted)
+    }
+
+    .done::before {
+      content: "完成标志";
+      display: inline-block;
+      margin-right: .5rem;
+      font-size: .72rem;
+      letter-spacing: .06em;
+      color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+      border-radius: 99px;
+      padding: .05rem .5rem;
+      vertical-align: 1px
+    }
+
+    figure {
+      margin: 1.5rem 0 2.1rem
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      cursor: zoom-in
+    }
+
+    figcaption {
+      margin-top: .6rem;
+      font-size: .84em;
+      line-height: 1.65;
+      color: var(--muted)
+    }
+
+    figcaption b {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    .tablewrap {
+      overflow-x: auto;
+      margin: 1.3rem 0 2rem
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: .9em;
+      line-height: 1.7;
+      min-width: 28rem
+    }
+
+    th,
+    td {
+      padding: .6rem .75rem;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line)
+    }
+
+    thead th {
+      font-size: .82em;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      background: var(--card)
+    }
+
+    tbody tr:nth-child(even) {
+      background: color-mix(in srgb, var(--line) 22%, transparent)
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0
+    }
+
+    .note {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      padding: .85rem 1.05rem;
+      margin: 1.3rem 0 1.8rem;
+      font-size: .95em
+    }
+
+    .note p:last-child {
+      margin: 0
+    }
+
+    .note .lbl {
+      display: block;
+      font-size: .74em;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: .25rem
+    }
+
+    .ph-box {
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      padding: 2.6rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9em
+    }
+
+    aside {
+      grid-column: 2;
+      min-width: 0
+    }
+
+    nav.toc {
+      position: sticky;
+      top: 0;
+      max-height: 100vh;
+      overflow: auto;
+      padding: 2.8rem 0 3rem;
+      font-size: .88rem
+    }
+
+    nav.toc .hd {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin: 0 0 1rem
+    }
+
+    nav.toc ol {
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    nav.toc li {
+      margin: .05rem 0
+    }
+
+    nav.toc a {
+      display: block;
+      padding: .24rem .7rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      border-radius: 0 4px 4px 0;
+      line-height: 1.5
+    }
+
+    nav.toc a:hover {
+      color: var(--fg);
+      background: var(--accent-soft)
+    }
+
+    nav.toc a.on {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      font-weight: 600
+    }
+
+    .end {
+      margin-top: 3.6rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: .86em;
+      color: var(--muted)
+    }
+
+    #lb {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .88);
+      display: none;
+      place-items: center;
+      z-index: 100;
+      padding: 2rem;
+      cursor: zoom-out
+    }
+
+    #lb.on {
+      display: grid
+    }
+
+    #lb img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px
+    }
+
+    @media (max-width:60rem) {
+      .wrap {
+        grid-template-columns: 1fr;
+        padding: 0 1.35rem
+      }
+
+      main {
+        grid-column: 1;
+        padding-top: 1.5rem
+      }
+
+      aside {
+        display: none
+      }
+
+      main>* {
+        max-width: 100%
+      }
+    }
+
+    @media print {
+
+      aside,
+      .progress,
+      #lb {
+        display: none
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+        font-size: 10.5pt;
+        line-height: 1.6
+      }
+
+      .wrap {
+        display: block;
+        max-width: none;
+        padding: 0
+      }
+
+      main>* {
+        max-width: none
+      }
+
+      h2 {
+        break-after: avoid;
+        border-top: 1px solid #ccc
+      }
+
+      figure,
+      table,
+      .step,
+      .note {
+        break-inside: avoid
+      }
+
+      a {
+        color: #000;
+        border-bottom: 0
+      }
+
+      a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: #555
+      }
+    }
+  /* 背景对齐 GaussDB：浅灰底 + 顶部浅红渐变光带 */
+    :root {
+      --bg: #f6f8fb;
+      --fg: #1f2329;
+      --muted: #5b6472;
+      --line: #e8eaf0;
+      --card: #ffffff;
+      --code-bg: #f4f6fa;
+      --accent: #1558c0;
+      --accent-soft: #eef4fe;
+    }
+
+    body {
+      background-color: #f6f8fb;
+      background-image:
+        radial-gradient(circle at 94% 30px, rgba(207, 10, 44, .10), transparent 58%),
+        linear-gradient(135deg, #fff 0%, #fff5f6 45%, #fdeef0 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 380px;
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" id="prog"></div>
+
+  <div class="wrap">
+    <main>
+      <h1>从 GitCode 仓库<span class="nb">跳转到</span> AI 开发者空间<span class="nb">部署</span>开源项目</h1>
+      <p class="lead">从 minimax-code 的 GitCode 仓库页到 Agent 开始部署，用户只做三件事：点「云体验」、登录、确认发送。克隆仓库、读
+        README、装依赖和启动服务都不用自己敲；这些动作被压缩成一条预置提示词，随 URL2ENV 深链一起落进 AI Shell。</p>
+      <p class="facts">
+        <span>适合人群：<b>开源项目维护者、运营、想让人一键试跑项目的开发者</b></span>
+        <span>预计时间：<b>15 分钟</b></span>
+        <span>前置条件：<b>GitCode 账号 + 华为云账号</b></span>
+      </p>
+
+      <h2 id="s1"><span class="sec-no">一</span>先认识 minimax-code 和「云体验」</h2>
+
+      <p>minimax-code 是 MiniMax-AI 开源在 GitCode 上的项目。这里不展开项目本身，只验证最容易被文档遗漏的问题：新用户拿到一个仓库链接后，能不能在短时间内部署出一个可访问的运行现场。</p>
+
+      <p>「云体验」看起来只是仓库页上的一个入口，实际由 URL2ENV 深链驱动：进哪个界面、预置什么提示词、要不要立即发送，都编在链接里。我把这次体验的验收边界定成三条：</p>
+
+      <ul>
+        <li>从仓库页点进去，不经过任何配置界面；</li>
+        <li>落地就是 AI Shell，提示词已经填好，用户不用再描述任务；</li>
+        <li>用户第一件事是确认执行，而不是先学平台怎么用。</li>
+      </ul>
+
+      <p>后面会分两段记录：第五节先走观众路径，第六节回到「链接生成」界面，看怎么给自己的仓库做出同款链接。</p>
+
+      <figure>
+        <img src="assets/p1.png" alt="GitCode 仓库页，右上角有云体验按钮">
+        <figcaption><b>图 1</b>　仓库页右上角的「云体验」按钮，点击后触发 GitCode 侧的 URL2ENV 深链。</figcaption>
+      </figure>
+
+      <h2 id="s2"><span class="sec-no">二</span>以前的做法：给个仓库地址，剩下自己来</h2>
+
+      <p>只发仓库地址和 README，读者就会先面对一台空的通用工作台。项目不在这里，任务也不在这里；下一步是什么，完全靠读者自己判断。</p>
+
+      <p>克隆、读文档、装依赖、找启动命令，这些动作单独看都不难。但一个只想试跑项目的人，可能要读完整套上下文才知道第一个命令该敲什么。命令能跑通还好，卡住时就更难分清是依赖问题、运行时问题，还是文档漏了步骤。</p>
+
+      <h2 id="s3"><span class="sec-no">三</span>URL 即环境带来的变化：从读文档到跑环境</h2>
+
+      <p>「云体验」背后的能力来自 AI 开发者空间的「链接生成」。链接不是简单指向工作台，而是把环境上下文带到 URL 里：落点是 AI Shell，任务是一段完整的部署提示词，发送方式由模式决定。这类链接叫
+        <strong>URL 即环境（URL to ENV）</strong>。
+      </p>
+
+      <p>链接编码前是一份配置，签名后变成可点、可扫码的 URL。落到读者面前时，仓库地址变成了已经准备好的会话：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:9rem">环节</th>
+              <th>没有深链</th>
+              <th>有深链</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>进入时要做的判断</td>
+              <td>读 README、找 clone 地址、猜启动方式</td>
+              <td>没有，提示词已经替你写好</td>
+            </tr>
+            <tr>
+              <td>要执行的命令</td>
+              <td>克隆、安装、启动，一条条敲</td>
+              <td>确认后 Agent 替你执行</td>
+            </tr>
+            <tr>
+              <td>要理解的概念</td>
+              <td>环境管理、依赖安装、启动脚本</td>
+              <td>只需要知道自己来试 minimax-code</td>
+            </tr>
+            <tr>
+              <td>等待</td>
+              <td>散在几次尝试之间，看不到进展</td>
+              <td>一次会话内连续执行，过程可见</td>
+            </tr>
+            <tr>
+              <td>卡住时</td>
+              <td>报错信息靠自己排查</td>
+              <td>Agent 给出最短修复路径</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s4"><span class="sec-no">四</span>开始前要确认的几件事</h2>
+
+      <ul>
+        <li><strong>GitCode 账号</strong>：能打开目标仓库，本案例用 <a
+            href="https://gitcode.com/MiniMax-AI/minimax-code?source_module=search_project">MiniMax-AI/minimax-code</a>。
+        </li>
+        <li><strong>华为云账号</strong>：已注册即可，用于登录 AI 开发者空间。</li>
+        <li><strong>AI Shell 左侧栏能看到 TOOLS → 链接生成（BETA）</strong>：做同款链接时需要。看不到说明当前账号没在开放名单里，需要找管理员开通。</li>
+      </ul>
+
+      <h2 id="s5"><span class="sec-no">五</span>动手体验：从仓库页点一次「云体验」</h2>
+
+      <p>还没登录过开发者空间的话，会先跳登录，登录完自动回到 AI Shell。</p>
+
+      <div class="step">
+        <h3><span class="n">1</span>打开仓库页，点「云体验」</h3>
+        <p>位置在仓库页右上角。按钮会新开一个标签页。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">2</span>按提示登录华为云账号</h3>
+        <p>首次进入会先完成环境初始化；弹出「临时凭据自动配置」时点「同意」，环境会免手工配置 AK/SK。</p>
+        <figure>
+          <img src="assets/aidevspace-entry-credential-dialog.png" alt="AI 开发者空间临时凭据自动配置弹窗">
+          <figcaption><b>图 2</b>　首次进入时的「临时凭据自动配置」弹窗。点「同意」，环境免手工配置。</figcaption>
+        </figure>
+        <p class="done">看到工作台界面，左侧有 AGENTS / TOOLS / EXTENSIONS 侧边栏。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">3</span>AI Shell自动创建</h3>
+        <figure>
+          <img src="assets/p3.png" alt="AI Shell 落地页，输入框已预置完整提示词">
+          <figcaption><b>图 3</b>　AI Shell 落地页</figcaption>
+        </figure>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">4</span>等 Agent 执行部署</h3>
+        <p>Agent 按提示词执行，过程和报错都在会话里可见。</p>
+        <figure class="ph">
+          <img src="assets/p4.png" alt="Agent 按预置提示词执行部署。">
+          <figcaption><b>图 4</b>　Agent 按预置提示词执行部署。</figcaption>
+        </figure>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">5</span>看部署结果</h3>
+        <p>跑完会输出访问地址、使用方式和停止方式。如果失败，Agent 会先给最短修复路径，而不是停在报错信息上。</p>
+        <figure class="ph">
+          <img src="assets/p5.png" alt="服务启动后形成作业环境卡片。">
+          <figcaption><b>图 5</b>　服务启动后形成作业环境卡片</figcaption>
+        </figure>
+        <p class="done">得到明确的运行结果（访问地址或运行状态）。</p>
+      </div>
+
+      <h2 id="s6"><span class="sec-no">六</span>给自己的仓库做一条这样的链接</h2>
+
+      <p>从开发者空间的 AI Shell 打开左侧栏 <strong>TOOLS → 链接生成（BETA）</strong>。三种场景对应三种落地方式：</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:11rem">场景</th>
+              <th>落地效果</th>
+              <th>用在哪</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI Shell 预置提示词</td>
+              <td>打开 AI Shell，把写好的提示词填进去，默认不自动发送</td>
+              <td>本案例走这条</td>
+            </tr>
+            <tr>
+              <td>作业环境</td>
+              <td>打开指定作业环境的命令行或网页界面</td>
+              <td>目标环境已经存在时</td>
+            </tr>
+            <tr>
+              <td>自定义</td>
+              <td>进容器前先跑几条命令，再开端口或预置提示词</td>
+              <td>需要先把服务拉起来</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">1</span>选「AI Shell 预置提示词」场景</h3>
+        <p>基础地址自动填好，不用改。</p>
+        <figure>
+          <img src="assets/p6.png" alt="链接生成表单，场景为 AI Shell 预置提示词，提示词已填写">
+          <figcaption><b>图 6</b>　链接生成表单。场景「AI Shell 预置提示词」，提示词已填写。</figcaption>
+        </figure>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">2</span>填提示词，按「目标 + 分步 + 交付物」写</h3>
+        <p>给 Agent 的提示词要像启动脚本，不要写成项目介绍。本案例用的原文：</p>
+        <pre><code>请帮我部署并启动 minimax-code 项目：
+1. 克隆仓库：https://gitcode.com/MiniMax-AI/minimax-code
+2. 阅读 README，识别最小可运行路径
+3. 安装依赖并启动
+4. 启动后输出访问地址、使用方式和停止方式</code></pre>
+        <p>更复杂的项目可以用这个模板，把仓库上下文固定得更完整：</p>
+        <pre><code>目标：在当前 AI 开发者空间中部署并启动该仓库的最小可运行版本。
+
+仓库信息：
+- 仓库地址：&lt;repo_url&gt;
+- 分支或 Tag：&lt;branch_or_tag&gt;
+- 项目类型：&lt;project_type&gt;
+
+执行步骤：
+1. 阅读 README、启动脚本和依赖配置，识别最小运行路径。
+2. 检查运行时版本、依赖管理工具和端口占用。
+3. 安装依赖。
+4. 使用项目自带命令启动服务。
+5. 服务启动后，输出访问地址、默认账号说明和停止方式。
+
+约束：
+- 不要修改业务代码。
+- 不要引入仓库未声明的重依赖。
+- 如果失败，先给出最短修复路径。
+- 如果必须配置密钥，只输出字段名，不要求用户粘贴真实密钥。</code></pre>
+        <div class="note">
+          <span class="lbl">注意</span>
+          <p>提示词里不要放真实密钥。必须配置时只写字段名，并指向 <code>.env.example</code> 或演示模式。</p>
+        </div>
+        <p class="done">提示词包含仓库地址、执行步骤和预期交付物。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">3</span>生成链接，检查链接结构</h3>
+        <p>结果区给出完整链接，下面是立即体验、复制链接、二维码三个按钮。</p>
+        <figure>
+          <img src="assets/p7.png" alt="链接生成结果，显示完整链接与三个按钮">
+          <figcaption><b>图 7</b>　生成结果。完整链接可在「历史链接」里再次获取。</figcaption>
+        </figure>
+        <p>这条链接有三个关键字段：<code>target=/aishell</code> 决定落点，<code>dc</code> 展开成预置提示词载荷，<code>dc_sign</code> 用来校验载荷有没有被改：
+        </p>
+        <pre><code>https://devstation.developer.huaweicloud.com/aidevspace?target=/aishell&amp;dc=&lt;预置提示词载荷&gt;&amp;dc_sign=&lt;签名&gt;</code></pre>
+        <p class="done">点「立即体验」能落到预置好提示词的 AI Shell；链接发给同事，对方也能打开同一个执行任务。</p>
+      </div>
+
+      <div class="step">
+        <h3><span class="n">4</span>生成二维码</h3>
+        <p>弹窗支持下载 SVG / PNG，适合放进文档、课件或线下物料。</p>
+        <figure>
+          <img src="assets/p8.png" alt="扫码打开二维码弹窗，支持下载 SVG 和 PNG">
+          <figcaption><b>图 8</b>　「扫码打开」弹窗。下载的二维码可独立扫码跳转。</figcaption>
+        </figure>
+        <p class="done">二维码弹窗可正常打开，下载的图片可独立扫码。</p>
+      </div>
+
+      <h2 id="s7"><span class="sec-no">七</span>用之前要知道的几件事</h2>
+
+      <ul>
+        <li><strong>环境是临时的</strong>：体验版顶栏一直显示剩余时长，到点销毁。要留的东西，用户得自己先存出去。</li>
+        <li><strong>链接有效，不等于环境一直在</strong>：链接本身长期可用，每次点开都是新容器，重新执行一遍提示词。</li>
+        <li><strong>链接不带登录态</strong>：没登录会先跳华为云登录，登录完自动回到这条链接。</li>
+        <li><strong>提示词默认不自动发送</strong>：Semi-Auto 模式让用户保留最终确认权。对仓库页这类公共入口来说，这个停顿是必要的。</li>
+        <li><strong>长链接别截断</strong>：缺 <code>dc</code> 或 <code>dc_sign</code> 链接就失效，聊天工具常把长链接折成省略号。</li>
+      </ul>
+
+      <h2 id="s8"><span class="sec-no">八</span>常见问题</h2>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:12rem">现象</th>
+              <th style="width:12rem">原因</th>
+              <th>处理</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>点开落在通用工作台</td>
+              <td>这条是普通链接，不是深链</td>
+              <td>用带 <code>target=/aishell&amp;dc=</code> 的链接</td>
+            </tr>
+            <tr>
+              <td>AI Shell 输入框是空的</td>
+              <td>提示词没填进链接，或链接被截断</td>
+              <td>回链接生成页重新生成并完整复制</td>
+            </tr>
+            <tr>
+              <td>Agent 停在某一步不动</td>
+              <td>依赖安装或启动失败</td>
+              <td>看会话输出；超过两分钟没动就重新点链接，会分配新环境</td>
+            </tr>
+            <tr>
+              <td>提示体验结束</td>
+              <td>体验时长用完，环境已释放</td>
+              <td>重新点链接拿新环境；成果要提前保存出去</td>
+            </tr>
+            <tr>
+              <td>生成的链接打不开</td>
+              <td>链接被截断，缺 <code>dc</code> 或 <code>dc_sign</code></td>
+              <td>重新完整复制</td>
+            </tr>
+            <tr>
+              <td>二维码扫不出来</td>
+              <td>截图或压缩导致码点丢失</td>
+              <td>下载原始 PNG 再投放</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="s9"><span class="sec-no">九</span>相关资源</h2>
+
+      <ul>
+        <li>GitCode 体验入口：<a
+            href="https://gitcode.com/MiniMax-AI/minimax-code?source_module=search_project">gitcode.com/MiniMax-AI/minimax-code</a>
+        </li>
+        <li>AI 开发者空间体验版：<a
+            href="https://devstation.developer.huaweicloud.com/aidevspace">devstation.developer.huaweicloud.com/aidevspace</a>
+        </li>
+        <li>链接生成入口：AI 开发者空间 → TOOLS → 链接生成 → AI Shell 预置提示词</li>
+      </ul>
+    </main>
+
+    <aside>
+      <nav class="toc" aria-label="本页内容">
+        <p class="hd">本页内容</p>
+        <ol id="toclist">
+          <li><a href="#s1">一　先认识 minimax-code</a></li>
+          <li><a href="#s2">二　以前的做法</a></li>
+          <li><a href="#s3">三　URL 即环境带来的变化</a></li>
+          <li><a href="#s4">四　开始前，请准备</a></li>
+          <li><a href="#s5">五　动手体验</a></li>
+          <li><a href="#s6">六　做一条这样的链接</a></li>
+          <li><a href="#s7">七　用之前要知道</a></li>
+          <li><a href="#s8">八　常见问题</a></li>
+          <li><a href="#s9">九　相关资源</a></li>
+        </ol>
+      </nav>
+    </aside>
+  </div>
+
+  <div id="lb" role="dialog" aria-label="放大的截图"><img alt=""></div>
+
+  <script>
+    (function () {
+      var links = [].slice.call(document.querySelectorAll('#toclist a'));
+      var heads = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+      var bar = document.getElementById('prog');
+
+      function update() {
+        var idx = 0;
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i] && heads[i].getBoundingClientRect().top <= 140) idx = i;
+        }
+        links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0) + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+
+      var lb = document.getElementById('lb'), img = lb.querySelector('img');
+      document.querySelectorAll('figure img').forEach(function (el) {
+        el.addEventListener('click', function () { img.src = el.src; lb.classList.add('on'); });
+      });
+      lb.addEventListener('click', function () { lb.classList.remove('on'); img.src = ''; });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { lb.classList.remove('on'); img.src = ''; }
+      });
+    })();
+  </script>
+</body>
+
+</html>
