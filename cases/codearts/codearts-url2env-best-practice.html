@@ -136,21 +136,6 @@
     a{color:#000; border-bottom:0}
     a[href^="http"]::after{content:" (" attr(href) ")"; font-size:8pt; color:#555}
   }
-/* 背景对齐 GaussDB：浅灰底 + 顶部浅红渐变光带 */
-  :root{
-    --bg:#f6f8fb; --fg:#1f2329; --muted:#5b6472; --line:#e8eaf0;
-    --card:#ffffff; --code-bg:#f4f6fa;
-    --accent:#1558c0; --accent-soft:#eef4fe;
-  }
-  body{
-    background-color:#f6f8fb;
-    background-image:
-      radial-gradient(circle at 94% 30px, rgba(207,10,44,.10), transparent 58%),
-      linear-gradient(135deg,#fff 0%,#fff5f6 45%,#fdeef0 100%);
-    background-repeat:no-repeat;
-    background-size:100% 380px;
-  }
-  @media print{ body{background:#fff} }
 </style>
 </head>
 <body>
