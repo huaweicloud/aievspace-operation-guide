@@ -383,7 +383,8 @@
     height: 26px;
     fill: #fff;
   }
-  .video-pagination {
+  .video-pagination,
+  .case-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -391,7 +392,8 @@
     margin-top: 24px;
     flex-wrap: wrap;
   }
-  .video-pagination button {
+  .video-pagination button,
+  .case-pagination button {
     min-width: 34px;
     height: 34px;
     padding: 0 10px;
@@ -403,17 +405,20 @@
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s, background 0.2s;
   }
-  .video-pagination button:hover:not(:disabled):not(.active) {
+  .video-pagination button:hover:not(:disabled):not(.active),
+  .case-pagination button:hover:not(:disabled):not(.active) {
     border-color: var(--link);
     color: var(--link);
   }
-  .video-pagination button.active {
+  .video-pagination button.active,
+  .case-pagination button.active {
     background: var(--link);
     border-color: var(--link);
     color: #fff;
     cursor: default;
   }
-  .video-pagination button:disabled {
+  .video-pagination button:disabled,
+  .case-pagination button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
   }
@@ -1472,8 +1477,8 @@
         </article>
         <article class="case-card">
           <h3 class="case-title">用一条链接打开码道 WebUI，项目已经克隆好了</h3>
-          <div class="case-desc-wrap" data-tip="点一下链接，大约四十秒后你已经在码道 WebUI 里，沙箱的 /workspace 下躺着克隆好的 atomcode 项目。环境启动和克隆这两件事，链接在你到达之前就做完了。">
-            <p class="case-desc">点一下链接，大约四十秒后你已经在码道 WebUI 里，沙箱的 /workspace 下躺着克隆好的 atomcode 项目。环境启动和克隆这两件事，链接在你到达之前就做完了。</p>
+          <div class="case-desc-wrap" data-tip="把「启动环境 + 克隆项目 + 打开 WebUI」三步编进一条链接，新同学不用配环境、不用敲 git clone，点开就能直接写代码；教程、工单里的环境说明可以缩成一次点击。">
+            <p class="case-desc">把「启动环境 + 克隆项目 + 打开 WebUI」编进一条链接，新同学不用配环境、不用敲 git clone，点开就能直接写代码。</p>
           </div>
           <div class="case-actions">
             <a class="case-more" href="cases/codearts/codearts-url2env-best-practice.html" target="_blank" rel="noopener">查看详情</a>
@@ -1481,8 +1486,8 @@
         </article>
         <article class="case-card">
           <h3 class="case-title">用一条链接直达 DevBridge TUI</h3>
-          <div class="case-desc-wrap" data-tip="DevBridge 的价值点在一个很具体的动作：创建隧道，拿到公网地址。现在改成一条作业环境深链——点开、登录、落地就是 DevBridge TUI，用户直接进入创建隧道的现场。">
-            <p class="case-desc">DevBridge 的价值点在一个很具体的动作：创建隧道，拿到公网地址。现在改成一条作业环境深链——点开、登录、落地就是 DevBridge TUI，用户直接进入创建隧道的现场。</p>
+          <div class="case-desc-wrap" data-tip="把 DevBridge 做成一条可分享的环境链接：接收方点开就在 TUI 现场，省掉找入口、选环境的前置学习，注意力直接落在创建隧道上；文档和工单里不必再写「请先进入平台…」。">
+            <p class="case-desc">把 DevBridge 做成一条可分享的环境链接，接收方点开就是 TUI 现场，省掉找入口、选环境的前置学习，直接开始创建隧道。</p>
           </div>
           <div class="case-actions">
             <a class="case-more" href="cases/devbridge/devbridge-url2env-best-practice.html" target="_blank" rel="noopener">查看详情</a>
@@ -1490,8 +1495,8 @@
         </article>
         <article class="case-card">
           <h3 class="case-title">从 EduSwarm 实践案例跳转到 AI 开发者空间进行实践</h3>
-          <div class="case-desc-wrap" data-tip="实践中心卡片上有个「前往 AI DevSpace 实践」按钮。点一下，约七十秒后你就在 EduSwarm 的课堂工作台里，输入框可以直接用。环境、启动命令、要打开的界面，这条链接都提前替你做完了。">
-            <p class="case-desc">实践中心卡片上有个「前往 AI DevSpace 实践」按钮。点一下，约七十秒后你就在 EduSwarm 的课堂工作台里，输入框可以直接用。环境、启动命令、要打开的界面，这条链接都提前替你做完了。</p>
+          <div class="case-desc-wrap" data-tip="给教学场景一条开箱即用的实践入口：环境、启动命令、界面和提示词随链接预置，学生点开就能在课堂工作台动手，不必先读懂平台结构。">
+            <p class="case-desc">给教学场景一条开箱即用的实践入口：环境、启动命令、界面都随链接预置，学生点开就能在课堂工作台动手，不必先读懂平台。</p>
           </div>
           <div class="case-actions">
             <a class="case-more" href="cases/eduswarm/eduswarm-url2env-best-practice.html" target="_blank" rel="noopener">查看详情</a>
@@ -1499,8 +1504,8 @@
         </article>
         <article class="case-card">
           <h3 class="case-title">从开发者作品展览馆作品跳转到 AI 开发者空间运行作品</h3>
-          <div class="case-desc-wrap" data-tip="从 Buddy 陪伴搭子的作品页到能填写的 HelloCard 页面，观众只需要点一次「体验作品」。中间的登录、环境创建、克隆、部署和 2 小时公网隧道，都被一条 URL2ENV 深链提前安排好。">
-            <p class="case-desc">从 Buddy 陪伴搭子的作品页到能填写的 HelloCard 页面，观众只需要点一次「体验作品」。中间的登录、环境创建、克隆、部署和 2 小时公网隧道，都被一条 URL2ENV 深链提前安排好。</p>
+          <div class="case-desc-wrap" data-tip="让作品从「看得见」变成「跑得起来」：运行参数与提示词随作品页链接下发，观众一次点击就能在 AI Shell 里体验，作者也不用反复写部署说明。">
+            <p class="case-desc">让作品从「看得见」变成「跑得起来」：运行参数与提示词随链接下发，观众点一次就能上手体验，作者不用反复写部署说明。</p>
           </div>
           <div class="case-actions">
             <a class="case-more" href="cases/gallery/gallery-url2env-best-practice.html" target="_blank" rel="noopener">查看详情</a>
@@ -1508,8 +1513,8 @@
         </article>
         <article class="case-card">
           <h3 class="case-title">从 GitCode 仓库跳转到 AI 开发者空间部署开源项目</h3>
-          <div class="case-desc-wrap" data-tip="从 minimax-code 的 GitCode 仓库页到 Agent 开始部署，用户只做三件事：点「云体验」、登录、确认发送。克隆仓库、读 README、装依赖和启动服务都被压缩成一条预置提示词，随 URL2ENV 深链一起落进 AI Shell。">
-            <p class="case-desc">从 minimax-code 的 GitCode 仓库页到 Agent 开始部署，用户只做三件事：点「云体验」、登录、确认发送。克隆仓库、读 README、装依赖和启动服务都被压缩成一条预置提示词，随 URL2ENV 深链一起落进 AI Shell。</p>
+          <div class="case-desc-wrap" data-tip="把开源项目的上手成本压到一次点击：部署步骤固化成预置提示词随链接下发，体验者只需登录确认，几分钟就能看到项目跑起来，维护者少写一份部署文档。">
+            <p class="case-desc">把开源项目的上手成本压到一次点击：部署步骤固化成预置提示词，体验者登录确认就能看到项目跑起来，维护者少写一份部署文档。</p>
           </div>
           <div class="case-actions">
             <a class="case-more" href="cases/gitcode/gitcode-url2env-best-practice.html" target="_blank" rel="noopener">查看详情</a>
@@ -1552,6 +1557,7 @@
           </div>
         </article>
       </div>
+      <div class="case-pagination" id="case-pagination"></div>
     </section>
 
     <section id="changelog">
@@ -2578,6 +2584,48 @@
 
   renderVideoFilters();
   renderVideoPage(1);
+
+  // 实践案例分页：静态卡片按页渲染
+  const caseGrid = document.getElementById('case-list');
+  const casePagination = document.getElementById('case-pagination');
+  const CASE_PAGE_SIZE = 9; // 每页案例数（3 列 × 3 行）
+  const caseItems = caseGrid ? Array.from(caseGrid.children) : [];
+  const casePageCount = Math.max(1, Math.ceil(caseItems.length / CASE_PAGE_SIZE));
+  let caseCurrentPage = 1;
+
+  function renderCasePagination() {
+    if (!casePagination) return;
+    if (casePageCount <= 1) { casePagination.innerHTML = ''; return; }
+    let html = '<button type="button" data-page="prev" aria-label="上一页"' + (caseCurrentPage === 1 ? ' disabled' : '') + '>‹</button>';
+    for (let i = 1; i <= casePageCount; i++) {
+      html += '<button type="button" data-page="' + i + '"' + (i === caseCurrentPage ? ' class="active"' : '') + '>' + i + '</button>';
+    }
+    html += '<button type="button" data-page="next" aria-label="下一页"' + (caseCurrentPage === casePageCount ? ' disabled' : '') + '>›</button>';
+    casePagination.innerHTML = html;
+  }
+
+  function renderCasePage(page) {
+    if (!caseGrid) return;
+    caseCurrentPage = Math.min(Math.max(1, page), casePageCount);
+    const start = (caseCurrentPage - 1) * CASE_PAGE_SIZE;
+    caseGrid.innerHTML = '';
+    caseItems.slice(start, start + CASE_PAGE_SIZE).forEach(function (card) { caseGrid.appendChild(card); });
+    renderCasePagination();
+  }
+
+  if (casePagination) {
+    casePagination.addEventListener('click', function (e) {
+      const btn = e.target.closest('button[data-page]');
+      if (!btn || btn.disabled) return;
+      const p = btn.getAttribute('data-page');
+      const next = p === 'prev' ? caseCurrentPage - 1 : (p === 'next' ? caseCurrentPage + 1 : parseInt(p, 10));
+      if (next === caseCurrentPage) return;
+      renderCasePage(next);
+      caseGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  renderCasePage(1);
 
   // 视频时长：元数据加载后显示在右下角
   function formatTime(t) {
