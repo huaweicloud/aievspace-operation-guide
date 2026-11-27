@@ -193,6 +193,7 @@
   }
   .sidebar nav a.sub { padding-left: 26px; font-size: 13px; color: var(--text-2); }
   .sidebar nav a.sub2 { padding-left: 42px; font-size: 12.5px; color: var(--text-3); }
+  .sidebar nav a.sub3 { padding-left: 58px; font-size: 12.5px; color: var(--text-3); }
   .sidebar nav a.toggle-parent {
     cursor: pointer;
     user-select: none;
@@ -758,7 +759,12 @@
       <a href="#home">首页</a>
       <a href="#agents" class="toggle-parent" id="agents-toggle"><span class="label">AGENTS 概览</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="agents-submenu">
-        <a href="#ai-shell" class="sub2">AI SHELL</a>
+        <a href="#ai-shell" class="sub2 toggle-parent" id="aishell-toggle"><span class="label">AI SHELL</span><span class="arrow">▸</span></a>
+        <div class="submenu collapsed" id="aishell-submenu">
+          <a href="#skills" class="sub3">华为云 Skills</a>
+          <a href="#channels" class="sub3">Channels</a>
+        </div>
+        <a href="#agent-harmony" class="sub2">鸿蒙实践中心</a>
         <a href="#agent-codearts" class="sub2">CodeArts</a>
         <a href="#agent-WorkSwarm" class="sub2">WorkSwarm</a>
         <a href="#agent-deepseek-harness" class="sub2">DeepSeek Harness</a>
@@ -768,9 +774,25 @@
         <a href="#agent-kimicode" class="sub2">KimiCode</a>
         <a href="#agent-prime" class="sub2">Prime Agent</a>
         <a href="#agent-eduswarm" class="sub2">EduSwarm</a>
+        <a href="#agent-minimax" class="sub2">MiniMax Code</a>
+        <a href="#agent-icode" class="sub2">iCode</a>
       </div>
-      
+
+      <a href="#tools" class="toggle-parent" id="tools-toggle"><span class="label">TOOLS</span><span class="arrow">▸</span></a>
+      <div class="submenu collapsed" id="tools-submenu">
+        <a href="#tool-link" class="sub2">链接生成（BETA）</a>
+        <a href="#tool-devbridge" class="sub2">DevBridge</a>
+        <a href="#tool-kasmvnc" class="sub2">KasmVNC Desktop</a>
+        <a href="#tool-drawio" class="sub2">Next AI Draw.io</a>
+        <a href="#tool-secaudit" class="sub2">Security Scan Suite</a>
+        <a href="#tool-agenteval" class="sub2">AgentEval Lite</a>
+        <a href="#tool-grape" class="sub2">Grape</a>
+        <a href="#tool-openviking" class="sub2">OpenViking</a>
+        <a href="#tool-gaussdb" class="sub2">GaussDB</a>
+        <a href="#tool-aibook" class="sub2">AI Book</a>
+      </div>
       <a href="#workenv">环境管理</a>
+      <!-- AGENT WORK 相关内容暂时隐藏；如需恢复，取消本段注释，并移除对应 section 的 style="display:none"
       <a href="#agent-work" class="toggle-parent" id="agentwork-toggle"><span class="label">AGENT WORK</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="agentwork-submenu">
         <a href="#agent-work-agents" class="sub2">Agent 管理</a>
@@ -779,15 +801,10 @@
         <a href="#agent-work-squads" class="sub2">小队</a>
         <a href="#agent-work-automation" class="sub2">自动化</a>
       </div>
+      -->
       <a href="#extensions" class="toggle-parent" id="extensions-toggle"><span class="label">EXTENSIONS</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="extensions-submenu">
-        <a href="#skills" class="sub2">华为云 Skills</a>
-        <a href="#channels" class="sub2">Channels</a>
-      </div>
-      <a href="#tools" class="toggle-parent" id="tools-toggle"><span class="label">TOOLS</span><span class="arrow">▸</span></a>
-      <div class="submenu collapsed" id="tools-submenu">
-        <a href="#tool-openviking" class="sub2">OpenViking</a>
-        <a href="#tool-devbridge" class="sub2">DevBridge</a>
+        <a href="#connectors" class="sub2">连接器</a>
       </div>
       <a href="#resources" class="toggle-parent" id="resources-toggle"><span class="label">RESOURCES</span><span class="arrow">▸</span></a>
       <div class="submenu collapsed" id="resources-submenu">
@@ -808,6 +825,7 @@
     <section id="intro">
       <h2>简介</h2>
       <p class="lead">AI 开发者空间是面向开发者的智能开发工作空间，以 AI SHELL 为核心入口，通过自然语言交互和命令行两种模式，打通云资源操作、智能代码生成、多 Agent 协作、基础设施即代码（IaC）部署、消息渠道对接、隧道托管与远程连接等全链路开发能力，帮助开发者在统一工作台中高效完成云原生应用的开发、部署与运维。</p>
+      <p>进入工作台后，左侧为全局导航（AGENTS、TOOLS、环境管理、EXTENSIONS、RESOURCES、文件管理、设置与反馈）与左下角的「会话」区，右侧为资源管理器面板，主区域展示当前功能页。</p>
 
       <h3>核心能力</h3>
       <table>
@@ -815,16 +833,20 @@
           <tr><th>模块</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话、TUI、命令行三种交互模式</td></tr>
-          <tr><td><strong>AGENTS</strong></td><td>9 个智能体，覆盖代码编写与分析、多 Agent 协作、DeepSeek 推理、编程辅助、个人助手、任务调度编排、AI 教学辅助等场景</td></tr>
-          <tr><td><strong>环境管理</strong></td><td>26 个作业环境，支持智能体、开发工具、数据库、基础设施四类分类与状态筛选，一键部署与管理</td></tr>
+          <tr><td><strong>AI SHELL</strong></td><td>核心入口，支持 AI 对话、TUI、命令行三种交互模式；下含华为云 Skills 与 Channels 两个子模块</td></tr>
+          <tr><td><strong>AGENTS</strong></td><td>14 个智能体（含待开放的 SRE），覆盖代码编写与分析、多 Agent 协作、DeepSeek 推理、编程辅助、个人助手、AI 教学等场景</td></tr>
+          <tr><td><strong>环境管理</strong></td><td>30 个作业环境，支持智能体、开发工具、数据库、基础设施、学习五类分类与状态筛选，一键部署与管理</td></tr>
+          <!-- AGENT WORK 暂时隐藏
           <tr><td><strong>AGENT WORK</strong></td><td>智能体工作平台（Beta），包含 Agent 管理、项目、任务、小队、自动化 5 个子模块，覆盖从 Agent 定义、任务承载、多智能体协作到周期自动化的完整工作流</td></tr>
-          <tr><td><strong>EXTENSIONS</strong></td><td>扩展能力，包含华为云 Skills（79 个云服务技能）和 Channels（飞书/微信/企业微信对接）</td></tr>
-          <tr><td><strong>TOOLS</strong></td><td>开发辅助工具：OpenViking 代码理解与重构、DevBridge 隧道管理</td></tr>
+          -->
+          <tr><td><strong>EXTENSIONS</strong></td><td>扩展能力，当前提供连接器（外部服务的 MCP 接入与凭证管理）</td></tr>
+          <tr><td><strong>TOOLS</strong></td><td>开发辅助工具集：链接生成（直达链接）、DevBridge 隧道管理、KasmVNC 远程桌面、Next AI Draw.io 绘图、Security Scan Suite 安全扫描、AgentEval Lite 评测、Grape AI DevOps、OpenViking 上下文数据库、GaussDB、AI Book</td></tr>
           <tr><td><strong>RESOURCES</strong></td><td>资源入口：文档站（本操作指南）与 Agent 接入（IACMCPServer 使用指南）</td></tr>
           <tr><td><strong>文件管理</strong></td><td>工作区文件操作：搜索、批量处理、上传、新建文件/文件夹，右侧面板快速访问</td></tr>
           <tr><td><strong>设置与反馈</strong></td><td>账号信息与主题设置（浅色 / 深色 / 跟随设备），以及问题反馈入口</td></tr>
-          <tr><td><strong>视频指导</strong></td><td>核心功能与实操方法的视频教程，支持按 CodeArts、AgentWork、WorkSwarm、作业环境、DevBridge、OpenViking 分类筛选查看</td></tr>
+          <tr><td><strong>视频指导</strong></td><td>核心功能与实操方法的视频教程，支持按 CodeArts、WorkSwarm、作业环境、GaussDB、DevBridge、OpenViking、模型接入分类筛选查看</td></tr>
+          <tr><td><strong>实践案例</strong></td><td>典型场景的端到端实践教程（KasmVNC 桌面、码道 WebUI、DevBridge TUI、EduSwarm 课堂、作品展览馆等），案例链接可一键直达对应环境</td></tr>
+          <tr><td><strong>更新日志</strong></td><td>按月记录各版本的新特性、特性更新与问题修复，并标注兼容性影响，便于评估升级</td></tr>
         </tbody>
       </table>
 
@@ -843,17 +865,26 @@
 
     <section id="home">
       <h2>首页</h2>
-      <p>登录 AI 开发者空间后默认进入首页。页面左侧为全局导航（AGENTS、环境管理、EXTENSIONS、TOOLS、RESOURCES、文件管理、设置与反馈），右侧为资源管理器面板；主区域从上到下分为四个板块：</p>
-      <img class="screenshot" src="images/home.png" alt="AI 开发者空间首页" />
-      <div class="figcaption">AI 开发者空间首页总览</div>
+      <p>通过华为云账号登录 <strong>AI 开发者空间-体验中心</strong> 后默认进入首页；在其他页面时，点击顶部标签栏的 <strong>首页</strong> 即可返回。首页聚合新手引导、每日资讯与实践入口，主区域从上到下依次为快速开始、每日AI知识精选、实践中心、开发者动态四个板块。</p>
+      <p><strong>首次使用建议按以下顺序上手：</strong></p>
+      <ol class="steps">
+        <li>在 <strong>快速开始</strong> 中挑选「什么是 AI 开发者空间」等视频，先了解产品能力与界面布局</li>
+        <li>在 <strong>实践中心</strong> 选择与自己场景一致的中心（AI 云原生 / 鸿蒙 / AI Agent / IaC），跟随实践指引完成一次端到端体验</li>
+        <li>进入 <strong>环境管理</strong> 确认所需环境已部署且状态为「运行中」，未部署的点击「部署」</li>
+        <li>从左侧 <strong>AGENTS</strong> 或 <strong>TOOLS</strong> 进入具体智能体 / 工具开始使用</li>
+      </ol>
+      <div class="tip"><b>说明：</b>顶部工具栏展示「剩余核时」，点击旁侧 ? 可查看统计口径；右上角「资源管理器」按钮用于展开 / 收起文件面板，设置入口为顶部工具栏的齿轮图标。</div>
+      
+      <img class="screenshot" src="images/home.jpg?v=20261127" alt="AI 开发者空间首页" />
+      <div class="figcaption">AI 开发者空间首页：快速开始、每日AI知识精选与实践中心</div>
       <table>
         <thead>
           <tr><th>板块</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>快速开始</strong></td><td>产品与核心功能的视频教程列表（什么是 AI 开发者空间、码道 CodeArts、WorkSwarm、AgentWork 等），点击即可在线播放</td></tr>
+          <tr><td><strong>快速开始</strong></td><td>产品与核心功能的视频教程列表（什么是 AI 开发者空间、码道 CodeArts、WorkSwarm 等），点击卡片即可在线播放</td></tr>
           <tr><td><strong>每日AI知识精选</strong></td><td>每日更新的大模型与 AI 领域精选资讯，涵盖前沿模型发布、技术进展与实践案例</td></tr>
-          <tr><td><strong>实践中心</strong></td><td>AI 云原生、鸿蒙、AI 办公、IaC 四大开发实践中心，按场景提供端到端的开发实践资源</td></tr>
+          <tr><td><strong>实践中心</strong></td><td>AI 云原生、鸿蒙、AI Agent、IaC 四大开发实践中心，按场景提供端到端的开发实践资源，点击对应中心进入实践页</td></tr>
           <tr><td><strong>开发者动态</strong></td><td>华为云开发者活动、任务福利与平台最新动态</td></tr>
         </tbody>
       </table>
@@ -875,13 +906,13 @@
 
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>在左侧 <strong>AGENTS 概览</strong>下点击 <strong>AI SHELL</strong>，进入 AI 对话界面</li>
+        <li>在左侧 <strong>AGENTS</strong> 分组下点击 <strong>AI Shell</strong>，进入 AI 对话界面</li>
         <li>点击 <strong>「新建」</strong>创建会话，可指定工作目录（CWD），缺省为 <code>/root/workspace</code></li>
         <li>在输入框用自然语言描述需求（例如"查询所有运行中的 ECS 实例"），按 Enter 发送（Shift+Enter 换行）</li>
         <li>输入 <code>/mode</code> 可随时切换「AI 对话」「TUI」「命令行」模式</li>
       </ol>
 
-      <img class="screenshot" src="images/ai-shell.png?v=20260920" alt="AI SHELL 主界面" />
+      <img class="screenshot" src="images/ai-shell.png?v=20261127" alt="AI SHELL 主界面" />
       <div class="figcaption">AI SHELL 主界面：居中欢迎页、快捷建议与需求输入框</div>
 
       <p><strong>输入增强：</strong></p>
@@ -899,20 +930,63 @@
         <tbody>
           <tr><td><strong>Session Mode</strong></td><td>控制 AI 的自主性与安全边界</td><td>Auto / Semi-Auto（默认）/ Manual / Plan</td></tr>
           <tr><td><strong>Reasoning Level</strong></td><td>控制模型产生的推理量</td><td>Low / Medium（默认）/ High</td></tr>
-          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/deepseek-v4-flash-0731（默认）/ hwdevspace/deepseek-v4-pro-0813 / hwdevspace/glm-5.1 / hwdevspace/glm-5.2</td></tr>
+          <tr><td><strong>Model</strong></td><td>选择使用的 LLM 模型</td><td>hwdevspace/deepseek-v4.1-flash-1017（默认）/ hwdevspace/deepseek-v4-pro-0813 / hwdevspace/glm-5.1 / hwdevspace/glm-5.2</td></tr>
         </tbody>
       </table>
 
-      <img class="screenshot" src="images/ai-shell-config.png?v=20260920" alt="AI SHELL 会话配置" />
+      <img class="screenshot" src="images/ai-shell-config.png?v=20261127" alt="AI SHELL 会话配置" />
       <div class="figcaption">会话配置面板：Session Mode / Reasoning Level / Model</div>
     </section>
 
     <section id="agents">
       <h2>AGENTS 概览</h2>
       <p>
-        <strong>AGENTS</strong> 模块默认展示 CodeArts、WorkSwarm、DeepSeek Harness 智能体，根据部署的环境状态动态展示 Agent 入口，
-        目前可以提供 9 个智能体，覆盖代码生成、多 Agent 协作、个人助手、DeepSeek 模型推理、AI 教学辅助等场景。
+        <strong>AGENTS</strong> 分组位于左侧导航顶部，根据已部署的环境状态动态展示智能体入口，未部署或待开放的环境不会出现在导航中。
+        当前共 <strong>14 个</strong>智能体，其中 <strong>SRE</strong> 待开放，覆盖代码生成、多 Agent 协作、个人助手、模型推理、AI 教学等场景：
       </p>
+      <p><strong>进入与使用：</strong></p>
+      <ol class="steps">
+        <li>展开左侧 <strong>AGENTS</strong> 分组，点击智能体名称进入其默认入口（TUI 或 WebUI）</li>
+        <li>表中标注 <strong>TUI / WebUI</strong> 的智能体，点击名称进入终端界面；在名称右侧点击 <strong>WebUI</strong> 按钮进入网页界面</li>
+        <li>在终端或网页界面中按页面提示输入任务；切换到其他菜单即离开当前智能体，可随时从左侧再次进入</li>
+      </ol>
+      <div class="tip"><b>看不到某个智能体？</b>左侧导航只展示已部署的环境。请到 <strong>环境管理</strong> 部署并启动对应环境，状态变为「运行中」后即可在 AGENTS 中出现。</div>
+      <div class="tip"><b>TUI 空白或跳回首页？</b>通常是环境仍在启动或终端端口未就绪。等待 1–2 分钟后重新点击；仍无法进入时，在环境管理中停止后重新启动环境再试。</div>
+      <table>
+        <thead>
+          <tr><th>智能体</th><th>入口形态</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AI Shell</strong></td><td>TUI</td><td>智驱华为云，对话即部署</td></tr>
+          <tr><td><strong>鸿蒙实践中心</strong></td><td>WebUI</td><td>鸿蒙 / ArkTS 云端编译打包与模拟器调测（在环境管理中归类为开发工具）</td></tr>
+          <tr><td><strong>CodeArts</strong></td><td>TUI / WebUI</td><td>华为云码道代码智能体 CLI，覆盖代码编写、分析、优化</td></tr>
+          <tr><td><strong>WorkSwarm</strong></td><td>TUI / WebUI</td><td>多 Agent 协作框架，自动分解任务并分配</td></tr>
+          <tr><td><strong>DeepSeek Harness</strong></td><td>TUI / WebUI</td><td>DeepSeek 官方多代理智能体开发平台</td></tr>
+          <tr><td><strong>Hermes Agent</strong></td><td>TUI / WebUI</td><td>自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
+          <tr><td><strong>OpenCode</strong></td><td>TUI / WebUI</td><td>开源 AI 编程代理，可连接 Claude、GPT、Gemini 等模型</td></tr>
+          <tr><td><strong>OpenClaw</strong></td><td>TUI / WebUI</td><td>开源可编程 AI 个人助手平台，支持自动化任务与工具调用</td></tr>
+          <tr><td><strong>KimiCode</strong></td><td>TUI</td><td>智能编程服务，支持代码阅读、文件编辑、命令执行、网页搜索</td></tr>
+          <tr><td><strong>Prime Agent</strong></td><td>TUI</td><td>开源通用 AI 编码智能体，内置 IPython 内核，支持 ACP 接入</td></tr>
+          <tr><td><strong>EduSwarm</strong></td><td>WebUI</td><td>AI 教师团队协作平台，覆盖备课、上课、作业、批改、学情</td></tr>
+          <tr><td><strong>MiniMax Code</strong></td><td>TUI</td><td>MiniMax Code CLI，可接入 Shell 与 CI</td></tr>
+          <tr><td><strong>iCode</strong></td><td>TUI</td><td>纯本地 AI 开发平台，主打轻量 TUI 体验</td></tr>
+          <tr><td><strong>SRE</strong></td><td>—</td><td>云服务运维智能体，支持环境运维、故障排查、扩缩容规划、费用查询（待开放）</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="agent-harmony">
+      <h2>鸿蒙实践中心</h2>
+      <p><strong>鸿蒙实践中心</strong> 基于 GLM 模型鸿蒙增训、深度适配 ArkTS 语言，提供云端编译打包与云端 + 本地模拟器调测能力，通过 <strong>WebUI</strong> 使用（在环境管理中归类为开发工具）。工作台左侧分为<strong>项目管理</strong>（CodeArts Web、CodeArts CLI、Skills 管理）与<strong>设备管理</strong>（鸿蒙云模拟器、本地真机&模拟器），并内置最佳实践。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENTS</strong> 分组下的 <strong>鸿蒙实践中心</strong>，打开 WebUI 工作台</li>
+        <li>点击 <strong>新建项目</strong> 创建鸿蒙工程，或通过 <strong>连接 GitCode</strong> 导入已有仓库</li>
+        <li>在项目中使用 CodeArts Web / CLI 编写代码，调用云端编译打包能力构建 HAP</li>
+        <li>在<strong>设备管理</strong>中选择鸿蒙云模拟器或本地真机完成安装与调测</li>
+      </ol>
+      <img class="screenshot" src="images/agent-harmony-webui.jpg?v=20261127" alt="鸿蒙实践中心 WebUI" />
+      <div class="figcaption">鸿蒙实践中心 WebUI：项目管理、设备管理与最佳实践入口</div>
     </section>
 
     <section id="agent-codearts">
@@ -926,10 +1000,10 @@
         <li>CodeArts 生成代码建议或分析报告，确认后执行查看结果</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-codearts-tui.jpg" alt="CodeArts TUI 模式" />
+      <img class="screenshot" src="images/agent-codearts-tui.jpg?v=20261127" alt="CodeArts TUI 模式" />
       <div class="figcaption">CodeArts TUI：终端模式，直接在命令行中交互</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-codearts-webui.jpg" alt="CodeArts WebUI 模式" />
+      <img class="screenshot" src="images/agent-codearts-webui.jpg?v=20261127" alt="CodeArts WebUI 模式" />
       <div class="figcaption">CodeArts WebUI：网页模式，可视化操作界面</div>
     </section>
 
@@ -945,10 +1019,10 @@
         <li>查看各 Agent 的协作结果</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-workswarm-tui.jpg" alt="WorkSwarm TUI 模式" />
+      <img class="screenshot" src="images/agent-workswarm-tui.jpg?v=20261127" alt="WorkSwarm TUI 模式" />
       <div class="figcaption">WorkSwarm TUI：终端模式</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-workswarm-webui.jpg" alt="WorkSwarm WebUI 模式" />
+      <img class="screenshot" src="images/agent-workswarm-webui.jpg?v=20261127" alt="WorkSwarm WebUI 模式" />
       <div class="figcaption">WorkSwarm WebUI：网页模式，多 Agent 可视化协作</div>
     </section>
 
@@ -964,25 +1038,29 @@
         <li>查看推理结果，根据需要调整提示词并重新执行</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-deepseek-harness-tui.jpg" alt="DeepSeek Harness TUI 模式" />
+      <img class="screenshot" src="images/agent-deepseek-harness-tui.jpg?v=20261127" alt="DeepSeek Harness TUI 模式" />
       <div class="figcaption">DeepSeek Harness TUI：终端模式</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-deepseek-harness-webui.jpg" alt="DeepSeek Harness WebUI 模式" />
+      <img class="screenshot" src="images/agent-deepseek-harness-webui.jpg?v=20261127" alt="DeepSeek Harness WebUI 模式" />
       <div class="figcaption">DeepSeek Harness WebUI：网页模式，支持会话编排与技能管理</div>
     </section>
 
     <section id="agent-hermes">
       <h2>Hermes Agent</h2>
-      <p><strong>Hermes Agent</strong> 是自我改进型 AI Agent，内置学习循环与长期记忆，可持续优化自身行为。</p>
+      <p><strong>Hermes Agent</strong> 是自我改进型 AI Agent，内置学习循环与长期记忆，可持续优化自身行为。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式，WebUI 提供 Chat、Sessions、Files、Models、Logs、Cron、Skills、Plugins、MCP、Channels、Webhooks、Config 等管理模块。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧菜单 <strong>Hermes Agent</strong>，进入该智能体</li>
+        <li>点击左侧菜单 <strong>Hermes Agent</strong>，进入终端界面；或点击右侧 <strong>WebUI</strong> 按钮进入网页控制台</li>
         <li>输入需要处理或改进的任务</li>
         <li>Hermes Agent 通过学习循环与长期记忆进行自我改进</li>
-        <li>查看改进后的结果</li>
+        <li>查看改进后的结果，可在 WebUI 的 Sessions / Skills 中回顾会话与沉淀的技能</li>
       </ol>
-      <img class="screenshot" src="images/agent-hermes.png" alt="Hermes Agent 智能体" />
-      <div class="figcaption">Hermes Agent：自我改进型 AI Agent</div>
+      <h3>TUI 模式（终端界面）</h3>
+      <img class="screenshot" src="images/agent-hermes.png?v=20261127" alt="Hermes Agent TUI 模式" />
+      <div class="figcaption">Hermes Agent TUI：终端模式，v0.20.6 启动界面</div>
+      <h3>WebUI 模式（网页界面）</h3>
+      <img class="screenshot" src="images/agent-hermes-webui.jpg?v=20261127" alt="Hermes Agent WebUI 模式" />
+      <div class="figcaption">Hermes Agent WebUI：会话列表与 Chat / Skills / Channels / MCP 等模块管理</div>
     </section>
 
     <section id="agent-opencode">
@@ -995,8 +1073,8 @@
         <li>描述编程任务</li>
         <li>查看生成的代码并确认执行</li>
       </ol>
-      <img class="screenshot" src="images/agent-opencode.jpg" alt="OpenCode 智能体" />
-      <div class="figcaption">OpenCode：开源 AI 编程代理</div>
+      <img class="screenshot" src="images/agent-opencode.jpg?v=20261127" alt="OpenCode 网页界面" />
+      <div class="figcaption">OpenCode：开源 AI 编程代理（WebUI 网页界面）</div>
     </section>
 
     <section id="agent-openclaw">
@@ -1011,10 +1089,10 @@
         <li>查看执行结果，可根据需要调整配置并重新执行</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/agent-openclaw-tui.jpg" alt="OpenClaw TUI 模式" />
+      <img class="screenshot" src="images/agent-openclaw-tui.jpg?v=20261127" alt="OpenClaw TUI 模式" />
       <div class="figcaption">OpenClaw TUI：终端模式，命令行交互</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/agent-openclaw-webui.jpg" alt="OpenClaw WebUI 模式" />
+      <img class="screenshot" src="images/agent-openclaw-webui.jpg?v=20261127" alt="OpenClaw WebUI 模式" />
       <div class="figcaption">OpenClaw WebUI：网页模式，可视化管理个人助手与渠道配置</div>
     </section>
 
@@ -1028,20 +1106,21 @@
         <li>KimiCode 执行并返回结果</li>
         <li>查看执行结果</li>
       </ol>
-      <img class="screenshot" src="images/agent-kimicode.png" alt="KimiCode 智能体" />
+      <img class="screenshot" src="images/agent-kimicode.png?v=20261127" alt="KimiCode 智能体" />
       <div class="figcaption">KimiCode：智能编程服务</div>
     </section>
 
     <section id="agent-prime">
       <h2>Prime Agent</h2>
-      <p><strong>Prime Agent</strong> 是智能任务调度与编排 Agent，支持将复杂任务自动拆解为子任务并协调多个执行单元协同完成。</p>
+      <p><strong>Prime Agent</strong> 是开源通用 AI 编码智能体，内置 IPython 内核与 TUI / ACP 双界面，可在终端中交互式完成编码任务，支持用 <code>@</code> 引用文件作为上下文。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧菜单 <strong>Prime Agent</strong>，进入该智能体</li>
-        <li>输入需要处理的复杂任务或编排需求</li>
-        <li>Prime Agent 自动拆解任务并协调执行单元进行处理</li>
-        <li>查看各子任务的执行结果与整体编排状态</li>
+        <li>点击左侧 <strong>AGENTS</strong> 分组下的 <strong>Prime Agent</strong>，进入 TUI 终端界面</li>
+        <li>在终端中描述编码任务（如「Fix bug in @&lt;filepath&gt;」），Prime Agent 调用内置 IPython 内核执行</li>
+        <li>根据输出继续对话，迭代完成代码编写与调试</li>
       </ol>
+      <img class="screenshot" src="images/agent-prime-tui.jpg?v=20261127" alt="Prime Agent TUI 模式" />
+      <div class="figcaption">Prime Agent TUI：启动界面展示版本、模型、工作目录与示例提示词</div>
     </section>
 
     <section id="agent-eduswarm">
@@ -1054,20 +1133,62 @@
         <li>通过左侧功能栏进入今日课堂、课件中心、作业中心等模块，也可在输入框用自然语言直接下达教学任务</li>
         <li>通过输入框下方可配置单 Agent 模式、访问权限与技能，选择模型后发送，EduSwarm 协同 AI 教师团队完成任务并输出结果</li>
       </ol>
-      <img class="screenshot" src="images/agent-eduswarm.png" alt="EduSwarm AI 智慧课堂工作台" />
+      <img class="screenshot" src="images/agent-eduswarm.png?v=20261127" alt="EduSwarm AI 智慧课堂工作台" />
       <div class="figcaption">EduSwarm：AI 智慧课堂工作台</div>
+    </section>
+
+    <section id="agent-minimax">
+      <h2>MiniMax Code</h2>
+      <p><strong>MiniMax Code</strong> 是 MiniMax 提供的代码智能体 CLI（MCode），支持交互式 TUI，也可通过 <code>mcode exec</code> 接入 Shell 脚本与 CI 流程。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENTS</strong> 分组下的 <strong>MiniMax Code</strong>，进入 TUI 终端界面</li>
+        <li>首次使用如需账号，按提示输入 <code>/login</code> 完成登录</li>
+        <li>在终端中描述编码任务，MiniMax Code 生成并执行代码</li>
+        <li>在 CI 或自动化脚本场景中，通过 <code>mcode exec</code> 调用</li>
+      </ol>
+      <img class="screenshot" src="images/agent-minimax-tui.jpg?v=20261127" alt="MiniMax Code TUI 模式" />
+      <div class="figcaption">MiniMax Code TUI：启动页展示登录态、Auto 模式与当前模型</div>
+    </section>
+
+    <section id="agent-icode">
+      <h2>iCode</h2>
+      <p><strong>iCode</strong> 是纯本地的 AI 开发平台，主打轻量 TUI 体验，数据与工作流完全由用户掌控。内置 Chat / Agent / Tools 等模式与常用工具集，适合在终端内完成代码生成、文件编辑与命令执行。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>AGENTS</strong> 分组下的 <strong>iCode</strong>，进入 TUI 终端界面</li>
+        <li>在终端中完成代码生成、文件编辑与命令执行</li>
+        <li>通过底部功能键（F1 Sessions、F2 Agents、F3 Models、F4 Files 等）切换会话、智能体、模型与文件视图</li>
+      </ol>
+      <img class="screenshot" src="images/agent-icode-tui.jpg?v=20261127" alt="iCode TUI 模式" />
+      <div class="figcaption">iCode TUI：Chat 模式、Code Agent 与底部快捷功能键</div>
     </section>
 
     <section id="tools">
       <h2>TOOLS</h2>
-      <p><strong>TOOLS</strong> 模块提供开发辅助工具，默认部署以下工具：</p>
+      <p><strong>TOOLS</strong> 汇总平台提供的开发辅助工具，覆盖环境直达链接、隧道管理、远程桌面、AI 绘图、安全扫描、Agent 评测、AI DevOps、上下文数据库、数据库学习与在线阅读等场景。工具统一以作业环境形式在「环境管理」中部署，启动后通过对应环境的 <strong>TUI</strong> / <strong>WebUI</strong> / <strong>Dashboard</strong> 入口使用。</p>
+      <p><strong>使用方式：</strong></p>
+      <ol class="steps">
+        <li>先在 <strong>环境管理</strong> 中确认目标工具环境已部署且状态为「运行中」；未部署的点击「部署」</li>
+        <li>展开左侧 <strong>TOOLS</strong> 分组选择工具，或直接在环境管理卡片上点击 <strong>TUI / WebUI / Dashboard</strong> 入口</li>
+        <li>链接生成为平台能力，打开后选择目标环境与入口即可生成；AI Book 打开即进入课程看板，无需额外部署</li>
+      </ol>
+      <div class="tip"><b>说明：</b>TOOLS 菜单本身不会启动环境，入口能否打开取决于对应环境是否运行；入口无响应时先回到环境管理检查环境状态。</div>
       <table>
         <thead>
-          <tr><th>工具</th><th>说明</th></tr>
+          <tr><th>工具</th><th>入口形态</th><th>用途</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>OpenViking</strong></td><td>智能开发辅助工具，提供代码理解、重构建议与自动化开发支持</td></tr>
-          <tr><td><strong>DevBridge</strong></td><td>隧道管理工具，提供 Web 控制台，支持隧道创建、端口管理与远程访问</td></tr>
+          <tr><td><strong>链接生成（BETA）</strong></td><td>平台能力</td><td>为作业环境生成可分享的直达链接，打开即进入对应环境</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>TUI / WebUI</td><td>隧道管理，支持本地服务托管与远程端口连接</td></tr>
+          <tr><td><strong>KasmVNC Desktop</strong></td><td>WebUI</td><td>浏览器内的 Linux 远程桌面（Ubuntu）</td></tr>
+          <tr><td><strong>Next AI Draw.io</strong></td><td>WebUI</td><td>自然语言生成 Draw.io 图表，并提供 MCP 绘图能力</td></tr>
+          <tr><td><strong>Security Scan Suite</strong></td><td>TUI</td><td>CVE、密钥泄露、SBOM、IaC 误配置、端口暴露与主机基线扫描</td></tr>
+          <tr><td><strong>AgentEval Lite</strong></td><td>WebUI</td><td>Agent 数据集评测、运行对比与 Skill 生成优化</td></tr>
+          <tr><td><strong>Grape</strong></td><td>WebUI</td><td>AI Native DevOps，将 Git 项目转为 AI 自主开发工作流</td></tr>
+          <tr><td><strong>OpenViking</strong></td><td>TUI / WebUI</td><td>AI 智能体的开源上下文数据库，辅助代码理解与重构</td></tr>
+          <tr><td><strong>GaussDB</strong></td><td>TUI</td><td>GaussDB 混合云开发者版，兼容 Oracle，供学习与适配验证</td></tr>
+          <tr><td><strong>AI Book</strong></td><td>Dashboard</td><td>AI Agent、AI Infra、生成式 AI 三门课在线阅读</td></tr>
         </tbody>
       </table>
     </section>
@@ -1077,7 +1198,7 @@
       <p><strong>OpenViking</strong> 是智能开发辅助工具，帮助开发者理解代码、提供重构建议与自动化开发支持。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧菜单 <strong>TOOLS → OpenViking</strong>，进入该工具</li>
+        <li>在左侧 <strong>环境管理</strong> 中找到 <strong>OpenViking</strong> 环境并确保已部署，点击卡片上的 <strong>TUI</strong> 或 <strong>WebUI</strong> 入口进入</li>
         <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入网页界面）</li>
         <li>选择目标代码文件或项目目录</li>
         <li>OpenViking 分析代码并生成理解报告或重构建议</li>
@@ -1086,29 +1207,288 @@
       <h3>TUI 模式（终端界面）</h3>
       <img class="screenshot" src="images/tool-openviking-tui.jpg" alt="OpenViking TUI 模式" />
       <div class="figcaption">OpenViking TUI：终端模式，选择语言初始界面</div>
-      <img class="screenshot" src="images/tool-openviking-tui-lang.jpg" alt="OpenViking TUI 选择中文后" />
-      <div class="figcaption">OpenViking TUI：选择中文语言后的界面展示</div>
+      <img class="screenshot" src="images/tool-openviking-tui-lang.jpg?v=20261127" alt="OpenViking TUI 选择中文后" />
+      <div class="figcaption">OpenViking TUI：切换中文后的终端界面（视图 / 会话 / 技能 / 编译 / 活动）</div>
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/tool-openviking-webui.jpg" alt="OpenViking WebUI 模式" />
+      <img class="screenshot" src="images/tool-openviking-webui.jpg?v=20261127" alt="OpenViking WebUI 模式" />
       <div class="figcaption">OpenViking WebUI：网页模式，代码智能助手</div>
     </section>
 
     <section id="tool-devbridge">
       <h2>DevBridge</h2>
-      <p><strong>DevBridge</strong> 是隧道管理工具，提供开发者隧道能力，支持托管（Host）将本地端口服务暴露到公网隧道，以及连接（Connect）将远端隧道端口转发到本地。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。当在<strong>环境管理</strong>中部署 DevBridge 环境后，会在 <strong>TOOLS</strong> 菜单下展示入口。</p>
+      <p><strong>DevBridge</strong> 是隧道管理工具，提供开发者隧道能力，支持托管（Host）将本地端口服务暴露到公网隧道，以及连接（Connect）将远端隧道端口转发到本地。支持 <strong>TUI（终端模式）</strong> 和 <strong>WebUI（网页模式）</strong> 两种使用方式。在<strong>环境管理</strong>中部署 DevBridge 环境后，通过该环境卡片上的 TUI / WebUI 入口使用。</p>
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
         <li>在 <strong>环境管理</strong> 中部署 <strong>DevBridge</strong> 环境</li>
-        <li>部署完成后，左侧 <strong>TOOLS</strong> 菜单下会出现 <strong>DevBridge</strong> 入口</li>
+        <li>部署完成后，在环境卡片上点击 <strong>TUI</strong> 或 <strong>WebUI</strong> 入口进入 DevBridge</li>
         <li>选择使用模式：<strong>TUI</strong>（点击名称直接进入终端界面）或 <strong>WebUI</strong>（点击右侧 WebUI 按钮进入管理控制台）</li>
         <li>TUI 模式下可通过命令行管理隧道；WebUI 模式下可在控制台创建隧道、管理端口映射与托管/连接进程</li>
       </ol>
       <h3>TUI 模式（终端界面）</h3>
-      <img class="screenshot" src="images/tool-devbridge-tui.jpg" alt="DevBridge TUI 模式" />
-      <div class="figcaption">DevBridge TUI：终端模式，通过命令行管理隧道</div>
+      <p>进入 TUI 后终端提示符为 <code>root@devbridge:~/devbridge</code>，所有操作通过 <code>devbridge</code> 命令完成，适合需要精细控制参数或脚本化执行的场景。</p>
+      <img class="screenshot" src="images/tool-devbridge-tui.jpg?v=20261127" alt="DevBridge TUI 模式" />
+      <div class="figcaption">DevBridge TUI：执行 <code>devbridge --help</code> 查看命令总览，提示符为 <code>root@devbridge:~/devbridge</code></div>
+      <p>常用命令：</p>
+      <table>
+        <tr><th>命令</th><th>用途</th></tr>
+        <tr><td><code>devbridge create &lt;name&gt; -d &lt;描述&gt; -e &lt;小时&gt;</code></td><td>创建隧道并返回隧道 ID</td></tr>
+        <tr><td><code>devbridge list</code> / <code>devbridge show &lt;tunnelId&gt;</code></td><td>列出全部隧道 / 查看单个隧道详情</td></tr>
+        <tr><td><code>devbridge update &lt;tunnelId&gt; -n &lt;名称&gt; -d &lt;描述&gt; -e &lt;小时&gt;</code></td><td>修改隧道名称、描述与有效期</td></tr>
+        <tr><td><code>devbridge port create &lt;tunnelId&gt; -p &lt;端口&gt; --protocol auto</code></td><td>为隧道添加端口（<code>-a</code> 允许匿名访问）</td></tr>
+        <tr><td><code>devbridge port list &lt;tunnelId&gt;</code> / <code>port show &lt;tunnelId&gt; -p &lt;端口&gt;</code></td><td>列出 / 查看隧道端口</td></tr>
+        <tr><td><code>devbridge port update &lt;tunnelId&gt; -p &lt;端口&gt; -a</code> / <code>port delete</code></td><td>修改端口访问策略（<code>-a</code> 允许匿名）/ 删除端口</td></tr>
+        <tr><td><code>devbridge host &lt;tunnelId&gt;</code></td><td>托管隧道中已配置的端口，输出公网地址</td></tr>
+        <tr><td><code>devbridge connect &lt;tunnelId&gt;</code></td><td>连接远端隧道，映射到本机 localhost 端口</td></tr>
+        <tr><td><code>devbridge set &lt;tunnelId&gt;</code> / <code>devbridge unset</code></td><td>设置 / 取消本机默认隧道，后续 host、connect 可省略 ID</td></tr>
+        <tr><td><code>devbridge token &lt;tunnelId&gt; -s host|connect</code></td><td>签发托管端或连接端的访问令牌</td></tr>
+        <tr><td><code>devbridge delete &lt;tunnelId&gt;</code> / <code>devbridge delete-all</code></td><td>删除单个隧道 / 删除全部隧道</td></tr>
+        <tr><td><code>devbridge echo</code> / <code>devbridge ping</code> / <code>devbridge version</code></td><td>启动诊断回显服务 / 测试连通性 / 查看 CLI 版本</td></tr>
+      </table>
+      <div class="tip"><b>说明：</b>端口或访问策略修改后，正在运行的托管进程不会自动感知，需先停止再重新执行 <code>devbridge host</code> 才会生效。</div>
+
       <h3>WebUI 模式（网页界面）</h3>
-      <img class="screenshot" src="images/tool-devbridge-webui.jpg" alt="DevBridge WebUI 模式" />
-      <div class="figcaption">DevBridge WebUI：隧道管理控制台，可视化创建和管理隧道</div>
+      <p>WebUI 是 DevBridge 的可视化控制台，隧道、托管进程与连接进程在同一个页面管理，适合日常分享服务、查看运行状态。</p>
+      <ol class="steps">
+        <li>在环境卡片上点击 <strong>WebUI</strong> 打开控制台，右上角显示登录状态（如 <em>Logged in (Huawei Cloud IAM)</em>），可切换主题</li>
+        <li>顶部说明条提供 <strong>查看配置与用量</strong>、<strong>查看架构示意</strong>、<strong>查看帮助文档</strong> 三个入口，首次使用建议先看架构示意</li>
+        <li>在 <strong>隧道列表</strong> 点击 <strong>+ 创建隧道</strong>，填写名称、描述与有效期，创建后即出现在列表中；顶部搜索框可按隧道名称或 ID 过滤</li>
+        <li>列表展示隧道 ID（支持一键复制）、名称、描述、有效期、端口数、托管开关、连接开关与操作列；<strong>托管</strong> 开关用于在本机托管该隧道端口，<strong>连接</strong> 开关用于在本机映射远端隧道</li>
+        <li>打开托管开关后，<strong>托管列表</strong> 出现运行进程：显示状态、启动时间、已运行时长、端口与公网地址（形如 <code>https://&lt;tunnelId&gt;-&lt;端口&gt;.&lt;集群域名&gt;</code>），可直接复制地址分享</li>
+        <li>打开连接开关后，<strong>连接列表</strong> 出现本机的连接进程，通过 <code>localhost:&lt;端口&gt;</code> 访问远端服务；关闭开关即停止进程</li>
+        <li>操作列提供 <strong>详情</strong>（查看/修改隧道与端口配置）、<strong>复制</strong>（复制隧道访问信息）与 <strong>删除</strong> 三个操作</li>
+      </ol>
+      <img class="screenshot" src="images/tool-devbridge-webui.jpg?v=20261127" alt="DevBridge WebUI 模式" />
+      <div class="figcaption">DevBridge WebUI：隧道列表、托管列表与连接列表三块区域，托管进程会显示公网地址与运行时长</div>
+      <p>控制台区域说明：</p>
+      <table>
+        <tr><th>区域</th><th>说明</th></tr>
+        <tr><td>隧道列表</td><td>创建、搜索、查看隧道；托管 / 连接开关控制本机进程；操作列支持详情、复制与删除</td></tr>
+        <tr><td>托管列表</td><td>展示运行中的 Host 进程，包含端口、公网地址、启动时间、已运行时长与匿名 / 鉴权访问策略，可复制地址或停止进程</td></tr>
+        <tr><td>连接列表</td><td>展示运行中的 Connect 进程；为空时提示「暂无运行中的连接进程」，在隧道列表打开连接开关后出现</td></tr>
+      </table>
+      <div class="tip"><b>说明：</b>TUI 与 WebUI 共用同一账户下的隧道与配额：TUI 创建的隧道会同步出现在 WebUI 列表，WebUI 打开的托管 / 连接进程与命令行进程等价。修改端口或访问策略后需重启托管进程才能生效。</div>
+    </section>
+
+    <section id="tool-link">
+      <h2>链接生成（BETA）</h2>
+      <p><strong>链接生成</strong> 用于把 AI 开发者空间中的指定位置（AI Shell 会话、某个作业环境、自定义启动流程）转换为一条可分享的推广链接（URL to ENV）。接收方打开链接即可直达对应入口，无需再逐级查找；链接支持渠道追踪与二维码下载，适合在文档、工单与教学场景中分发环境。</p>
+      <p>页面提供两种生成方式，可随时切换：</p>
+      <ul>
+        <li><strong>表单生成</strong>：选择场景后按表单填写参数；表单区提供「表单 / JSON」切换，需要精确配置或批量复用时可改用 JSON 编辑。</li>
+        <li><strong>AI 生成</strong>：用一句话描述要生成的链接，交给 AI Shell 完成配置。</li>
+      </ul>
+      <img class="screenshot" src="images/tool-link-scene.jpg?v=20261127" alt="链接生成：选择生成模式与场景" />
+      <div class="figcaption">进入「链接生成」后先切换「表单生成 / AI 生成」，再在「选择场景」中选一种场景</div>
+      <div class="tip"><b>说明：</b>页面顶部显示「历史链接」数量（如「历史链接 1」），用于查看已生成的链接。三种场景共用 <strong>基础地址</strong> 与 <strong>渠道（运维）</strong> 两个通用字段：前者通常已按场景预填，一般无需修改；后者用于标记推广来源（如 CSDN、GitCode、华为云官网等），可留空。</div>
+
+      <h3>场景一：AI Shell 预置提示词</h3>
+      <p>适合把一段任务提示词做成分享链接。对方打开链接会直接进入 AI Shell，提示词已预置在输入框中且<strong>默认不自动发送</strong>，确认后自行执行，常用于分发实践任务、排查步骤或教学示例。</p>
+      <table>
+        <thead><tr><th>字段</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>基础地址</td><td>默认已带 <code>?target=/aishell</code>，一般无需修改</td></tr>
+          <tr><td>渠道（运维）</td><td>可选，用于标记链接的分发渠道</td></tr>
+          <tr><td>AI Shell 提示词（prompt）</td><td>要预置的提示词，上限 800 字</td></tr>
+        </tbody>
+      </table>
+      <img class="screenshot" src="images/tool-link-aishell.jpg?v=20261127" alt="链接生成：AI Shell 预置提示词表单" />
+      <div class="figcaption">AI Shell 预置提示词：填写提示词后点击「生成链接」</div>
+
+      <h3>场景二：作业环境</h3>
+      <p>适合把已部署的作业环境（如「鸿蒙实践中心 · WebUI」）连同指定入口打包成直达链接，接收方打开即可进入该环境的命令行（TUI）或网页界面（WebUI）。</p>
+      <table>
+        <thead><tr><th>字段</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>作业环境*</td><td>下拉选择目标环境，选中后可切换需要直达的入口（TUI / WebUI）</td></tr>
+          <tr><td>环境名（name）</td><td>链接在会话与历史记录中的显示名称，上限 30 字，默认按「打开 + 环境 + 入口」自动生成</td></tr>
+        </tbody>
+      </table>
+      <img class="screenshot" src="images/tool-link-result.jpg?v=20261127" alt="链接生成：作业环境生成结果与操作按钮" />
+      <div class="figcaption">选择作业环境并点击「生成链接」后，结果区给出推广链接与「立即体验 / 复制链接 / 二维码」三个操作</div>
+      <p>生成后可分别用 <strong>立即体验</strong> 自测、<strong>复制链接</strong> 分发、<strong>二维码</strong> 下载后线下扫码；生成记录会出现在顶部「历史链接」中。</p>
+
+      <h3>场景三：自定义</h3>
+      <p>适合没有现成环境、需要「先执行几条命令再启动服务」的场景：把准备命令与启动命令一起写进链接，接收方打开后按顺序执行，并直接进入服务页面。</p>
+      <table>
+        <thead><tr><th>字段</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>环境名（name）</td><td>存在执行命令时必填，上限 30 字</td></tr>
+          <tr><td>执行步骤（steps）</td><td>按顺序串行的命令列表，点「新增命令」添加；每条可设置 说明（label）、命令（command）、工作目录（cwd）、超时（timeout）、跳过条件（skipIf）、失败也继续（ignoreFailure）</td></tr>
+          <tr><td>启动与端口（launch）</td><td>点「新增启动项」添加；需填 端口（port，建议 26000–26999）、启动命令（command）、工作目录（cwd），也可「+ 添加 AI Shell 预置」</td></tr>
+        </tbody>
+      </table>
+      <img class="screenshot" src="images/tool-link-custom.jpg?v=20261127" alt="链接生成：自定义场景的指令与启动项配置" />
+      <div class="figcaption">自定义场景：配置串行命令与启动项，存在命令时环境名为必填项</div>
+      <div class="tip"><b>说明：</b>命令按顺序串行执行，某步失败默认中断，确认无影响后可开启「失败也继续」；「跳过条件（skipIf）」用于条件已满足时跳过该步，避免重复安装。</div>
+
+      <h3>AI 生成</h3>
+      <p>切到「AI 生成」页签后，用一句话描述目标即可，例如「生成一条打开鸿蒙实践中心 WebUI 的直达链接」。输入框内 <strong>Enter</strong> 发送、<strong>Shift + Enter</strong> 换行，输入为空时回车会使用当前的默认提示词；生成过程与结果在 AI Shell 对话中展示，可继续追问调整。</p>
+      <img class="screenshot" src="images/tool-link-aigen.jpg?v=20261127" alt="链接生成：AI 生成页签" />
+      <div class="figcaption">AI 生成：用自然语言描述要生成的链接，由 AI Shell 完成配置</div>
+
+      <div class="tip"><b>说明：</b>链接的可用性依赖环境运行状态，环境未运行时链接无法直接打开，需先到「环境管理」启动环境。</div>
+    </section>
+
+    <section id="tool-kasmvnc">
+      <h2>KasmVNC Desktop</h2>
+      <p><strong>KasmVNC Desktop</strong> 基于开源 VNC 服务器 KasmVNC，提供浏览器内的 Linux 远程桌面。环境部署后在浏览器标签页即可获得一台 Ubuntu 桌面，可直接打开终端、文件管理器，并通过 <code>get-apps.sh</code> 一键安装常用应用（如 feishu、vscode、chrome、QQ、wechat 等）。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中部署 <strong>KasmVNC Desktop</strong> 环境并启动</li>
+        <li>点击环境卡片或左侧 <strong>TOOLS</strong> 下 <strong>KasmVNC Desktop</strong> 的 <strong>WebUI</strong> 按钮，进入远程桌面</li>
+        <li>在桌面内使用终端、文件管理器，或执行 <code>get-apps.sh</code> 安装所需应用</li>
+        <li>个人文件保存在 <code>/root</code> 目录，环境重启或升级不会丢失</li>
+      </ol>
+      <img class="screenshot" src="images/tool-kasmvnc-webui.jpg?v=20261127" alt="KasmVNC Desktop 远程桌面" />
+      <div class="figcaption">KasmVNC Desktop：浏览器内的 Ubuntu 远程桌面</div>
+    </section>
+
+    <section id="tool-drawio">
+      <h2>Next AI Draw.io</h2>
+      <p><strong>Next AI Draw.io</strong> 基于自然语言描述自动生成 Draw.io 图表，支持流程图、ER 图、类图、时序图等多种类型，也可基于截图或 PDF 转换为可编辑图表。同时通过集成 MCP 服务，AI Shell 与其他 Agent 可以发现并调用其绘图能力。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中启动 <strong>Next AI Draw.io</strong>，点击 <strong>WebUI</strong> 进入绘图界面</li>
+        <li>输入图表描述（如「画一个订单支付的时序图」），或上传截图 / PDF</li>
+        <li>在画布中调整生成的图表，并导出为 <code>.drawio</code> 或图片格式</li>
+        <li>在 AI Shell 对话中，也可让 Agent 通过 MCP 调用该工具生成图表</li>
+      </ol>
+      <img class="screenshot" src="images/tool-drawio-webui.jpg?v=20261127" alt="Next AI Draw.io 绘图界面" />
+      <div class="figcaption">Next AI Draw.io：自然语言驱动的 Draw.io 绘图界面</div>
+    </section>
+
+    <section id="tool-secaudit">
+      <h2>Security Scan Suite</h2>
+      <p><strong>Security Scan Suite</strong> 通过 MCP 协议暴露安全扫描能力，覆盖制品 CVE 漏洞、密钥泄露、SBOM、IaC 误配置、端口暴露与 Lynis 主机基线，供 AI Agent 调用，也可在 TUI 内直接执行扫描脚本完成检查。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中启动 <strong>Security Scan Suite</strong>，点击进入 TUI</li>
+        <li>执行 <code>scan-t.sh -h</code> 查看可用扫描阶段与参数</li>
+        <li>按需执行制品、密钥、SBOM、IaC、端口或主机基线扫描</li>
+        <li>汇总报告输出到 <code>~/.secaudit/reports/</code> 目录</li>
+      </ol>
+      <img class="screenshot" src="images/tool-secaudit-tui.jpg?v=20261127" alt="Security Scan Suite TUI" />
+      <div class="figcaption">Security Scan Suite TUI：扫描脚本用法与可用的 MCP 扫描工具</div>
+    </section>
+
+    <section id="tool-agenteval">
+      <h2>AgentEval Lite</h2>
+      <p><strong>AgentEval Lite</strong> 是 Agent 测评平台：连接外部 Agent，准备测试场景（评测数据集），并可生成与管理 Skill，通过运行对比评估不同组合的实际表现，输出评分、回答与改进建议。包含 Agent 配置、评测数据集、运行对比、Skill 训练优化四个模块。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中启动 <strong>AgentEval Lite</strong>，点击 <strong>WebUI</strong> 进入平台</li>
+        <li>在 <strong>Agent 配置</strong> 中运行本地 Agent 命令（如 Python）或连接已有 Agent</li>
+        <li>在 <strong>评测数据集</strong> 中准备测试场景，选择对比组合发起运行</li>
+        <li>在 <strong>运行对比</strong> 中查看评分、回答与改进建议，必要时在 <strong>Skill 训练优化</strong> 中迭代</li>
+      </ol>
+      <img class="screenshot" src="images/tool-agenteval-webui.jpg?v=20261127" alt="AgentEval Lite WebUI" />
+      <div class="figcaption">AgentEval Lite：Agent 配置、评测数据集、运行对比与 Skill 训练优化</div>
+    </section>
+
+    <section id="tool-grape">
+      <h2>Grape</h2>
+      <p><strong>Grape</strong> 是一个多 Agent 协作的 DevOps 平台，通过 <strong>VOD / Issue / Coding / QA / SRE</strong> 五类 Agent 覆盖从需求分析到部署运维的全生命周期。平台对接 GitCode 代码托管，通过 Webhook 自动触发流水线，由 AI Agent 自主完成任务并提交 PR。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中启动 <strong>Grape</strong>，点击 <strong>WebUI</strong> 进入平台</li>
+        <li>使用 GitCode 账号登录（OAuth 自动授权），也可选择 Gitee / GitHub / 华为云账号或注册新账号</li>
+        <li>在欢迎页绑定代码托管平台（GitCode / Gitee / GitHub），建议同时设置 Grape 密码与绑定邮箱</li>
+        <li>进入工作台，在左侧选择已授权的仓库，即可开始使用</li>
+      </ol>
+      <img class="screenshot" src="images/tool-grape-webui.jpg?v=20261127" alt="Grape 登录页" />
+      <div class="figcaption">Grape：AI Native DevOps 平台登录入口</div>
+      <img class="screenshot" src="images/tool-grape-onboarding.jpg?v=20261127" alt="Grape 欢迎页：绑定代码托管平台" />
+      <div class="figcaption">登录后进入欢迎页，绑定 GitCode / Gitee / GitHub 任一平台后自动进入工作台</div>
+      <div class="tip"><b>说明：</b>未绑定代码托管平台时无法进入工作台，直接访问工作台地址会自动跳回绑定引导页。绑定关系可在「用户设置」中随时调整；为账号安全，建议设置 Grape 独立密码并绑定邮箱。</div>
+      <h3>工作台导航</h3>
+      <p>绑定仓库后，左侧导航按功能域组织，常用入口如下：</p>
+      <table>
+        <thead>
+          <tr><th>分组</th><th>入口</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>工作区</td><td>需求中心</td><td>查看与管理需求 / Issue，跟踪拆解与流转</td></tr>
+          <tr><td>工作区</td><td>项目场景</td><td>为项目配置适用的业务场景</td></tr>
+          <tr><td>工作区</td><td>流水线</td><td>按 Issue 查看多 Agent 全链路执行进度</td></tr>
+          <tr><td>工作区</td><td>自动化</td><td>配置 Webhook 等自动触发规则</td></tr>
+          <tr><td>DevOps Agents</td><td>VOD / Issue / Coding / QA / SRE Agent</td><td>分别负责需求分析、任务拆解、编码提 PR、代码审查、部署运维</td></tr>
+          <tr><td>场景中心</td><td>场景·技能 / 插件市场</td><td>管理技能（Skill）与扩展插件，增强 Agent 能力</td></tr>
+          <tr><td>知识库</td><td>项目知识库</td><td>沉淀项目上下文，供 Agent 检索使用</td></tr>
+          <tr><td>可观测性</td><td>运行驾驶舱</td><td>查看 Worker 负载、探活延迟等系统监控指标</td></tr>
+          <tr><td>设置</td><td>仓库设置</td><td>配置当前仓库的流水线与 Agent 行为</td></tr>
+          <tr><td>用户设置</td><td>Chat Agent / IM 渠道 / 设备中心</td><td>管理对话入口、IM 通知渠道与已登录设备</td></tr>
+        </tbody>
+      </table>
+      <h3>从需求到合并的闭环</h3>
+      <ol class="steps">
+        <li>在 GitCode 仓库中创建 Issue，Webhook 自动触发流水线</li>
+        <li>VOD Agent 分析需求，Issue Agent 细化任务，Coding Agent 编写代码并提交 PR，QA Agent 自动审查，SRE Agent 负责部署运维</li>
+        <li>在「流水线」页按 Issue 查看全链路进度，在任务中心查看排队 / 运行中 / 已完成 / 失败状态</li>
+        <li>点击任务可查看每一步的思考过程与工具调用日志；在 GitCode 合并 PR 后，Grape 感知合并并自动更新 Issue</li>
+      </ol>
+      <p>也可在 <strong>VOD Agent</strong> 页面直接输入需求手动触发，由 VOD 按需路由到下游 Agent。</p>
+      <div class="tip"><b>说明：</b>平台内置帮助中心提供 Agent 详解、CLI（<code>grape</code>）命令、执行环境变量、流水线机制、技能管理、运行时与引擎、系统监控、项目知识库等完整章节，遇到细节问题可优先查阅。<a href="https://19999-3d471f5fef50473396d78ac0898ed6f0.workspace.developer.huaweicloud.com/#repos" target="_blank" rel="noopener">打开 Grape 帮助中心 ↗</a></div>
+      <img class="screenshot" src="images/tool-grape-help.jpg?v=20261127" alt="Grape 内置帮助中心：快速上手" />
+      <div class="figcaption">平台内置帮助中心：快速上手与各功能章节</div>
+    </section>
+
+    <section id="tool-gaussdb">
+      <h2>GaussDB</h2>
+      <p><strong>GaussDB</strong> 为混合云开发者版（ARM / HCE 2.0），单机集中式部署，兼容 Oracle 语法，适合学习、适配验证或测试使用，请勿用于生产环境。</p>
+      <p>环境已预置 <code>gsql</code> 客户端并完成数据库连接配置，进入终端即可直接执行 SQL，无需自行搭建实例。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在「环境管理」中搜索 <strong>GaussDB</strong>，确认状态为「运行中」</li>
+        <li>点击卡片上的 <strong>TUI</strong> 进入环境终端，也可点击「操作指导」查看官方说明</li>
+        <li>首次登录按提示选择：立即重置密码，或暂不重置直接进入数据库</li>
+        <li>在 <code>gsql</code> 终端执行 SQL，完成建库建表、增删改查与聚合查询练习</li>
+        <li>验证完成后删除测试表与测试库，释放环境资源</li>
+      </ol>
+      <img class="screenshot" src="images/tool-gaussdb-workenv.jpg?v=20261127" alt="环境管理：搜索 GaussDB 环境" />
+      <div class="figcaption">环境管理：搜索 GaussDB，卡片提供 TUI（终端）、停止与操作指导入口</div>
+      <div class="tip"><b>说明：</b>首次登录会提示当前使用默认密码，可按提示立即重置或选择直接进入数据库；该环境仅供学习、适配验证或测试使用。</div>
+      <p>进入 TUI 后会自动打开 <strong>GaussDB</strong> 标签页，左侧为 AI Shell 导航、右侧为资源管理器，终端默认已连接数据库，可直接执行 <code>gsql</code> 命令：</p>
+      <pre><code>-- 查看版本与连接信息
+select version();
+\conninfo
+
+-- 建库、建表并写入数据
+create database shop;
+\c shop
+create table orders (
+  id bigint primary key,
+  customer varchar(64) not null,
+  amount decimal(10,2) not null,
+  status varchar(16) default 'NEW',
+  created_at timestamp default now()
+);
+insert into orders(id, customer, amount, status) values
+  (1,'Alice',199.00,'PAID'),
+  (2,'Bob',59.90,'NEW'),
+  (3,'Carol',899.00,'PAID');
+
+-- 查询与聚合统计
+select * from orders;
+select status, count(*) as cnt, sum(amount) as total from orders group by status;</code></pre>
+      <img class="screenshot" src="images/tool-gaussdb-terminal.jpg?v=20261127" alt="GaussDB 终端：连接数据库并确认版本" />
+      <div class="figcaption">终端执行 <code>select version();</code> 与 <code>\conninfo</code>，确认 GaussDB Kernel 版本与连接信息</div>
+      <img class="screenshot" src="images/tool-gaussdb-query.jpg?v=20261127" alt="GaussDB 查询与聚合结果" />
+      <div class="figcaption">查询订单明细，并按状态统计订单数与金额合计</div>
+      <img class="screenshot" src="images/tool-gaussdb-cleanup.jpg?v=20261127" alt="GaussDB 清理测试数据" />
+      <div class="figcaption">验证完成后 <code>drop table</code>、<code>drop database</code> 清理测试数据</div>
+    </section>
+
+    <section id="tool-aibook">
+      <h2>AI Book</h2>
+      <p><strong>AI Book</strong> 提供学习资料在线阅读，内置《深入理解 AI Agent》《深入理解 AI Infra》《面向初学者的生成式 AI》三门课程，支持章节导航、全文搜索与划词笔记。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击左侧 <strong>TOOLS</strong> 分组下的 <strong>AI Book</strong>，打开学习资料看板</li>
+        <li>选择课程后按章节阅读，使用全文搜索快速定位内容</li>
+        <li>选中文字即可添加划词笔记，沉淀学习要点</li>
+      </ol>
+      <img class="screenshot" src="images/tool-aibook-webui.jpg?v=20261127" alt="AI Book 课程首页" />
+      <div class="figcaption">AI Book：AI Agent、AI Infra、生成式 AI 三门课程</div>
     </section>
 
     <section id="workenv">
@@ -1120,13 +1500,14 @@
         </thead>
         <tbody>
           <tr><td>智能体（14）</td><td>代码智能体、多 Agent 协作、个人助手、AI 教学辅助等 14 个智能体环境</td></tr>
-          <tr><td>开发工具（8）</td><td>鸿蒙实践中心、DevBridge、IAC MCP Server、Agent Browser、HuaweiCloud DevKit、KasmVNC Desktop、Next AI Draw.io、Security Scan Suite</td></tr>
+          <tr><td>开发工具（12）</td><td>鸿蒙实践中心、DevBridge、IAC MCP Server、Agent Browser、HuaweiCloud DevKit、KasmVNC Desktop、Next AI Draw.io、Security Scan Suite、AgentEval Lite、Grape、SAG-Wiki Web、随身工具箱</td></tr>
           <tr><td>数据库（2）</td><td>OpenViking AI 智能体开源上下文数据库、GaussDB 混合云开发者版</td></tr>
           <tr><td>基础设施（1）</td><td>Llama 本地 Embedding 环境</td></tr>
+          <tr><td>学习（1）</td><td>AI Book 在线学习资料</td></tr>
         </tbody>
       </table>
 
-      <p>共 25 个环境，其中运行中 8 个、未部署 16 个、待开放 1 个，支持的作业环境：</p>
+      <p>共 30 个环境，其中运行中 28 个、未部署 1 个、待开放 1 个，支持的作业环境：</p>
       <table>
         <thead>
           <tr><th>环境</th><th>类型</th><th>版本</th><th>说明</th></tr>
@@ -1135,35 +1516,40 @@
           <tr><td><strong>AI Shell</strong></td><td>智能体</td><td>内置</td><td>AI Shell · 智驱华为云，对话即部署（TUI）</td></tr>
           <tr><td><strong>CodeArts</strong></td><td>智能体</td><td>v1.0.19</td><td>华为云码道 CodeArts Agent CLI，具备代码编写、代码分析、代码优化全链路能力（TUI / WebUI）</td></tr>
           <tr><td><strong>WorkSwarm</strong></td><td>智能体</td><td>v1.0.17</td><td>多 Agent 协作框架，自动分解问题并分配给不同 Agent（TUI / WebUI）</td></tr>
-          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>v1.0.7</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等自动化工具</td></tr>
-          <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v1.0.21</td><td>DeepSeek 官方多代理智能体开发平台，内置 Web 图形界面与 Claude Code 风格 TUI（TUI / WebUI）</td></tr>
-          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>—</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆</td></tr>
-          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>—</td><td>开源 AI 编程代理，内置免费模型，也可连接 Claude、GPT、Gemini 等任意模型</td></tr>
-          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>—</td><td>开源可编程 AI 个人助手平台，支持自动化任务与工具调用</td></tr>
-          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>—</td><td>面向开发者的智能编程服务，支持代码阅读、文件编辑、命令执行、网页搜索</td></tr>
-          <tr><td><strong>Prime Agent</strong></td><td>智能体</td><td>—</td><td>开源通用 AI 编码智能体，内置 IPython 内核与 TUI / ACP 双界面</td></tr>
-          <tr><td><strong>EduSwarm</strong></td><td>智能体</td><td>—</td><td>基于多智能体框架的 AI 教师团队协作平台，覆盖备课、上课、作业、批改、学情全流程</td></tr>
-          <tr><td><strong>MiniMax Code</strong></td><td>智能体</td><td>—</td><td>MiniMax Code CLI，支持交互式 TUI 与 mcode exec 接入 Shell 和 CI</td></tr>
-          <tr><td><strong>iCode</strong></td><td>智能体</td><td>—</td><td>纯本地的 AI 开发平台，主打轻量 TUI 体验，数据与工作流由用户掌控</td></tr>
-          <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>云服务运维智能体，支持环境运维、故障排查、扩缩容规划、费用查询</td></tr>
-          <tr><td><strong>鸿蒙实践中心</strong></td><td>开发工具</td><td>v1.0.0</td><td>基于 GLM 模型鸿蒙增训、深度适配 ArkTS 语言，支持云端编译打包与云端 + 本地模拟器调测（WebUI）</td></tr>
-          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>—</td><td>隧道管理 Web 控制台，支持隧道创建、端口管理、本地服务托管与远程连接（TUI / WebUI）</td></tr>
-          <tr><td><strong>IAC MCP Server</strong></td><td>开发工具</td><td>—</td><td>通过 MCP 协议暴露华为云基础设施部署能力，覆盖需求分析、资源规划、成本估算、Terraform 部署、排错与资源销毁</td></tr>
-          <tr><td><strong>Agent Browser</strong></td><td>开发工具</td><td>—</td><td>集成 agent-browser 的无头浏览器自动化环境，支持网页导航、点击、填表、截图与数据提取</td></tr>
-          <tr><td><strong>HuaweiCloud DevKit</strong></td><td>开发工具</td><td>—</td><td>让 AI 智能体掌握华为云构建、部署、运维全流程操作</td></tr>
-          <tr><td><strong>KasmVNC Desktop</strong></td><td>开发工具</td><td>—</td><td>基于 Web 的 Linux 远程桌面访问（VNC）</td></tr>
-          <tr><td><strong>Next AI Draw.io</strong></td><td>开发工具</td><td>—</td><td>AI 自然语言生成 Draw.io 图表，通过 MCP 供 AI Shell 等智能体调用</td></tr>
-          <tr><td><strong>Security Scan Suite</strong></td><td>开发工具</td><td>—</td><td>通过 MCP 暴露安全扫描能力，覆盖制品 CVE 漏洞、密钥泄露、SBOM、IaC 误配置、端口暴露与主机基线</td></tr>
-          <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.7</td><td>AI 智能体的开源上下文数据库（TUI / WebUI）</td></tr>
-          <tr><td><strong>GaussDB</strong></td><td>数据库</td><td>—</td><td>GaussDB 混合云开发者版（ARM / HCE2.0），单机集中式部署，兼容 Oracle，仅供学习、适配验证或测试使用</td></tr>
-          <tr><td><strong>Llama</strong></td><td>基础设施</td><td>—</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型</td></tr>
+          <tr><td><strong>HWCloud CLI</strong></td><td>智能体</td><td>v1.0.8</td><td>基础设施即代码智能体，支持 Terraform、Ansible 等自动化工具</td></tr>
+          <tr><td><strong>DeepSeek Harness</strong></td><td>智能体</td><td>v1.0.23</td><td>DeepSeek 官方多代理智能体开发平台，内置 Web 图形界面与 Claude Code 风格 TUI（TUI / WebUI）</td></tr>
+          <tr><td><strong>Hermes Agent</strong></td><td>智能体</td><td>v1.0.10</td><td>Nous Research 自我改进型 AI Agent，内置学习循环与长期记忆（TUI / WebUI）</td></tr>
+          <tr><td><strong>OpenCode</strong></td><td>智能体</td><td>v1.0.11</td><td>开源 AI 编程代理，内置免费模型，也可连接 Claude、GPT、Gemini 等任意模型（TUI / WebUI）</td></tr>
+          <tr><td><strong>OpenClaw</strong></td><td>智能体</td><td>v1.0.11</td><td>开源可编程 AI 个人助手平台，支持自动化任务与工具调用（TUI / WebUI）</td></tr>
+          <tr><td><strong>KimiCode</strong></td><td>智能体</td><td>v1.0.9</td><td>面向开发者的智能编程服务，支持代码阅读、文件编辑、命令执行、网页搜索（TUI）</td></tr>
+          <tr><td><strong>Prime Agent</strong></td><td>智能体</td><td>v1.0.8</td><td>开源通用 AI 编码智能体，内置 IPython 内核与 TUI / ACP 双界面（TUI，支持 ACP 接入）</td></tr>
+          <tr><td><strong>EduSwarm</strong></td><td>智能体</td><td>v1.0.7</td><td>基于多智能体框架的 AI 教师团队协作平台，覆盖备课、上课、作业、批改、学情全流程（WebUI）</td></tr>
+          <tr><td><strong>MiniMax Code</strong></td><td>智能体</td><td>v1.0.5</td><td>MiniMax Code CLI，支持交互式 TUI 与 mcode exec 接入 Shell 和 CI（TUI）</td></tr>
+          <tr><td><strong>iCode</strong></td><td>智能体</td><td>v1.0.3</td><td>纯本地的 AI 开发平台，主打轻量 TUI 体验，数据与工作流由用户掌控（TUI）</td></tr>
+          <tr><td><strong>SRE</strong></td><td>智能体</td><td>—</td><td>云服务运维智能体，支持环境运维、故障排查、扩缩容规划、费用查询（待开放）</td></tr>
+          <tr><td><strong>鸿蒙实践中心</strong></td><td>开发工具</td><td>v1.0.5</td><td>基于 GLM 模型鸿蒙增训、深度适配 ArkTS 语言，支持云端编译打包与云端 + 本地模拟器调测（WebUI）</td></tr>
+          <tr><td><strong>DevBridge</strong></td><td>开发工具</td><td>v1.0.6</td><td>隧道管理 Web 控制台，支持隧道创建、端口管理、本地服务托管与远程连接（TUI / WebUI）</td></tr>
+          <tr><td><strong>IAC MCP Server</strong></td><td>开发工具</td><td>v1.0.4</td><td>通过 MCP 协议暴露华为云基础设施部署能力，覆盖需求分析、资源规划、成本估算、Terraform 部署、排错与资源销毁</td></tr>
+          <tr><td><strong>Agent Browser</strong></td><td>开发工具</td><td>v1.0.1</td><td>集成 agent-browser 的无头浏览器自动化环境，支持网页导航、点击、填表、截图与数据提取</td></tr>
+          <tr><td><strong>HuaweiCloud DevKit</strong></td><td>开发工具</td><td>v1.0.4</td><td>让 AI 智能体掌握华为云构建、部署、运维全流程操作</td></tr>
+          <tr><td><strong>KasmVNC Desktop</strong></td><td>开发工具</td><td>v1.0.6</td><td>基于 Web 的 Linux 远程桌面访问（VNC）</td></tr>
+          <tr><td><strong>Next AI Draw.io</strong></td><td>开发工具</td><td>v1.0.3</td><td>AI 自然语言生成 Draw.io 图表，通过 MCP 供 AI Shell 等智能体调用</td></tr>
+          <tr><td><strong>Security Scan Suite</strong></td><td>开发工具</td><td>v1.0.1</td><td>通过 MCP 暴露安全扫描能力，覆盖制品 CVE 漏洞、密钥泄露、SBOM、IaC 误配置、端口暴露与主机基线</td></tr>
+          <tr><td><strong>AgentEval Lite</strong></td><td>开发工具</td><td>v1.0.1</td><td>通过 ACP 连接 Agent，进行数据集评测、运行对比和 Skill 生成与优化的平台（WebUI）</td></tr>
+          <tr><td><strong>Grape</strong></td><td>开发工具</td><td>v1.0.0</td><td>AI Native DevOps，将任意 Git 项目一键变为 AI 自主驱动的开发工作流（WebUI）</td></tr>
+          <tr><td><strong>SAG-Wiki Web</strong></td><td>开发工具</td><td>v1.0.1</td><td>轻量知识库，索引搜索本地文件，Web 界面访问（WebUI）</td></tr>
+          <tr><td><strong>随身工具箱</strong></td><td>开发工具</td><td>v1.0.1</td><td>音频剪辑、视频提取音频、图片压缩、二维码、房贷个税计算、数独等实用小工具，浏览器本地运行（WebUI）</td></tr>
+          <tr><td><strong>OpenViking</strong></td><td>数据库</td><td>v1.0.9</td><td>AI 智能体的开源上下文数据库（TUI / WebUI）</td></tr>
+          <tr><td><strong>GaussDB</strong></td><td>数据库</td><td>v1.0.4</td><td>GaussDB 混合云开发者版（ARM / HCE2.0），单机集中式部署，兼容 Oracle，仅供学习、适配验证或测试使用</td></tr>
+          <tr><td><strong>Llama</strong></td><td>基础设施</td><td>—</td><td>基于 llama.cpp 的本地 Embedding 环境，内置 bge-small-zh-v1.5 向量模型（未部署）</td></tr>
+          <tr><td><strong>AI Book</strong></td><td>学习</td><td>v1.0.4</td><td>学习资料在线阅读：AI Agent、AI Infra、生成式 AI 三门课，章节导航、全文搜索与划词笔记（Dashboard）</td></tr>
         </tbody>
       </table>
 
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧 <strong>TOOLS &gt; 环境管理</strong> 进入环境列表，页面上方显示环境总数与各状态数量</li>
-        <li>使用<strong>搜索框</strong>按名称检索，可通过<strong>分类</strong>（智能体 / 开发工具 / 数据库 / 基础设施）与<strong>状态</strong>（未部署 / 运行中 / 待开放）筛选</li>
+        <li>点击左侧 <strong>环境管理</strong> 进入环境列表，页面上方显示环境总数与各状态数量</li>
+        <li>使用<strong>搜索框</strong>按名称检索，可通过<strong>分类</strong>（智能体 / 开发工具 / 数据库 / 基础设施 / 学习）与<strong>状态</strong>（未部署 / 运行中 / 待开放）筛选</li>
         <li>卡片展示分类、版本、状态、标签、使用次数与最近操作时间；未部署的环境点击<strong>部署</strong>启动，待开放的环境暂不可部署</li>
         <li>运行中的环境提供 <strong>TUI</strong>（终端界面）、<strong>WebUI</strong>（网页界面）入口，以及<strong>停止</strong>、<strong>删除</strong>操作；部分卡片提供<strong>查看最佳实践</strong>快捷入口</li>
         <li>点击右上角<strong>创建</strong>打开「创建作业环境」对话框，可选择<strong>AI 创建</strong>（通过 AI Shell 对话生成）或<strong>手动搭建</strong>（填写卡片信息、配置沙箱与环境目录、编写启动脚本，设置 TUI 命令或 Web UI 端口），创建后状态为未部署</li>
@@ -1171,11 +1557,28 @@
         <li>页面顶部提示各智能体作业环境已完成自定义模型适配，建议将作业环境升级至最新版本以获得最佳使用体验</li>
       </ol>
 
-      <img class="screenshot" src="images/workenv.png?v=20261109" alt="环境管理" />
+      <p><strong>常用操作说明：</strong></p>
+      <table>
+        <thead>
+          <tr><th>操作</th><th>说明</th><th>注意事项</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>部署 / 启动</strong></td><td>未部署的环境点击「部署」，已停止的环境点击「启动」</td><td>首次部署需等待状态变为「运行中」，期间 TUI / WebUI 入口不可用</td></tr>
+          <tr><td><strong>进入环境</strong></td><td>运行中的环境通过卡片上的 TUI / WebUI / Dashboard 按钮进入</td><td>入口无法打开通常说明环境尚未就绪，稍后刷新页面重试</td></tr>
+          <tr><td><strong>停止</strong></td><td>释放运行资源，环境与目录中的文件保留</td><td>停止后入口失效，再次使用需重新启动</td></tr>
+          <tr><td><strong>删除</strong></td><td>移除不再使用的环境</td><td>删除前先通过资源管理器备份需要保留的文件</td></tr>
+          <tr><td><strong>创建</strong></td><td>右上角「创建」→ AI 创建（通过 AI Shell 对话生成）或手动搭建</td><td>手动搭建需填写卡片信息、沙箱与环境目录、启动脚本、TUI 命令或 Web UI 端口</td></tr>
+          <tr><td><strong>发布 / 取回</strong></td><td>自定义环境发布上架供其他用户使用；已发布环境可「取回」继续修改</td><td>发布前请确认配置与启动脚本可用，发布后会出现在列表中供其他用户使用</td></tr>
+        </tbody>
+      </table>
+      <p><strong>环境间切换：</strong>左侧 AGENTS 分组只列出已部署的智能体；如需查看全部环境或切换到其他工具，请在「环境管理」列表中定位目标环境并点击其入口。卡片上会展示版本、使用次数与最近操作时间，便于识别常用环境。</p>
+      <div class="tip"><b>说明：</b>页面顶部会提示智能体环境已完成自定义模型适配，如有新版本可点击卡片上的「升级」入口更新，以获得最新能力。</div>
+
+      <img class="screenshot" src="images/workenv.png?v=20261127" alt="环境管理" />
       <div class="figcaption">环境管理：作业环境列表、分类与状态筛选、部署与 TUI / WebUI 入口</div>
     </section>
 
-    <section id="agent-work">
+    <section id="agent-work" style="display:none">
       <h2>AGENT WORK</h2>
       <p><strong>AGENT WORK</strong>（Beta）是智能体工作平台，提供从 Agent 定义、任务承载、多智能体协作到周期自动化的完整工作流。在左侧导航展开 <strong>AGENT WORK</strong> 菜单，包含 5 个子模块：</p>
       <table>
@@ -1192,7 +1595,7 @@
       </table>
     </section>
 
-    <section id="agent-work-agents">
+    <section id="agent-work-agents" style="display:none">
       <h2>Agent 管理</h2>
       <p>管理空间内的 AI Agent 实例。内置 <strong>AI SHELL</strong> Agent 默认在线，支持通过 <strong>聊天</strong> 直接对话，或通过 <strong>IM 连接</strong> 接入即时消息渠道：</p>
       <ol class="steps">
@@ -1207,7 +1610,7 @@
       <div class="figcaption">创建 Agent：填写名称与人格，选择运行时，可配置环境变量、Skills 与 MCP 服务器</div>
     </section>
 
-    <section id="agent-work-projects">
+    <section id="agent-work-projects" style="display:none">
       <h2>项目</h2>
       <p>项目是承载 Agent 任务的容器，可定义标准与验证规则，支持关联代码仓库自动校验：</p>
       <ol class="steps">
@@ -1221,7 +1624,7 @@
       <div class="figcaption">新建项目：选择项目类型（无仓库项目 / 代码仓库），填写项目名称与验收要求</div>
     </section>
 
-    <section id="agent-work-tasks">
+    <section id="agent-work-tasks" style="display:none">
       <h2>任务</h2>
       <p>面向目标的任务管理，实时跟踪 Agent 执行状态与进度：</p>
       <ol class="steps">
@@ -1236,7 +1639,7 @@
       <div class="figcaption">新建任务：填写标题与描述，选择负责人（Agent / 小队）、状态与所属项目</div>
     </section>
 
-    <section id="agent-work-squads">
+    <section id="agent-work-squads" style="display:none">
       <h2>小队</h2>
       <p>将多个智能体组合为协作小队，由 Leader 协同完成复杂任务：</p>
       <ol class="steps">
@@ -1250,7 +1653,7 @@
       <div class="figcaption">新建小队：设置名称与 Leader，选择成员与审查者，填写小队介绍与协作说明</div>
     </section>
 
-    <section id="agent-work-automation">
+    <section id="agent-work-automation" style="display:none">
       <h2>自动化</h2>
       <p>为智能体或小队安排周期性任务，实现定时自动执行：</p>
       <ol class="steps">
@@ -1266,21 +1669,56 @@
 
     <section id="extensions">
       <h2>EXTENSIONS</h2>
-      <p><strong>EXTENSIONS</strong> 模块提供扩展能力入口，包含华为云 Skills 和 Channels 两个子模块：</p>
+      <p><strong>EXTENSIONS</strong> 是扩展能力入口，当前提供 <strong>连接器</strong>：把外部服务以 MCP 方式接入 AI Shell 与智能体，配置并启用后即可在会话中调用其工具。</p>
       <table>
         <thead>
           <tr><th>子模块</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>华为云 Skills</strong></td><td>预置的华为云服务技能集合，提供云资源查询、运维等快捷能力</td></tr>
-          <tr><td><strong>Channels</strong></td><td>消息渠道连接管理，支持飞书、微信、企业微信等平台对接</td></tr>
+          <tr><td><strong>连接器</strong></td><td>外部服务的 MCP 接入与凭证管理，详见 <a href="#connectors">连接器</a></td></tr>
         </tbody>
       </table>
+      <p>原 EXTENSIONS 下的 <strong>华为云 Skills</strong> 与 <strong>Channels</strong> 已调整为 AI SHELL 的下级模块，入口见 <a href="#skills">华为云 Skills</a> 与 <a href="#channels">Channels</a>。</p>
+    </section>
+
+    <section id="connectors">
+      <h2>连接器</h2>
+      <p><strong>连接器（Connectors）</strong> 将外部服务以 MCP（Model Context Protocol）方式接入 AI Shell：连接器负责协议适配与凭证转发，智能体在会话中即可调用该服务提供的工具。</p>
+      <p>进入 <strong>EXTENSIONS → 连接器</strong> 后，页面以卡片列表展示全部连接器，每张卡片包含服务名称、能力说明、能力标签（如仓库、安全防护、数据采集）、当前连接状态与 <strong>连接</strong> 按钮；顶部搜索框可按名称快速过滤。</p>
+      <img class="screenshot" src="images/connectors-list.jpg?v=20261127" alt="连接器列表" />
+      <div class="figcaption">连接器列表：状态显示「未连接」，点击卡片右下角的「连接」开始配置</div>
+      <table>
+        <thead>
+          <tr><th>连接器</th><th>典型能力</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cloudflare</td><td>Workers、KV、D1 等边缘资源操作</td></tr>
+          <tr><td>Context7</td><td>检索主流开源库的最新文档与代码示例</td></tr>
+          <tr><td>Neon</td><td>Serverless Postgres 数据库管理</td></tr>
+          <tr><td>Firecrawl</td><td>网页抓取并转换为结构化内容</td></tr>
+          <tr><td>Apify</td><td>调用预置爬虫与自动化 Actor</td></tr>
+          <tr><td>Hugging Face</td><td>模型与数据集检索</td></tr>
+          <tr><td>PostHog</td><td>产品分析与事件数据查询</td></tr>
+          <tr><td>华为云服务连接器</td><td>CodeArts 等华为云研发服务的代理接入</td></tr>
+        </tbody>
+      </table>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>在左侧导航展开 <strong>EXTENSIONS</strong>，进入 <strong>连接器</strong></li>
+        <li>通过搜索框按名称检索，或直接浏览列表；每个连接器会说明自身能力与所需凭证</li>
+        <li>选择目标连接器并按页面提示完成配置：第三方服务一般填写 API Key / Token，华为云服务填写 AK/SK</li>
+        <li>保存并启用后，连接器状态变为可用</li>
+        <li>回到 AI Shell 会话，用自然语言描述任务，智能体会按需调用已启用连接器提供的工具</li>
+      </ol>
+      <p>以 Cloudflare 为例，点击 <strong>连接</strong> 后弹出配置窗口，窗口内给出凭证的获取方式与申请入口，按提示填入 API Token 并点击 <strong>连接</strong> 即完成配置。</p>
+      <img class="screenshot" src="images/connectors-config.jpg?v=20261127" alt="连接器配置窗口" />
+      <div class="figcaption">配置 Cloudflare 连接器：按提示前往服务商控制台创建 API Token 并填入</div>
+      <div class="tip"><b>说明：</b>连接器基于 MCP 协议与外部服务通信，不同连接器可用的工具以其说明为准；如出现工具调用失败，先检查凭证是否过期，再刷新连接器状态后重试。</div>
     </section>
 
     <section id="skills">
       <h2>华为云 Skills</h2>
-      <p><strong>华为云 Skills</strong> 是技能市场，提供华为云各产品的技能（当前 79 个，可查看已安装数量）。</p>
+      <p><strong>华为云 Skills</strong> 是技能市场，提供华为云各产品的技能（当前 169 个，页面右上角显示「已安装数 / 总数」）。</p>
       <table>
         <thead>
           <tr><th>技能类别</th><th>示例</th><th>用途</th></tr>
@@ -1303,9 +1741,11 @@
         <li>使用顶部<strong>搜索框</strong>按名称检索技能</li>
         <li>勾选「仅显示已安装」可筛选已安装的技能</li>
         <li>点击技能的<strong>安装</strong>按钮完成安装，点击<strong>卸载</strong>移除</li>
+        <li>安装完成后，在 AI Shell 会话输入 <code>$</code> 唤起技能列表，选择已安装技能即可插入对话引用</li>
       </ol>
+      <div class="tip"><b>说明：</b>技能卡片展示技能名称、说明与安装状态；安装后无需重启会话，直接在对话中引用即可。</div>
 
-      <img class="screenshot" src="images/skills.png" alt="华为云 Skills" />
+      <img class="screenshot" src="images/skills.png?v=20261127" alt="华为云 Skills" />
       <div class="figcaption">华为云 Skills 技能市场：技能搜索、安装与卸载</div>
     </section>
 
@@ -1325,15 +1765,16 @@
 
       <p><strong>操作步骤：</strong></p>
       <ol class="steps">
-        <li>点击左侧 <strong>Channels</strong> 进入渠道列表</li>
-        <li>点击顶部「配置华为云 AKSK」，管理华为云访问凭证</li>
-        <li>选择目标渠道（飞书 / 微信 / 企业微信），点击<strong>连接</strong>或<strong>配置</strong>建立连接</li>
+        <li>点击左侧 <strong>Channels</strong> 进入渠道列表，页面顶部提供 <strong>刷新</strong> 与 Channel 搜索框</li>
+        <li>按页面提示先完成<strong>华为云 AK/SK</strong> 配置，使智能体具备访问华为云资源的能力</li>
+        <li>在目标渠道卡片（飞书 / 微信 / 企业微信）上点击 <strong>连接</strong>（按提示扫码 / 授权快速建立连接）或 <strong>配置</strong>（手动填写凭证后保存）</li>
+        <li>连接成功后卡片状态由「未配置」变为已连接，并显示连接时间与已开通能力（消息 / 机器人 / 群聊）</li>
+        <li>到对应平台私聊机器人或 @机器人 发送一条测试消息，收到回复即表示接入成功</li>
       </ol>
-      <div class="tip">
-        <b>提示：</b>每个 Channel 通过配置凭证（如 App ID、App Secret）与外部平台建立安全连接，支持扫码注册与手动配置两种方式。
-      </div>
+      <div class="tip"><b>凭证从哪来：</b>飞书需先在飞书开放平台创建企业自建应用并开启机器人能力，获取 App ID 与 App Secret；企业微信需提供 Bot ID 与 Secret 并完成扫码授权；微信按页面二维码扫码登录并完成配对码验证。</div>
+      <div class="tip"><b>说明：</b>连接异常时点击右上角 <strong>刷新</strong> 更新状态；更换凭证或机器人后需重新配置并再次验证。</div>
 
-      <img class="screenshot" src="images/channels.png" alt="Channels 渠道" />
+      <img class="screenshot" src="images/channels.png?v=20261127" alt="Channels 渠道" />
       <div class="figcaption">Channels 渠道：飞书 / 微信 / 企业微信连接配置</div>
     </section>
 
@@ -1349,7 +1790,12 @@
           <tr><td><strong>Agent 接入</strong></td><td>IACMCPServer 使用指南文档</td></tr>
         </tbody>
       </table>
-      
+      <p><strong>使用方式：</strong></p>
+      <ol class="steps">
+        <li>点击 <strong>RESOURCES → 文档站</strong> 查看完整操作指南（即本文档），通过左侧目录快速定位功能模块</li>
+        <li>点击 <strong>RESOURCES → Agent 接入</strong> 打开 GitCode 上的 IACMCPServer 使用指南，按文档配置 MCP 客户端完成接入</li>
+      </ol>
+      <div class="tip"><b>说明：</b>Agent 接入指南托管在 GitCode，访问需具备对应仓库权限；如需在 AI Shell 中直接使用 IaC 能力，也可先在环境管理部署 <strong>IAC MCP Server</strong> 环境。</div>
     </section>
 
     <section id="resources-docs">
@@ -1359,8 +1805,8 @@
         <li>AI SHELL 的使用方法（AI 对话模式、命令行模式、会话配置）</li>
         <li>AGENTS 模块各智能体的操作说明（CodeArts、WorkSwarm 等）</li>
         <li>环境管理的部署与配置指引</li>
-        <li>华为云 Skills 和 Channels 的接入说明</li>
-        <li>TOOLS 模块（OpenViking、DevBridge）的使用指南</li>
+        <li>AI SHELL 下华为云 Skills、Channels 的接入说明，以及 EXTENSIONS 连接器的配置说明</li>
+        <li>TOOLS 模块（链接生成、DevBridge、KasmVNC、Next AI Draw.io、Security Scan Suite、AgentEval Lite、Grape、OpenViking、GaussDB、AI Book）的使用指南</li>
         <li>RESOURCES、文件管理、设置与反馈等全部功能模块说明</li>
       </ul>
       <div class="tip">
@@ -1387,32 +1833,53 @@
 
     <section id="files">
       <h2>文件管理</h2>
-      <p>点击右上角「展开右侧面板」，可打开文件管理器：</p>
+      <p>文件管理通过右侧<strong>资源管理器</strong>面板完成。点击页面右上角的 <strong>资源管理器</strong> 按钮即可展开 / 收起面板，面板默认展示当前环境的根目录 <code>/</code>，点击文件夹可逐级展开。</p>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>打开资源管理器，在文件树中定位目标目录（AI Shell 新建会话的默认工作目录为 <code>/root/workspace</code>）</li>
+        <li>点击<strong>上传</strong>图标，选择本地文件上传至当前所在目录</li>
+        <li>点击<strong>新建文件</strong>图标，在当前目录下创建文件或文件夹</li>
+        <li>在顶部<strong>搜索</strong>框按文件名检索；点击<strong>刷新</strong>图标重新加载目录内容</li>
+        <li>点击<strong>批量操作</strong>图标进入多选模式，勾选多个文件后统一处理</li>
+      </ol>
+      <p><strong>目录与文件说明：</strong></p>
       <ul>
-        <li><strong>搜索文件名</strong>：按名称检索文件</li>
-        <li><strong>批量操作</strong>：对多个文件执行批量处理</li>
-        <li><strong>上传</strong>：上传本地文件</li>
-        <li><strong>新建文件 / 新建文件夹</strong>：在工作区创建文件或目录</li>
+        <li><code>/</code>：环境根目录，<code>/etc</code>、<code>/usr</code> 等系统目录请勿随意修改</li>
+        <li><code>/root/workspace</code>：代码与业务文件的默认工作目录，建议在此目录下开发</li>
+        <li><code>/root</code> 下的个人文件在环境重启或升级后仍会保留</li>
       </ul>
+      <div class="tip"><b>说明：</b>在 AI Shell 的右侧资源管理器中，可将文件「添加到对话」作为上下文；删除或重建环境前，请先备份 <code>/root</code> 下需要保留的文件。</div>
 
-      <img class="screenshot" src="images/files.png" alt="文件管理" />
-      <div class="figcaption">文件管理：文件搜索、上传、新建文件 / 文件夹</div>
+      <img class="screenshot" src="images/files.png?v=20261127" alt="文件管理" />
+      <div class="figcaption">资源管理器：文件搜索、上传、新建文件、批量操作与刷新</div>
     </section>
 
     <section id="settings">
       <h2>设置与反馈</h2>
+      <p>点击顶部工具栏的<strong>齿轮图标</strong>打开「设置」标签页，可管理账号信息、主题与模型；问题反馈入口用于提交使用问题与建议。</p>
+      <p><strong>设置项说明：</strong></p>
       <table>
         <thead>
-          <tr><th>入口</th><th>功能</th></tr>
+          <tr><th>设置项</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>设置</strong></td><td>基本信息：账号 ID / 实名认证状态 / 账号中心；主题设置：浅色模式 / 深色模式 / 跟随设备</td></tr>
-          <tr><td><strong>问题反馈</strong></td><td>提交使用问题与意见反馈</td></tr>
+          <tr><td><strong>基本信息</strong></td><td>展示账号 ID 与实名认证状态；点击「账号中心」跳转华为云账号中心，可修改密码、绑定手机与查看认证信息</td></tr>
+          <tr><td><strong>主题设置</strong></td><td>浅色模式 / 深色模式 / 跟随设备，选择后自动保存并立即生效</td></tr>
+          <tr><td><strong>模型</strong></td><td>展示模型供应商与可用模型数量。内置供应商「开发者空间」由平台同步、只读；点击「+ 添加供应商」可接入自有模型，添加后可在 AI Shell 会话配置的 Model 中选择</td></tr>
+          <tr><td><strong>问题反馈</strong></td><td>提交使用问题与意见反馈，便于平台侧定位处理</td></tr>
         </tbody>
       </table>
+      <p><strong>操作步骤：</strong></p>
+      <ol class="steps">
+        <li>点击顶部齿轮图标进入「设置」，在<strong>基本信息</strong>中核对账号 ID 与实名认证状态；未实名认证时部分云资源能力不可用，可点击「账号中心」完成认证</li>
+        <li>在<strong>主题设置</strong>中选择浅色 / 深色 / 跟随设备，页面主题即时切换并自动保存</li>
+        <li>在<strong>模型</strong>中查看内置模型；如需使用自有模型，点击「+ 添加供应商」按页面提示填写配置并保存</li>
+        <li>如遇使用问题，通过<strong>问题反馈</strong>入口填写问题描述、复现步骤并附上截图后提交</li>
+      </ol>
+      <div class="tip"><b>说明：</b>顶部工具栏同时展示「剩余核时」，点击旁侧 ? 可查看核时统计口径；账号 ID 与实名认证状态可在设置中随时核对。</div>
 
-      <img class="screenshot" src="images/settings.png" alt="设置" />
-      <div class="figcaption">设置：基本信息与主题模式切换（浅色 / 深色 / 跟随设备）</div>
+      <img class="screenshot" src="images/settings.png?v=20261127" alt="设置" />
+      <div class="figcaption">设置：基本信息、主题设置与模型管理</div>
     </section>
 
     <section id="system-monitor">
@@ -1451,7 +1918,7 @@
         <b>统计口径：</b>内存为宿主机 /root/runtime/&lt;环境&gt; 目录下进程 RSS 聚合；沙箱内 free 命令结果为宿主共享视图，不代表单环境实际占用；CPU 为 /proc 两次采样差（单核口径）。
       </div>
 
-      <img class="screenshot" src="images/system-monitor.jpg" alt="系统监控" />
+      <img class="screenshot" src="images/system-monitor.jpg?v=20261127" alt="系统监控" />
       <div class="figcaption">系统监控：系统指标卡、作业环境资源与资源占用排行</div>
     </section>
 
@@ -2598,8 +3065,11 @@
   const chapters = [
     { id: 'intro', title: '简介' },
     { id: 'home', title: '首页' },
-    { id: 'ai-shell', title: 'AI SHELL' },
     { id: 'agents', title: 'AGENTS 概览' },
+    { id: 'ai-shell', title: 'AI SHELL' },
+    { id: 'skills', title: '华为云 Skills' },
+    { id: 'channels', title: 'Channels' },
+    { id: 'agent-harmony', title: '鸿蒙实践中心' },
     { id: 'agent-codearts', title: 'CodeArts' },
     { id: 'agent-WorkSwarm', title: 'WorkSwarm' },
     { id: 'agent-deepseek-harness', title: 'DeepSeek Harness' },
@@ -2609,20 +3079,29 @@
     { id: 'agent-kimicode', title: 'KimiCode' },
     { id: 'agent-prime', title: 'Prime Agent' },
     { id: 'agent-eduswarm', title: 'EduSwarm' },
-    { id: 'workenv', title: '环境管理' },
-    { id: 'agent-work', title: 'AGENT WORK' },
-    { id: 'agent-work-agents', title: 'Agent 管理' },
-    { id: 'agent-work-projects', title: '项目' },
-    { id: 'agent-work-tasks', title: '任务' },
-    { id: 'agent-work-squads', title: '小队' },
-    { id: 'agent-work-automation', title: '自动化' },
-    { id: 'extensions', title: 'EXTENSIONS' },
-    { id: 'skills', title: '华为云 Skills' },
-    { id: 'channels', title: 'Channels' },
+    { id: 'agent-minimax', title: 'MiniMax Code' },
+    { id: 'agent-icode', title: 'iCode' },
     { id: 'tools', title: 'TOOLS' },
-    { id: 'tool-openviking', title: 'OpenViking' },
-    { id: 'tool-iacmcp', title: 'IACMCPServer' },
+    { id: 'tool-link', title: '链接生成' },
     { id: 'tool-devbridge', title: 'DevBridge' },
+    { id: 'tool-kasmvnc', title: 'KasmVNC Desktop' },
+    { id: 'tool-drawio', title: 'Next AI Draw.io' },
+    { id: 'tool-secaudit', title: 'Security Scan Suite' },
+    { id: 'tool-agenteval', title: 'AgentEval Lite' },
+    { id: 'tool-grape', title: 'Grape' },
+    { id: 'tool-openviking', title: 'OpenViking' },
+    { id: 'tool-gaussdb', title: 'GaussDB' },
+    { id: 'tool-aibook', title: 'AI Book' },
+    { id: 'workenv', title: '环境管理' },
+    // AGENT WORK 暂时隐藏
+    // { id: 'agent-work', title: 'AGENT WORK' },
+    // { id: 'agent-work-agents', title: 'Agent 管理' },
+    // { id: 'agent-work-projects', title: '项目' },
+    // { id: 'agent-work-tasks', title: '任务' },
+    // { id: 'agent-work-squads', title: '小队' },
+    // { id: 'agent-work-automation', title: '自动化' },
+    { id: 'extensions', title: 'EXTENSIONS' },
+    { id: 'connectors', title: '连接器' },
     { id: 'resources', title: 'RESOURCES' },
     { id: 'resources-docs', title: '文档站' },
     { id: 'resources-agent', title: 'Agent 接入' },
@@ -2654,6 +3133,17 @@
     document.querySelectorAll('#toc a').forEach(a => {
       a.classList.toggle('active', a.getAttribute('href') === '#' + id);
     });
+    // 首次渲染时自动展开包含当前页面的上级菜单，避免深层链接进页面时侧边栏看不到当前位置
+    if (!window.__navExpandedOnce) {
+      window.__navExpandedOnce = true;
+      document.querySelectorAll('#toc .submenu').forEach(sm => {
+        if (sm.querySelector('a.active')) {
+          sm.classList.remove('collapsed');
+          const toggle = document.getElementById(sm.id.replace('-submenu', '-toggle'));
+          if (toggle) toggle.classList.add('open');
+        }
+      });
+    }
     window.scrollTo(0, 0);
   }
 
@@ -2730,7 +3220,7 @@
     { src: VIDEO_BASE + 'space.mp4', poster: POSTER_BASE + 'space1.jpg', title: '什么是AI开发者空间？', cat: '', dur: 70.1 },
     { src: VIDEO_BASE + 'codearts.mp4', poster: POSTER_BASE + 'codearts.jpg', title: '码道CodeArts 快速上手：从自动安装到一句话开发', cat: 'codearts', dur: 106.1 },
     { src: VIDEO_BASE + 'workswarm.mp4', poster: POSTER_BASE + 'workswarm.png', title: 'WorkSwarm快速上手：你的专属桌面智能搭子', cat: 'workswarm', dur: 140.9 },
-    { src: VIDEO_BASE + 'agentwork.mp4', poster: POSTER_BASE + 'agentwork.png', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
+    // { src: VIDEO_BASE + 'agentwork.mp4', poster: POSTER_BASE + 'agentwork.png', title: 'AgentWork实践：多智能体协作完成毕业设计', cat: 'agentwork', dur: 187.7 },
     { src: VIDEO_BASE + 'envrioment.mp4', poster: POSTER_BASE + 'envrioment.png', title: '自定义作业环境：AI创建与手动搭建', cat: 'env', dur: 123.5 },
     { src: VIDEO_BASE + 'customize.mp4', poster: POSTER_BASE + 'customize.jpg', title: '发布作业环境：自定义环境一键上架', cat: 'env', dur: 142 },
     { src: VIDEO_BASE + 'devBridge.mp4', poster: POSTER_BASE + 'devBridge.jpg', title: 'DevBridge开发者隧道：DevOps利器', cat: 'devbridge', dur: 61.9 },
@@ -2757,7 +3247,7 @@
   const videoCats = [
     { key: 'codearts', label: 'CodeArts' },
     { key: 'workswarm', label: 'WorkSwarm' },
-    { key: 'agentwork', label: 'AgentWork' },
+    // { key: 'agentwork', label: 'AgentWork' },
     { key: 'env', label: '作业环境' },
     { key: 'gaussdb', label: 'GaussDB' },
     { key: 'devbridge', label: 'DevBridge' },
@@ -3026,6 +3516,11 @@
       const id = a.getAttribute('href').slice(1);
       if (a.id === 'agents-toggle') {
         const submenu = document.getElementById('agents-submenu');
+        const collapsed = submenu.classList.toggle('collapsed');
+        a.classList.toggle('open', !collapsed);
+      }
+      if (a.id === 'aishell-toggle') {
+        const submenu = document.getElementById('aishell-submenu');
         const collapsed = submenu.classList.toggle('collapsed');
         a.classList.toggle('open', !collapsed);
       }
